@@ -165,10 +165,8 @@ export interface Database {
 export type Player = Database["public"]["Tables"]["players"]["Row"];
 export type Rival = Database["public"]["Tables"]["rivals"]["Row"];
 export type Match = Database["public"]["Tables"]["matches"]["Row"];
-export type MatchPlayerStat =
-  Database["public"]["Tables"]["match_player_stats"]["Row"];
-export type PlayerStatsSummary =
-  Database["public"]["Views"]["player_stats_summary"]["Row"];
+export type MatchPlayerStat = Database["public"]["Tables"]["match_player_stats"]["Row"];
+export type PlayerStatsSummary = Database["public"]["Views"]["player_stats_summary"]["Row"];
 
 export interface MatchWithRival extends Match {
   rival: Rival;
@@ -177,3 +175,4 @@ export interface MatchWithRival extends Match {
 export interface MatchDetail extends MatchWithRival {
   stats: (MatchPlayerStat & { player: Player })[];
 }
+

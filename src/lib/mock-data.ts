@@ -1,44 +1,34 @@
-import {
-  Player,
-  Rival,
-  MatchWithRival,
-  PlayerStatsSummary,
-} from "./supabase/types";
+import { Player, Rival, MatchWithRival, PlayerStatsSummary } from "./supabase/types";
 
 export const initialRivals: Rival[] = [
   {
     id: "rival-1",
     name: "Barrio Norte F7",
-    shield_url:
-      "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=128&auto=format&fit=crop&q=80",
+    shield_url: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=128&auto=format&fit=crop&q=80",
     created_at: new Date().toISOString(),
   },
   {
     id: "rival-2",
     name: "Los Halcones FC",
-    shield_url:
-      "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?w=128&auto=format&fit=crop&q=80",
+    shield_url: "https://images.unsplash.com/photo-1518091043644-c1d4457512c6?w=128&auto=format&fit=crop&q=80",
     created_at: new Date().toISOString(),
   },
   {
     id: "rival-3",
     name: "Atlético San Juan",
-    shield_url:
-      "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=128&auto=format&fit=crop&q=80",
+    shield_url: "https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=128&auto=format&fit=crop&q=80",
     created_at: new Date().toISOString(),
   },
   {
     id: "rival-4",
     name: "Inter Ribera",
-    shield_url:
-      "https://images.unsplash.com/photo-1511886929837-354d827aae26?w=128&auto=format&fit=crop&q=80",
+    shield_url: "https://images.unsplash.com/photo-1511886929837-354d827aae26?w=128&auto=format&fit=crop&q=80",
     created_at: new Date().toISOString(),
   },
   {
     id: "rival-5",
     name: "Recreativo Olivo",
-    shield_url:
-      "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=128&auto=format&fit=crop&q=80",
+    shield_url: "https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=128&auto=format&fit=crop&q=80",
     created_at: new Date().toISOString(),
   },
 ];
@@ -51,8 +41,7 @@ export const initialPlayers: Player[] = [
     nickname: "El Muro",
     dorsal: 1,
     position: "portero",
-    photo_url:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
   },
@@ -63,8 +52,7 @@ export const initialPlayers: Player[] = [
     nickname: "Checho",
     dorsal: 13,
     position: "portero",
-    photo_url:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
   },
@@ -75,8 +63,7 @@ export const initialPlayers: Player[] = [
     nickname: "Kaiser",
     dorsal: 3,
     position: "defensa",
-    photo_url:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
   },
@@ -87,8 +74,7 @@ export const initialPlayers: Player[] = [
     nickname: "Torre",
     dorsal: 4,
     position: "defensa",
-    photo_url:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
   },
@@ -99,8 +85,7 @@ export const initialPlayers: Player[] = [
     nickname: "Tano",
     dorsal: 5,
     position: "defensa",
-    photo_url:
-      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
   },
@@ -111,8 +96,7 @@ export const initialPlayers: Player[] = [
     nickname: "Mago",
     dorsal: 8,
     position: "medio",
-    photo_url:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
   },
@@ -123,8 +107,7 @@ export const initialPlayers: Player[] = [
     nickname: "Pulmón",
     dorsal: 6,
     position: "medio",
-    photo_url:
-      "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
   },
@@ -135,8 +118,7 @@ export const initialPlayers: Player[] = [
     nickname: "Charly",
     dorsal: 10,
     position: "medio",
-    photo_url:
-      "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
   },
@@ -147,8 +129,7 @@ export const initialPlayers: Player[] = [
     nickname: "Pistolero",
     dorsal: 9,
     position: "delantero",
-    photo_url:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
   },
@@ -159,8 +140,7 @@ export const initialPlayers: Player[] = [
     nickname: "Rayo",
     dorsal: 7,
     position: "delantero",
-    photo_url:
-      "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
   },
@@ -171,8 +151,7 @@ export const initialPlayers: Player[] = [
     nickname: "Tanque",
     dorsal: 11,
     position: "delantero",
-    photo_url:
-      "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
   },
@@ -210,9 +189,7 @@ export const initialMatches: MatchWithRival[] = [
     rival_id: "rival-3",
     is_home: true,
     // Next upcoming match in 3 days 18:00
-    match_date: new Date(
-      Date.now() + 3 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000
-    ).toISOString(),
+    match_date: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000 + 4 * 60 * 60 * 1000).toISOString(),
     competition: "liga",
     psg_score: null,
     rival_score: null,
@@ -244,8 +221,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     nickname: "El Muro",
     dorsal: 1,
     position: "portero",
-    photo_url:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 2,
     total_goals: 0,
@@ -261,8 +237,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     nickname: "Checho",
     dorsal: 13,
     position: "portero",
-    photo_url:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 0,
     total_goals: 0,
@@ -278,8 +253,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     nickname: "Kaiser",
     dorsal: 3,
     position: "defensa",
-    photo_url:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 2,
     total_goals: 0,
@@ -295,8 +269,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     nickname: "Torre",
     dorsal: 4,
     position: "defensa",
-    photo_url:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 1,
     total_goals: 0,
@@ -312,8 +285,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     nickname: "Tano",
     dorsal: 5,
     position: "defensa",
-    photo_url:
-      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 1,
     total_goals: 1,
@@ -329,8 +301,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     nickname: "Mago",
     dorsal: 8,
     position: "medio",
-    photo_url:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 2,
     total_goals: 1,
@@ -346,8 +317,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     nickname: "Pulmón",
     dorsal: 6,
     position: "medio",
-    photo_url:
-      "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 1,
     total_goals: 0,
@@ -363,8 +333,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     nickname: "Charly",
     dorsal: 10,
     position: "medio",
-    photo_url:
-      "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 1,
     total_goals: 0,
@@ -380,8 +349,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     nickname: "Pistolero",
     dorsal: 9,
     position: "delantero",
-    photo_url:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 2,
     total_goals: 4,
@@ -397,8 +365,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     nickname: "Rayo",
     dorsal: 7,
     position: "delantero",
-    photo_url:
-      "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 1,
     total_goals: 1,
@@ -414,8 +381,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     nickname: "Tanque",
     dorsal: 11,
     position: "delantero",
-    photo_url:
-      "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&auto=format&fit=crop&q=80",
+    photo_url: "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 1,
     total_goals: 0,
@@ -425,3 +391,4 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     total_clean_sheets: 0,
   },
 ];
+

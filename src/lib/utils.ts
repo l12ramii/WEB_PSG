@@ -10,10 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function formatMatchDate(dateString: string): string {
   try {
-    const date =
-      typeof dateString === "string"
-        ? parseISO(dateString)
-        : new Date(dateString);
+    const date = typeof dateString === "string" ? parseISO(dateString) : new Date(dateString);
     return format(date, "EEEE, d 'de' MMMM · HH:mm 'hs'", { locale: es });
   } catch {
     return dateString;
@@ -22,10 +19,7 @@ export function formatMatchDate(dateString: string): string {
 
 export function formatShortDate(dateString: string): string {
   try {
-    const date =
-      typeof dateString === "string"
-        ? parseISO(dateString)
-        : new Date(dateString);
+    const date = typeof dateString === "string" ? parseISO(dateString) : new Date(dateString);
     return format(date, "dd/MM/yyyy · HH:mm", { locale: es });
   } catch {
     return dateString;
@@ -34,10 +28,7 @@ export function formatShortDate(dateString: string): string {
 
 export function getRelativeTime(dateString: string): string {
   try {
-    const date =
-      typeof dateString === "string"
-        ? parseISO(dateString)
-        : new Date(dateString);
+    const date = typeof dateString === "string" ? parseISO(dateString) : new Date(dateString);
     return formatDistanceToNow(date, { addSuffix: true, locale: es });
   } catch {
     return dateString;
@@ -101,3 +92,4 @@ export function getCompetitionLabel(comp: CompetitionType): string {
       return comp;
   }
 }
+

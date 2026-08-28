@@ -2,17 +2,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?:
-    | "default"
-    | "portero"
-    | "defensa"
-    | "medio"
-    | "delantero"
-    | "liga"
-    | "copa"
-    | "amistoso"
-    | "live"
-    | "gold";
+  variant?: "default" | "portero" | "defensa" | "medio" | "delantero" | "liga" | "copa" | "amistoso" | "live" | "gold";
 }
 
 export function Badge({
@@ -37,7 +27,7 @@ export function Badge({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-semibold uppercase tracking-wider",
+        "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wider border",
         variantStyles[variant],
         className
       )}
@@ -47,3 +37,4 @@ export function Badge({
     </span>
   );
 }
+

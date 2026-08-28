@@ -16,9 +16,9 @@ export function Card({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-surface-border bg-surface p-6 shadow-card backdrop-blur-sm transition-all duration-300",
+        "rounded-2xl bg-surface border border-surface-border p-6 shadow-card transition-all duration-300 relative overflow-hidden backdrop-blur-sm",
         hoverEffect &&
-          "hover:-translate-y-1 hover:border-accent-cyan/40 hover:shadow-glow",
+          "hover:border-accent-cyan/40 hover:-translate-y-1 hover:shadow-glow",
         glow && "border-accent-cyan/40 shadow-glow",
         className
       )}
@@ -35,7 +35,10 @@ export function CardHeader({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div className={cn("flex flex-col space-y-1.5 pb-4", className)} {...props}>
+    <div
+      className={cn("flex flex-col space-y-1.5 pb-4", className)}
+      {...props}
+    >
       {children}
     </div>
   );
@@ -49,7 +52,7 @@ export function CardTitle({
   return (
     <h3
       className={cn(
-        "flex items-center gap-2 text-xl font-bold tracking-tight text-white",
+        "text-xl font-bold tracking-tight text-white flex items-center gap-2",
         className
       )}
       {...props}
@@ -70,3 +73,4 @@ export function CardContent({
     </div>
   );
 }
+

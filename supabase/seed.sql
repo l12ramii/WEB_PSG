@@ -76,3 +76,4 @@ INSERT INTO match_player_stats (match_id, player_id, played, goals, assists, yel
 ('33333333-3333-3333-3333-333333333302', '22222222-2222-2222-2222-222222222209', true, 2, 0, 0, 0, false), -- Pistolero (2G)
 ('33333333-3333-3333-3333-333333333302', '22222222-2222-2222-2222-222222222211', true, 0, 1, 0, 0, false)
 ON CONFLICT (match_id, player_id) DO NOTHING;
+

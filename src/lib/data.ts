@@ -19,176 +19,22 @@ let localRivals: Rival[] = [...initialRivals];
 let localMatches: MatchWithRival[] = [...initialMatches];
 let localMatchStats: Record<string, any[]> = {
   "match-1": [
-    {
-      id: "s1",
-      match_id: "match-1",
-      player_id: "player-1",
-      played: true,
-      goals: 0,
-      assists: 0,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[0],
-    },
-    {
-      id: "s2",
-      match_id: "match-1",
-      player_id: "player-3",
-      played: true,
-      goals: 0,
-      assists: 0,
-      yellow_cards: 1,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[2],
-    },
-    {
-      id: "s3",
-      match_id: "match-1",
-      player_id: "player-4",
-      played: true,
-      goals: 0,
-      assists: 1,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[3],
-    },
-    {
-      id: "s4",
-      match_id: "match-1",
-      player_id: "player-6",
-      played: true,
-      goals: 1,
-      assists: 2,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[5],
-    },
-    {
-      id: "s5",
-      match_id: "match-1",
-      player_id: "player-7",
-      played: true,
-      goals: 0,
-      assists: 0,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[6],
-    },
-    {
-      id: "s6",
-      match_id: "match-1",
-      player_id: "player-9",
-      played: true,
-      goals: 2,
-      assists: 0,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[8],
-    },
-    {
-      id: "s7",
-      match_id: "match-1",
-      player_id: "player-10",
-      played: true,
-      goals: 1,
-      assists: 1,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[9],
-    },
+    { id: "s1", match_id: "match-1", player_id: "player-1", played: true, goals: 0, assists: 0, yellow_cards: 0, red_cards: 0, clean_sheet: false, player: initialPlayers[0] },
+    { id: "s2", match_id: "match-1", player_id: "player-3", played: true, goals: 0, assists: 0, yellow_cards: 1, red_cards: 0, clean_sheet: false, player: initialPlayers[2] },
+    { id: "s3", match_id: "match-1", player_id: "player-4", played: true, goals: 0, assists: 1, yellow_cards: 0, red_cards: 0, clean_sheet: false, player: initialPlayers[3] },
+    { id: "s4", match_id: "match-1", player_id: "player-6", played: true, goals: 1, assists: 2, yellow_cards: 0, red_cards: 0, clean_sheet: false, player: initialPlayers[5] },
+    { id: "s5", match_id: "match-1", player_id: "player-7", played: true, goals: 0, assists: 0, yellow_cards: 0, red_cards: 0, clean_sheet: false, player: initialPlayers[6] },
+    { id: "s6", match_id: "match-1", player_id: "player-9", played: true, goals: 2, assists: 0, yellow_cards: 0, red_cards: 0, clean_sheet: false, player: initialPlayers[8] },
+    { id: "s7", match_id: "match-1", player_id: "player-10", played: true, goals: 1, assists: 1, yellow_cards: 0, red_cards: 0, clean_sheet: false, player: initialPlayers[9] },
   ],
   "match-2": [
-    {
-      id: "s8",
-      match_id: "match-2",
-      player_id: "player-1",
-      played: true,
-      goals: 0,
-      assists: 0,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: true,
-      player: initialPlayers[0],
-    },
-    {
-      id: "s9",
-      match_id: "match-2",
-      player_id: "player-3",
-      played: true,
-      goals: 0,
-      assists: 0,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[2],
-    },
-    {
-      id: "s10",
-      match_id: "match-2",
-      player_id: "player-5",
-      played: true,
-      goals: 1,
-      assists: 0,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[4],
-    },
-    {
-      id: "s11",
-      match_id: "match-2",
-      player_id: "player-6",
-      played: true,
-      goals: 0,
-      assists: 1,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[5],
-    },
-    {
-      id: "s12",
-      match_id: "match-2",
-      player_id: "player-8",
-      played: true,
-      goals: 0,
-      assists: 1,
-      yellow_cards: 1,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[7],
-    },
-    {
-      id: "s13",
-      match_id: "match-2",
-      player_id: "player-9",
-      played: true,
-      goals: 2,
-      assists: 0,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[8],
-    },
-    {
-      id: "s14",
-      match_id: "match-2",
-      player_id: "player-11",
-      played: true,
-      goals: 0,
-      assists: 1,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[10],
-    },
+    { id: "s8", match_id: "match-2", player_id: "player-1", played: true, goals: 0, assists: 0, yellow_cards: 0, red_cards: 0, clean_sheet: true, player: initialPlayers[0] },
+    { id: "s9", match_id: "match-2", player_id: "player-3", played: true, goals: 0, assists: 0, yellow_cards: 0, red_cards: 0, clean_sheet: false, player: initialPlayers[2] },
+    { id: "s10", match_id: "match-2", player_id: "player-5", played: true, goals: 1, assists: 0, yellow_cards: 0, red_cards: 0, clean_sheet: false, player: initialPlayers[4] },
+    { id: "s11", match_id: "match-2", player_id: "player-6", played: true, goals: 0, assists: 1, yellow_cards: 0, red_cards: 0, clean_sheet: false, player: initialPlayers[5] },
+    { id: "s12", match_id: "match-2", player_id: "player-8", played: true, goals: 0, assists: 1, yellow_cards: 1, red_cards: 0, clean_sheet: false, player: initialPlayers[7] },
+    { id: "s13", match_id: "match-2", player_id: "player-9", played: true, goals: 2, assists: 0, yellow_cards: 0, red_cards: 0, clean_sheet: false, player: initialPlayers[8] },
+    { id: "s14", match_id: "match-2", player_id: "player-11", played: true, goals: 0, assists: 1, yellow_cards: 0, red_cards: 0, clean_sheet: false, player: initialPlayers[10] },
   ],
 };
 
@@ -304,8 +150,7 @@ export async function getMatches(): Promise<MatchWithRival[]> {
     }
   }
   return localMatches.sort(
-    (a, b) =>
-      new Date(a.match_date).getTime() - new Date(b.match_date).getTime()
+    (a, b) => new Date(a.match_date).getTime() - new Date(b.match_date).getTime()
   );
 }
 
@@ -317,8 +162,7 @@ export async function getNextMatch(): Promise<MatchWithRival | null> {
       (m) => !m.is_finished && new Date(m.match_date).getTime() >= now - 7200000
     )
     .sort(
-      (a, b) =>
-        new Date(a.match_date).getTime() - new Date(b.match_date).getTime()
+      (a, b) => new Date(a.match_date).getTime() - new Date(b.match_date).getTime()
     );
   return upcoming[0] || null;
 }
@@ -328,8 +172,7 @@ export async function getLastResult(): Promise<MatchWithRival | null> {
   const finished = matches
     .filter((m) => m.is_finished)
     .sort(
-      (a, b) =>
-        new Date(b.match_date).getTime() - new Date(a.match_date).getTime()
+      (a, b) => new Date(b.match_date).getTime() - new Date(a.match_date).getTime()
     );
   return finished[0] || null;
 }
@@ -401,7 +244,9 @@ export async function addPlayer(data: Omit<Player, "id" | "created_at">) {
 }
 
 export async function updatePlayer(id: string, data: Partial<Player>) {
-  localPlayers = localPlayers.map((p) => (p.id === id ? { ...p, ...data } : p));
+  localPlayers = localPlayers.map((p) =>
+    p.id === id ? { ...p, ...data } : p
+  );
   return localPlayers.find((p) => p.id === id);
 }
 
@@ -470,3 +315,4 @@ export async function saveMatchSheet(
 
   return { success: true };
 }
+

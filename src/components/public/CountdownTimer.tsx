@@ -20,13 +20,7 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
       const difference = new Date(targetDate).getTime() - new Date().getTime();
 
       if (difference <= 0) {
-        setTimeLeft({
-          days: 0,
-          hours: 0,
-          minutes: 0,
-          seconds: 0,
-          isExpired: true,
-        });
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, isExpired: true });
         return;
       }
 
@@ -45,9 +39,8 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
 
   if (timeLeft.isExpired) {
     return (
-      <div className="inline-flex animate-pulse items-center gap-2 rounded-lg border border-rose-500/40 bg-rose-500/20 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-rose-300">
-        <span className="h-2 w-2 rounded-full bg-rose-500" /> ¡Día de Partido /
-        En Juego!
+      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-rose-500/20 border border-rose-500/40 text-rose-300 font-bold text-xs uppercase tracking-wider animate-pulse">
+        <span className="w-2 h-2 rounded-full bg-rose-500" /> ¡Día de Partido / En Juego!
       </div>
     );
   }
@@ -64,20 +57,21 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
       {units.map((unit, index) => (
         <React.Fragment key={unit.label}>
           <div className="flex flex-col items-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-surface-border bg-surface-muted shadow-inner sm:h-16 sm:w-16">
-              <span className="text-glow font-mono text-xl font-bold text-accent-cyan sm:text-2xl">
+            <div className="w-12 sm:w-16 h-12 sm:h-16 rounded-xl bg-surface-muted border border-surface-border flex items-center justify-center shadow-inner">
+              <span className="font-mono text-xl sm:text-2xl font-bold text-accent-cyan text-glow">
                 {String(unit.value).padStart(2, "0")}
               </span>
             </div>
-            <span className="mt-1 text-[9px] font-bold uppercase tracking-wider text-psg-400 sm:text-[10px]">
+            <span className="text-[9px] sm:text-[10px] font-bold text-psg-400 mt-1 uppercase tracking-wider">
               {unit.label}
             </span>
           </div>
           {index < units.length - 1 && (
-            <span className="mb-4 text-xl font-bold text-psg-500">:</span>
+            <span className="text-psg-500 font-bold text-xl mb-4">:</span>
           )}
         </React.Fragment>
       ))}
     </div>
   );
 }
+

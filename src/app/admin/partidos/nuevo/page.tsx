@@ -16,9 +16,7 @@ export default function NuevoPartidoPage() {
   const [rivalId, setRivalId] = useState<string>(initialRivals[0]?.id || "");
   const [isHome, setIsHome] = useState<boolean>(true);
   const [matchDate, setMatchDate] = useState<string>("");
-  const [competition, setCompetition] = useState<"liga" | "copa" | "amistoso">(
-    "liga"
-  );
+  const [competition, setCompetition] = useState<"liga" | "copa" | "amistoso">("liga");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -61,18 +59,18 @@ export default function NuevoPartidoPage() {
   };
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6 pb-16">
+    <div className="max-w-2xl mx-auto space-y-6 pb-16">
       {/* Back Button */}
       <Link
         href="/admin/partidos"
-        className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-psg-300 transition-colors hover:text-white"
+        className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-psg-300 hover:text-white transition-colors"
       >
-        <ArrowLeft className="h-4 w-4" /> Volver a partidos
+        <ArrowLeft className="w-4 h-4" /> Volver a partidos
       </Link>
 
-      <div className="space-y-6 rounded-3xl border border-surface-border bg-surface p-6 shadow-card sm:p-8">
-        <div className="space-y-1 border-b border-surface-border pb-4">
-          <h1 className="font-display text-2xl font-black uppercase tracking-wider text-white sm:text-3xl">
+      <div className="rounded-3xl bg-surface border border-surface-border p-6 sm:p-8 shadow-card space-y-6">
+        <div className="space-y-1 pb-4 border-b border-surface-border">
+          <h1 className="font-display text-2xl sm:text-3xl font-black uppercase text-white tracking-wider">
             Programar <span className="text-accent-cyan">Nuevo Partido</span>
           </h1>
           <p className="text-xs text-psg-300">
@@ -89,16 +87,16 @@ export default function NuevoPartidoPage() {
               </label>
               <Link
                 href="/admin/rivales"
-                className="flex items-center gap-1 text-xs font-semibold text-accent-cyan hover:underline"
+                className="text-xs text-accent-cyan hover:underline flex items-center gap-1 font-semibold"
               >
-                <Plus className="h-3.5 w-3.5" /> Crear nuevo rival
+                <Plus className="w-3.5 h-3.5" /> Crear nuevo rival
               </Link>
             </div>
 
             <select
               value={rivalId}
               onChange={(e) => setRivalId(e.target.value)}
-              className="w-full rounded-xl border border-surface-border bg-surface-muted px-4 py-3 text-sm text-white focus:border-accent-cyan focus:outline-none"
+              className="w-full rounded-xl bg-surface-muted border border-surface-border px-4 py-3 text-sm text-white focus:border-accent-cyan focus:outline-none"
               required
             >
               {rivals.map((rival) => (
@@ -111,17 +109,17 @@ export default function NuevoPartidoPage() {
 
           {/* Condition: Local / Away */}
           <div className="space-y-2">
-            <label className="block text-xs font-bold uppercase tracking-wider text-psg-200">
+            <label className="text-xs font-bold uppercase tracking-wider text-psg-200 block">
               Condición
             </label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setIsHome(true)}
-                className={`rounded-xl border px-4 py-3 text-sm font-bold uppercase tracking-wider transition-all ${
+                className={`py-3 px-4 rounded-xl border text-sm font-bold uppercase tracking-wider transition-all ${
                   isHome
-                    ? "border-accent-cyan bg-accent-electric text-white shadow-glow"
-                    : "border-surface-border bg-surface-muted text-psg-300 hover:text-white"
+                    ? "bg-accent-electric text-white border-accent-cyan shadow-glow"
+                    : "bg-surface-muted text-psg-300 border-surface-border hover:text-white"
                 }`}
               >
                 Local (Campo PSG)
@@ -129,10 +127,10 @@ export default function NuevoPartidoPage() {
               <button
                 type="button"
                 onClick={() => setIsHome(false)}
-                className={`rounded-xl border px-4 py-3 text-sm font-bold uppercase tracking-wider transition-all ${
+                className={`py-3 px-4 rounded-xl border text-sm font-bold uppercase tracking-wider transition-all ${
                   !isHome
-                    ? "border-accent-cyan bg-accent-electric text-white shadow-glow"
-                    : "border-surface-border bg-surface-muted text-psg-300 hover:text-white"
+                    ? "bg-accent-electric text-white border-accent-cyan shadow-glow"
+                    : "bg-surface-muted text-psg-300 border-surface-border hover:text-white"
                 }`}
               >
                 Visitante
@@ -142,27 +140,27 @@ export default function NuevoPartidoPage() {
 
           {/* Date & Time */}
           <div className="space-y-2">
-            <label className="block text-xs font-bold uppercase tracking-wider text-psg-200">
+            <label className="text-xs font-bold uppercase tracking-wider text-psg-200 block">
               Fecha y Hora del Partido
             </label>
             <input
               type="datetime-local"
               value={matchDate}
               onChange={(e) => setMatchDate(e.target.value)}
-              className="w-full rounded-xl border border-surface-border bg-surface-muted px-4 py-3 text-sm text-white focus:border-accent-cyan focus:outline-none"
+              className="w-full rounded-xl bg-surface-muted border border-surface-border px-4 py-3 text-sm text-white focus:border-accent-cyan focus:outline-none"
               required
             />
           </div>
 
           {/* Competición */}
           <div className="space-y-2">
-            <label className="block text-xs font-bold uppercase tracking-wider text-psg-200">
+            <label className="text-xs font-bold uppercase tracking-wider text-psg-200 block">
               Competición
             </label>
             <select
               value={competition}
               onChange={(e) => setCompetition(e.target.value as any)}
-              className="w-full rounded-xl border border-surface-border bg-surface-muted px-4 py-3 text-sm text-white focus:border-accent-cyan focus:outline-none"
+              className="w-full rounded-xl bg-surface-muted border border-surface-border px-4 py-3 text-sm text-white focus:border-accent-cyan focus:outline-none"
             >
               <option value="liga">Liga Oficial F7</option>
               <option value="copa">Copa</option>
@@ -170,14 +168,14 @@ export default function NuevoPartidoPage() {
             </select>
           </div>
 
-          <div className="flex justify-end gap-3 border-t border-surface-border pt-4">
+          <div className="pt-4 border-t border-surface-border flex justify-end gap-3">
             <Link href="/admin/partidos">
               <Button type="button" variant="secondary">
                 Cancelar
               </Button>
             </Link>
             <Button type="submit" isLoading={isLoading} size="lg">
-              <CalendarPlus className="h-4 w-4" /> Guardar Partido
+              <CalendarPlus className="w-4 h-4" /> Guardar Partido
             </Button>
           </div>
         </form>
@@ -185,3 +183,4 @@ export default function NuevoPartidoPage() {
     </div>
   );
 }
+

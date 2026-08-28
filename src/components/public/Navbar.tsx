@@ -18,25 +18,24 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-surface-border/80 bg-psg-950/80 backdrop-blur-md">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo / Brand */}
-        <Link href="/" className="group flex items-center gap-3">
-          <div className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-accent-cyan/40 bg-gradient-to-br from-psg-500 to-psg-700 shadow-glow transition-transform group-hover:scale-105">
-            <Flame className="phoenix-glow h-6 w-6 text-white" />
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-psg-500 to-psg-700 flex items-center justify-center border border-accent-cyan/40 shadow-glow group-hover:scale-105 transition-transform">
+            <Flame className="w-6 h-6 text-white phoenix-glow" />
           </div>
           <div className="flex flex-col">
-            <span className="font-display text-xl font-bold tracking-wider text-white transition-colors group-hover:text-accent-cyan">
-              PSG{" "}
-              <span className="text-sm font-normal text-accent-cyan">F7</span>
+            <span className="font-display text-xl font-bold tracking-wider text-white group-hover:text-accent-cyan transition-colors">
+              PSG <span className="text-accent-cyan text-sm font-normal">F7</span>
             </span>
-            <span className="text-[10px] font-semibold uppercase tracking-widest text-psg-300">
+            <span className="text-[10px] uppercase tracking-widest text-psg-300 font-semibold">
               Oficial
             </span>
           </div>
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden md:flex items-center gap-1">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname === link.href;
@@ -45,13 +44,13 @@ export function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200",
+                  "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200",
                   isActive
-                    ? "border border-accent-cyan/30 bg-surface-active text-accent-cyan shadow-sm"
-                    : "text-psg-200 hover:bg-white/5 hover:text-white"
+                    ? "bg-surface-active text-accent-cyan border border-accent-cyan/30 shadow-sm"
+                    : "text-psg-200 hover:text-white hover:bg-white/5"
                 )}
               >
-                <Icon className="h-4 w-4" />
+                <Icon className="w-4 h-4" />
                 {link.label}
               </Link>
             );
@@ -62,30 +61,26 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           <Link
             href="/admin"
-            className="flex items-center gap-1.5 rounded-lg border border-surface-border bg-surface-muted px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-psg-300 transition-all hover:border-accent-cyan/40 hover:text-accent-cyan"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold uppercase tracking-wider text-psg-300 bg-surface-muted hover:text-accent-cyan hover:border-accent-cyan/40 border border-surface-border transition-all"
           >
-            <Lock className="h-3.5 w-3.5" />
+            <Lock className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Panel CM</span>
           </Link>
 
           {/* Mobile menu button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="rounded-lg p-2 text-psg-200 hover:bg-white/10 hover:text-white md:hidden"
+            className="p-2 md:hidden rounded-lg text-psg-200 hover:text-white hover:bg-white/10"
             aria-label="Abrir menú"
           >
-            {mobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
       </div>
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="space-y-1 border-t border-surface-border bg-psg-900/95 px-4 pb-4 pt-2 backdrop-blur-xl md:hidden">
+        <div className="md:hidden border-t border-surface-border bg-psg-900/95 backdrop-blur-xl px-4 pt-2 pb-4 space-y-1">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname === link.href;
@@ -95,13 +90,13 @@ export function Navbar() {
                 href={link.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-4 py-3 text-base font-medium transition-colors",
+                  "flex items-center gap-3 px-4 py-3 rounded-lg text-base font-medium transition-colors",
                   isActive
-                    ? "border border-accent-cyan/30 bg-surface-active text-accent-cyan"
-                    : "text-psg-200 hover:bg-white/5 hover:text-white"
+                    ? "bg-surface-active text-accent-cyan border border-accent-cyan/30"
+                    : "text-psg-200 hover:text-white hover:bg-white/5"
                 )}
               >
-                <Icon className="h-5 w-5" />
+                <Icon className="w-5 h-5" />
                 {link.label}
               </Link>
             );
@@ -111,3 +106,4 @@ export function Navbar() {
     </header>
   );
 }
+

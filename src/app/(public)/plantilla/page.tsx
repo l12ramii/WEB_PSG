@@ -37,18 +37,17 @@ export default async function PlantillaPage() {
   ];
 
   return (
-    <div className="container mx-auto space-y-12 px-4 py-12 pb-24">
+    <div className="container mx-auto px-4 py-12 space-y-12 pb-24">
       {/* Header Banner */}
-      <div className="mx-auto max-w-2xl space-y-4 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-surface-border bg-surface-muted px-3 py-1 text-xs font-bold uppercase tracking-wider text-accent-cyan">
-          <Users className="h-3.5 w-3.5" /> Temporada 2026/2027
+      <div className="text-center max-w-2xl mx-auto space-y-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-muted border border-surface-border text-accent-cyan text-xs font-bold uppercase tracking-wider">
+          <Users className="w-3.5 h-3.5" /> Temporada 2026/2027
         </div>
-        <h1 className="font-display text-4xl font-black uppercase tracking-tight text-white sm:text-6xl">
-          Plantilla <span className="text-glow text-accent-cyan">Oficial</span>
+        <h1 className="font-display text-4xl sm:text-6xl font-black uppercase tracking-tight text-white">
+          Plantilla <span className="text-accent-cyan text-glow">Oficial</span>
         </h1>
-        <p className="text-sm text-psg-300 sm:text-base">
-          Conoce a los integrantes del PSG Fútbol 7 y sus estadísticas
-          individuales acumuladas durante la competición.
+        <p className="text-sm sm:text-base text-psg-300">
+          Conoce a los integrantes del PSG Fútbol 7 y sus estadísticas individuales acumuladas durante la competición.
         </p>
       </div>
 
@@ -62,31 +61,28 @@ export default async function PlantillaPage() {
           return (
             <section key={section.position} className="space-y-6">
               {/* Section Header */}
-              <div className="flex flex-col justify-between gap-2 border-b border-surface-border pb-3 sm:flex-row sm:items-baseline">
+              <div className="flex flex-col sm:flex-row sm:items-baseline justify-between border-b border-surface-border pb-3 gap-2">
                 <div>
-                  <h2 className="flex items-center gap-3 font-display text-2xl font-bold uppercase tracking-wide text-white sm:text-3xl">
-                    <span className="h-2.5 w-2.5 rounded-full bg-accent-cyan" />
+                  <h2 className="font-display text-2xl sm:text-3xl font-bold uppercase text-white tracking-wide flex items-center gap-3">
+                    <span className="w-2.5 h-2.5 rounded-full bg-accent-cyan" />
                     {section.title}
                   </h2>
-                  <p className="mt-0.5 text-xs text-psg-400">
-                    {section.description}
-                  </p>
+                  <p className="text-xs text-psg-400 mt-0.5">{section.description}</p>
                 </div>
-                <span className="font-mono text-xs font-bold text-psg-300">
-                  {positionPlayers.length}{" "}
-                  {positionPlayers.length === 1 ? "jugador" : "jugadores"}
+                <span className="text-xs font-mono font-bold text-psg-300">
+                  {positionPlayers.length} {positionPlayers.length === 1 ? "jugador" : "jugadores"}
                 </span>
               </div>
 
               {/* Grid of Players */}
               {positionPlayers.length > 0 ? (
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {positionPlayers.map((player) => (
                     <PlayerCard key={player.player_id} player={player} />
                   ))}
                 </div>
               ) : (
-                <div className="rounded-2xl border border-surface-border bg-surface-muted/50 p-8 text-center text-sm text-psg-400">
+                <div className="p-8 rounded-2xl bg-surface-muted/50 border border-surface-border text-center text-psg-400 text-sm">
                   No hay jugadores registrados en esta posición.
                 </div>
               )}
@@ -97,3 +93,4 @@ export default async function PlantillaPage() {
     </div>
   );
 }
+

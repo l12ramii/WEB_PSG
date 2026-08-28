@@ -48,39 +48,39 @@ export function StatLeaders({
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
       {leaders.map((leader) => {
         const Icon = leader.icon;
         return (
           <Card
             key={leader.title}
             hoverEffect
-            className="relative flex flex-col justify-between"
+            className="flex flex-col justify-between relative"
           >
             <div>
-              <div className="mb-4 flex items-center justify-between">
+              <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <div
-                    className={`h-8 w-8 rounded-lg bg-gradient-to-br ${leader.color} flex items-center justify-center font-bold text-psg-950 shadow-sm`}
+                    className={`w-8 h-8 rounded-lg bg-gradient-to-br ${leader.color} flex items-center justify-center text-psg-950 font-bold shadow-sm`}
                   >
-                    <Icon className="h-4 w-4 text-white" />
+                    <Icon className="w-4 h-4 text-white" />
                   </div>
-                  <h4 className="text-sm font-bold uppercase tracking-wider text-white">
+                  <h4 className="text-sm font-bold text-white uppercase tracking-wider">
                     {leader.title}
                   </h4>
                 </div>
-                <span className="rounded bg-white/10 px-2 py-0.5 font-mono text-[10px] font-black tracking-widest text-white">
+                <span className="text-[10px] font-mono font-black tracking-widest px-2 py-0.5 rounded bg-white/10 text-white">
                   {leader.badge}
                 </span>
               </div>
 
-              <div className="my-2 flex items-center gap-4">
-                <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-surface-border bg-psg-900">
+              <div className="flex items-center gap-4 my-2">
+                <div className="w-16 h-16 rounded-2xl bg-psg-900 border border-surface-border overflow-hidden flex-shrink-0 flex items-center justify-center">
                   {leader.player?.photo_url ? (
                     <img
                       src={leader.player.photo_url}
                       alt={leader.player.nickname}
-                      className="h-full w-full object-cover"
+                      className="w-full h-full object-cover"
                     />
                   ) : (
                     <span className="font-mono text-xl font-bold text-psg-400">
@@ -94,20 +94,17 @@ export function StatLeaders({
                     {leader.player?.nickname || "Sin datos"}
                   </h5>
                   <p className="text-xs text-psg-300">
-                    Dorsal #{leader.player?.dorsal} ·{" "}
-                    {leader.player?.first_name}
+                    Dorsal #{leader.player?.dorsal} · {leader.player?.first_name}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="mt-4 flex items-baseline justify-between border-t border-surface-border pt-4">
-              <span className="text-xs font-semibold uppercase text-psg-400">
+            <div className="mt-4 pt-4 border-t border-surface-border flex items-baseline justify-between">
+              <span className="text-xs text-psg-400 uppercase font-semibold">
                 {leader.statLabel}
               </span>
-              <span
-                className={`font-mono text-3xl font-black ${leader.textColor}`}
-              >
+              <span className={`text-3xl font-mono font-black ${leader.textColor}`}>
                 {leader.statValue}
               </span>
             </div>
@@ -117,3 +114,4 @@ export function StatLeaders({
     </div>
   );
 }
+

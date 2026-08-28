@@ -29,29 +29,27 @@ export default function PartidosPage() {
   const finishedCount = matches.filter((m) => m.is_finished).length;
 
   return (
-    <div className="container mx-auto space-y-8 px-4 py-12 pb-24">
+    <div className="container mx-auto px-4 py-12 space-y-8 pb-24">
       {/* Header */}
-      <div className="mx-auto max-w-2xl space-y-4 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-surface-border bg-surface-muted px-3 py-1 text-xs font-bold uppercase tracking-wider text-accent-cyan">
-          <Calendar className="h-3.5 w-3.5" /> Temporada Regular & Copas
+      <div className="text-center max-w-2xl mx-auto space-y-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-muted border border-surface-border text-accent-cyan text-xs font-bold uppercase tracking-wider">
+          <Calendar className="w-3.5 h-3.5" /> Temporada Regular & Copas
         </div>
-        <h1 className="font-display text-4xl font-black uppercase tracking-tight text-white sm:text-6xl">
-          Calendario &{" "}
-          <span className="text-glow text-accent-cyan">Resultados</span>
+        <h1 className="font-display text-4xl sm:text-6xl font-black uppercase tracking-tight text-white">
+          Calendario & <span className="text-accent-cyan text-glow">Resultados</span>
         </h1>
-        <p className="text-sm text-psg-300 sm:text-base">
-          Consulta las fechas de los próximos encuentros y el histórico de actas
-          y marcadores del PSG Fútbol 7.
+        <p className="text-sm sm:text-base text-psg-300">
+          Consulta las fechas de los próximos encuentros y el histórico de actas y marcadores del PSG Fútbol 7.
         </p>
       </div>
 
       {/* Control Bar: Tabs & Filter */}
-      <div className="flex flex-col items-center justify-between gap-4 rounded-2xl border border-surface-border bg-surface p-4 md:flex-row">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-surface border border-surface-border">
         {/* Status Tabs */}
-        <div className="flex w-full items-center gap-1 rounded-xl border border-surface-border bg-surface-muted p-1 md:w-auto">
+        <div className="flex items-center gap-1 p-1 bg-surface-muted rounded-xl border border-surface-border w-full md:w-auto">
           <button
             onClick={() => setTab("todos")}
-            className={`flex-1 rounded-lg px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all md:flex-initial ${
+            className={`flex-1 md:flex-initial px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
               tab === "todos"
                 ? "bg-accent-electric text-white shadow-sm"
                 : "text-psg-300 hover:text-white"
@@ -61,34 +59,33 @@ export default function PartidosPage() {
           </button>
           <button
             onClick={() => setTab("proximos")}
-            className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all md:flex-initial ${
+            className={`flex-1 md:flex-initial px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 ${
               tab === "proximos"
                 ? "bg-accent-electric text-white shadow-sm"
                 : "text-psg-300 hover:text-white"
             }`}
           >
-            <Clock className="h-3.5 w-3.5" /> Próximos ({upcomingCount})
+            <Clock className="w-3.5 h-3.5" /> Próximos ({upcomingCount})
           </button>
           <button
             onClick={() => setTab("finalizados")}
-            className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all md:flex-initial ${
+            className={`flex-1 md:flex-initial px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 ${
               tab === "finalizados"
                 ? "bg-accent-electric text-white shadow-sm"
                 : "text-psg-300 hover:text-white"
             }`}
           >
-            <CheckCircle2 className="h-3.5 w-3.5" /> Resultados ({finishedCount}
-            )
+            <CheckCircle2 className="w-3.5 h-3.5" /> Resultados ({finishedCount})
           </button>
         </div>
 
         {/* Competition Dropdown */}
-        <div className="flex w-full items-center justify-end gap-2 md:w-auto">
-          <Filter className="h-4 w-4 text-psg-400" />
+        <div className="flex items-center gap-2 w-full md:w-auto justify-end">
+          <Filter className="w-4 h-4 text-psg-400" />
           <select
             value={competitionFilter}
             onChange={(e) => setCompetitionFilter(e.target.value)}
-            className="cursor-pointer rounded-xl border border-surface-border bg-surface-muted px-3 py-2 text-xs font-semibold text-white focus:border-accent-cyan focus:outline-none"
+            className="bg-surface-muted border border-surface-border text-white text-xs font-semibold rounded-xl px-3 py-2 focus:outline-none focus:border-accent-cyan cursor-pointer"
           >
             <option value="todas">Todas las Competiciones</option>
             <option value="liga">Solo Liga F7</option>
@@ -100,22 +97,19 @@ export default function PartidosPage() {
 
       {/* Match Grid */}
       {filteredMatches.length > 0 ? (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {filteredMatches.map((match) => (
             <MatchCard key={match.id} match={match} />
           ))}
         </div>
       ) : (
-        <div className="space-y-3 rounded-3xl border border-surface-border bg-surface/50 py-16 text-center text-psg-400">
-          <Calendar className="mx-auto h-12 w-12 opacity-40" />
-          <p className="text-base font-bold text-white">
-            No se encontraron partidos
-          </p>
-          <p className="text-xs">
-            Prueba seleccionando otro filtro de competición o estado.
-          </p>
+        <div className="py-16 text-center rounded-3xl bg-surface/50 border border-surface-border text-psg-400 space-y-3">
+          <Calendar className="w-12 h-12 mx-auto opacity-40" />
+          <p className="text-base font-bold text-white">No se encontraron partidos</p>
+          <p className="text-xs">Prueba seleccionando otro filtro de competición o estado.</p>
         </div>
       )}
     </div>
   );
 }
+

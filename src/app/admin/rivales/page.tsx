@@ -44,45 +44,44 @@ export default function AdminRivalesPage() {
   return (
     <div className="space-y-8 pb-16">
       {/* Header */}
-      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-display text-3xl font-black uppercase tracking-tight text-white sm:text-4xl">
+          <h1 className="font-display text-3xl sm:text-4xl font-black uppercase text-white tracking-tight">
             Directorio de <span className="text-accent-cyan">Rivales</span>
           </h1>
-          <p className="text-xs text-psg-300 sm:text-sm">
-            Base de datos reutilizable de equipos rivales y sus escudos para los
-            partidos.
+          <p className="text-xs sm:text-sm text-psg-300">
+            Base de datos reutilizable de equipos rivales y sus escudos para los partidos.
           </p>
         </div>
 
         <Button onClick={() => setIsModalOpen(true)} size="md">
-          <Plus className="h-4 w-4" /> Añadir Nuevo Rival
+          <Plus className="w-4 h-4" /> Añadir Nuevo Rival
         </Button>
       </div>
 
       {/* Rivals Grid */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {rivals.map((rival) => (
           <div
             key={rival.id}
-            className="flex items-center gap-4 rounded-2xl border border-surface-border bg-surface p-6 shadow-card transition-colors hover:border-accent-cyan/40"
+            className="rounded-2xl bg-surface border border-surface-border p-6 shadow-card flex items-center gap-4 hover:border-accent-cyan/40 transition-colors"
           >
-            <div className="flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-surface-border bg-surface-muted p-2">
+            <div className="w-16 h-16 rounded-2xl bg-surface-muted border border-surface-border flex items-center justify-center overflow-hidden flex-shrink-0 p-2">
               {rival.shield_url ? (
                 <img
                   src={rival.shield_url}
                   alt={rival.name}
-                  className="h-full w-full object-contain"
+                  className="w-full h-full object-contain"
                 />
               ) : (
-                <Shield className="h-8 w-8 text-psg-400" />
+                <Shield className="w-8 h-8 text-psg-400" />
               )}
             </div>
 
             <div>
               <h3 className="text-lg font-bold text-white">{rival.name}</h3>
-              <span className="flex items-center gap-1 text-xs font-semibold text-emerald-400">
-                <Check className="h-3 w-3" /> Disponible en selector
+              <span className="text-xs text-emerald-400 font-semibold flex items-center gap-1">
+                <Check className="w-3 h-3" /> Disponible en selector
               </span>
             </div>
           </div>
@@ -112,19 +111,17 @@ export default function AdminRivalesPage() {
           />
 
           {shieldUrl && (
-            <div className="flex items-center gap-3 rounded-xl border border-surface-border bg-surface-muted p-3">
+            <div className="flex items-center gap-3 p-3 rounded-xl bg-surface-muted border border-surface-border">
               <img
                 src={shieldUrl}
                 alt="Vista previa del escudo"
-                className="h-12 w-12 rounded-lg object-contain"
+                className="w-12 h-12 rounded-lg object-contain"
               />
-              <span className="text-xs text-psg-300">
-                Vista previa del escudo
-              </span>
+              <span className="text-xs text-psg-300">Vista previa del escudo</span>
             </div>
           )}
 
-          <div className="flex justify-end gap-3 border-t border-surface-border pt-4">
+          <div className="pt-4 border-t border-surface-border flex justify-end gap-3">
             <Button
               type="button"
               variant="secondary"
@@ -133,7 +130,7 @@ export default function AdminRivalesPage() {
               Cancelar
             </Button>
             <Button type="submit" isLoading={saving}>
-              <Check className="h-4 w-4" /> Guardar Rival
+              <Check className="w-4 h-4" /> Guardar Rival
             </Button>
           </div>
         </form>
@@ -141,3 +138,4 @@ export default function AdminRivalesPage() {
     </div>
   );
 }
+

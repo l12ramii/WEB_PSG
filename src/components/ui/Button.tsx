@@ -1,7 +1,8 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "outline" | "danger" | "ghost" | "gold";
   size?: "sm" | "md" | "lg" | "icon";
   isLoading?: boolean;
@@ -57,7 +58,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {isLoading && (
           <svg
-            className="-ml-1 mr-2 h-4 w-4 animate-spin text-current"
+            className="animate-spin -ml-1 mr-2 h-4 w-4 text-current"
             fill="none"
             viewBox="0 0 24 24"
           >
@@ -83,3 +84,4 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 
 Button.displayName = "Button";
+

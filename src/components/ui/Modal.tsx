@@ -49,26 +49,24 @@ export function Modal({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="animate-in fade-in fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity animate-in fade-in"
         onClick={onClose}
       />
 
       {/* Modal Dialog */}
       <div
         className={cn(
-          "animate-in zoom-in-95 relative z-10 max-h-[90vh] w-full overflow-y-auto rounded-2xl border border-surface-border bg-surface p-6 shadow-2xl duration-200",
+          "relative w-full rounded-2xl bg-surface border border-surface-border p-6 shadow-2xl z-10 max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200",
           maxWidthClasses[maxWidth]
         )}
       >
-        <div className="mb-4 flex items-center justify-between border-b border-surface-border pb-4">
-          <h2 className="text-xl font-bold tracking-tight text-white">
-            {title}
-          </h2>
+        <div className="flex items-center justify-between pb-4 mb-4 border-b border-surface-border">
+          <h2 className="text-xl font-bold tracking-tight text-white">{title}</h2>
           <button
             onClick={onClose}
-            className="rounded-lg p-1 text-psg-300 transition-colors hover:bg-white/10 hover:text-white"
+            className="p-1 rounded-lg text-psg-300 hover:text-white hover:bg-white/10 transition-colors"
           >
-            <X className="h-5 w-5" />
+            <X className="w-5 h-5" />
           </button>
         </div>
         <div>{children}</div>
@@ -76,3 +74,4 @@ export function Modal({
     </div>
   );
 }
+

@@ -151,3 +151,4 @@ CREATE POLICY "Eliminación autenticada de fotos de jugadores" ON storage.object
 
 CREATE POLICY "Eliminación autenticada de escudos de rivales" ON storage.objects
     FOR DELETE TO authenticated USING (bucket_id = 'rival-crests');
+
