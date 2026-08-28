@@ -22,11 +22,13 @@ export default async function MatchActaPage({ params }: MatchActaPageProps) {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-3xl sm:text-4xl font-black uppercase text-white tracking-tight">
-          Acta Oficial: <span className="text-accent-cyan">PSG vs {match.rival?.name}</span>
+        <h1 className="font-display text-3xl font-black uppercase tracking-tight text-white sm:text-4xl">
+          Acta Oficial:{" "}
+          <span className="text-accent-cyan">PSG vs {match.rival?.name}</span>
         </h1>
-        <p className="text-xs sm:text-sm text-psg-300">
-          Rellena el marcador y los eventos por jugador para actualizar automáticamente las estadísticas del equipo.
+        <p className="text-xs text-psg-300 sm:text-sm">
+          Rellena el marcador y los eventos por jugador para actualizar
+          automáticamente las estadísticas del equipo.
         </p>
       </div>
 
@@ -34,4 +36,3 @@ export default async function MatchActaPage({ params }: MatchActaPageProps) {
     </div>
   );
 }
-

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Plus, Shield, Check, Trophy } from "lucide-react";
+import { Plus, Shield, Check, Trophy, Search } from "lucide-react";
 import { getRivals, addRival } from "@/lib/data";
 import { Rival } from "@/lib/supabase/types";
 import { initialRivals } from "@/lib/mock-data";
@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/Input";
 
 export default function AdminRivalesPage() {
   const [rivals, setRivals] = useState<Rival[]>(initialRivals);
+  const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
   const [shieldUrl, setShieldUrl] = useState("");
@@ -41,54 +42,84 @@ export default function AdminRivalesPage() {
     }
   };
 
+  const filteredRivals = rivals.filter((r) =>
+    r.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
-    <div className="space-y-8 pb-16">
+    <div className="space-y-8 pb-20">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="font-display text-3xl sm:text-4xl font-black uppercase text-white tracking-tight">
-            Directorio de <span className="text-accent-cyan">Rivales</span>
+          <h1 className="font-display text-3xl font-black uppercase tracking-tight text-white sm:text-5xl">
+            Directorio de{" "}
+            <span className="text-glow text-accent-cyan">Rivales</span>
           </h1>
-          <p className="text-xs sm:text-sm text-psg-300">
-            Base de datos reutilizable de equipos rivales y sus escudos para los partidos.
+          <p className="text-xs font-medium text-psg-300 sm:text-sm">
+            Base de datos reutilizable de equipos rivales y sus escudos para
+            vincularlos a los partidos.
           </p>
         </div>
 
-        <Button onClick={() => setIsModalOpen(true)} size="md">
-          <Plus className="w-4 h-4" /> Añadir Nuevo Rival
+        <Button
+          onClick={() => setIsModalOpen(true)}
+          size="lg"
+          className="shadow-glow"
+        >
+          <Plus className="h-4 w-4" /> Añadir Nuevo Rival
         </Button>
       </div>
 
+      {/* Search & Counter */}
+      <div className="flex flex-col items-center justify-between gap-4 rounded-3xl border border-surface-border bg-surface p-4 shadow-card sm:flex-row">
+        <div className="relative w-full sm:w-80">
+          <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-psg-400" />
+          <input
+            type="text"
+            placeholder="Buscar rival por nombre..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full rounded-xl border border-surface-border bg-surface-muted py-2.5 pl-10 pr-4 text-xs font-medium text-white placeholder-psg-400 focus:border-accent-cyan focus:outline-none"
+          />
+        </div>
+
+        <span className="rounded-xl border border-surface-border bg-surface-muted px-3 py-1.5 font-display text-xs font-bold uppercase text-psg-300">
+          {filteredRivals.length} Rivales en Base de Datos
+        </span>
+      </div>
+
       {/* Rivals Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {rivals.map((rival) => (
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {filteredRivals.map((rival) => (
           <div
             key={rival.id}
-            className="rounded-2xl bg-surface border border-surface-border p-6 shadow-card flex items-center gap-4 hover:border-accent-cyan/40 transition-colors"
+            className="group flex select-none items-center gap-4 rounded-3xl border border-surface-border bg-card-gradient p-6 shadow-card transition-all duration-300 hover:border-accent-cyan/50 hover:shadow-glow"
           >
-            <div className="w-16 h-16 rounded-2xl bg-surface-muted border border-surface-border flex items-center justify-center overflow-hidden flex-shrink-0 p-2">
+            <div className="w-18 h-18 flex flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 border-surface-border bg-surface-muted p-2.5 shadow-inner transition-transform duration-300 group-hover:scale-105 sm:h-20 sm:w-20">
               {rival.shield_url ? (
                 <img
                   src={rival.shield_url}
                   alt={rival.name}
-                  className="w-full h-full object-contain"
+                  className="h-full w-full object-contain"
                 />
               ) : (
-                <Shield className="w-8 h-8 text-psg-400" />
+                <Shield className="h-8 w-8 text-psg-400" />
               )}
             </div>
 
             <div>
-              <h3 className="text-lg font-bold text-white">{rival.name}</h3>
-              <span className="text-xs text-emerald-400 font-semibold flex items-center gap-1">
-                <Check className="w-3 h-3" /> Disponible en selector
+              <h3 className="font-display text-xl font-bold uppercase tracking-wide text-white transition-colors group-hover:text-accent-cyan">
+                {rival.name}
+              </h3>
+              <span className="mt-1 flex items-center gap-1 font-display text-xs font-bold uppercase tracking-wider text-emerald-400">
+                <Check className="h-3.5 w-3.5" /> Disponible en Partidos
               </span>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Modal Añadir Rival */}
+      {/* Modal Add Rival */}
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -105,23 +136,25 @@ export default function AdminRivalesPage() {
 
           <Input
             label="URL del Escudo (o enlace de imagen de Supabase Storage)"
-            placeholder="https://..."
+            placeholder="https://images.unsplash.com/..."
             value={shieldUrl}
             onChange={(e) => setShieldUrl(e.target.value)}
           />
 
           {shieldUrl && (
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-surface-muted border border-surface-border">
+            <div className="flex items-center gap-3 rounded-2xl border border-surface-border bg-surface-muted p-3">
               <img
                 src={shieldUrl}
                 alt="Vista previa del escudo"
-                className="w-12 h-12 rounded-lg object-contain"
+                className="h-12 w-12 rounded-xl object-contain"
               />
-              <span className="text-xs text-psg-300">Vista previa del escudo</span>
+              <span className="text-xs font-medium text-psg-300">
+                Vista previa del escudo del equipo
+              </span>
             </div>
           )}
 
-          <div className="pt-4 border-t border-surface-border flex justify-end gap-3">
+          <div className="flex justify-end gap-3 border-t border-surface-border pt-4">
             <Button
               type="button"
               variant="secondary"
@@ -130,7 +163,7 @@ export default function AdminRivalesPage() {
               Cancelar
             </Button>
             <Button type="submit" isLoading={saving}>
-              <Check className="w-4 h-4" /> Guardar Rival
+              <Check className="h-4 w-4" /> Guardar Rival
             </Button>
           </div>
         </form>
@@ -138,4 +171,3 @@ export default function AdminRivalesPage() {
     </div>
   );
 }
-

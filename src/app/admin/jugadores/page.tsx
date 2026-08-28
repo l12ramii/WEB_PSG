@@ -1,7 +1,17 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { UserPlus, Edit, Check, X, Shield, User, Power } from "lucide-react";
+import {
+  UserPlus,
+  Edit,
+  Check,
+  X,
+  Shield,
+  User,
+  Power,
+  Search,
+  Sparkles,
+} from "lucide-react";
 import { getPlayers, addPlayer, updatePlayer } from "@/lib/data";
 import { Player, PlayerPosition } from "@/lib/supabase/types";
 import { initialPlayers } from "@/lib/mock-data";
@@ -13,6 +23,7 @@ import { getPositionName, getPositionBadgeColor } from "@/lib/utils";
 
 export default function AdminJugadoresPage() {
   const [players, setPlayers] = useState<Player[]>(initialPlayers);
+  const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPlayer, setEditingPlayer] = useState<Player | null>(null);
 
@@ -35,7 +46,9 @@ export default function AdminJugadoresPage() {
     setFirstName("");
     setLastName("");
     setNickname("");
-    setDorsal(players.length > 0 ? Math.max(...players.map((p) => p.dorsal)) + 1 : 1);
+    setDorsal(
+      players.length > 0 ? Math.max(...players.map((p) => p.dorsal)) + 1 : 1
+    );
     setPosition("medio");
     setPhotoUrl("");
     setIsActive(true);
@@ -55,10 +68,14 @@ export default function AdminJugadoresPage() {
   };
 
   const handleToggleStatus = async (player: Player) => {
-    const updated = await updatePlayer(player.id, { is_active: !player.is_active });
+    const updated = await updatePlayer(player.id, {
+      is_active: !player.is_active,
+    });
     if (updated) {
       setPlayers((prev) =>
-        prev.map((p) => (p.id === player.id ? { ...p, is_active: !p.is_active } : p))
+        prev.map((p) =>
+          p.id === player.id ? { ...p, is_active: !p.is_active } : p
+        )
       );
     }
   };
@@ -118,74 +135,106 @@ export default function AdminJugadoresPage() {
     }
   };
 
+  const filteredPlayers = players.filter((p) => {
+    if (!search.trim()) return true;
+    const q = search.toLowerCase();
+    return (
+      p.nickname.toLowerCase().includes(q) ||
+      p.first_name.toLowerCase().includes(q) ||
+      String(p.dorsal).includes(q)
+    );
+  });
+
   return (
-    <div className="space-y-8 pb-16">
+    <div className="space-y-8 pb-20">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="font-display text-3xl sm:text-4xl font-black uppercase text-white tracking-tight">
-            Gestión de <span className="text-accent-cyan">Plantilla</span>
+          <h1 className="font-display text-3xl font-black uppercase tracking-tight text-white sm:text-5xl">
+            Gestión de{" "}
+            <span className="text-glow text-accent-cyan">Plantilla</span>
           </h1>
-          <p className="text-xs sm:text-sm text-psg-300">
-            Añade nuevos jugadores, edita sus dorsales y actualiza sus fichas y fotos oficiales.
+          <p className="text-xs font-medium text-psg-300 sm:text-sm">
+            Alta de fichajes, edición de dorsales, posiciones y fotos oficiales
+            de los jugadores.
           </p>
         </div>
 
-        <Button onClick={openNewPlayerModal} size="md">
-          <UserPlus className="w-4 h-4" /> Añadir Jugador
+        <Button onClick={openNewPlayerModal} size="lg" className="shadow-glow">
+          <UserPlus className="h-4 w-4" /> Añadir Jugador
         </Button>
       </div>
 
+      {/* Control Bar: Search & Filter */}
+      <div className="flex flex-col items-center justify-between gap-4 rounded-3xl border border-surface-border bg-surface p-4 shadow-card sm:flex-row">
+        <div className="relative w-full sm:w-80">
+          <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-psg-400" />
+          <input
+            type="text"
+            placeholder="Buscar por apodo, nombre o dorsal..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full rounded-xl border border-surface-border bg-surface-muted py-2.5 pl-10 pr-4 text-xs font-medium text-white placeholder-psg-400 focus:border-accent-cyan focus:outline-none"
+          />
+        </div>
+
+        <span className="rounded-xl border border-surface-border bg-surface-muted px-3 py-1.5 font-display text-xs font-bold uppercase text-psg-300">
+          Total: {filteredPlayers.length} Jugadores
+        </span>
+      </div>
+
       {/* Players Table / Grid */}
-      <div className="rounded-3xl bg-surface border border-surface-border p-6 shadow-card space-y-4">
+      <div className="space-y-4 rounded-3xl border border-surface-border bg-surface p-6 shadow-card sm:p-8">
         <div className="divide-y divide-surface-border">
-          {players.map((player) => (
+          {filteredPlayers.map((player) => (
             <div
               key={player.id}
-              className="py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+              className="py-4.5 flex flex-col justify-between gap-4 sm:flex-row sm:items-center"
             >
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-2xl bg-psg-900 border border-surface-border overflow-hidden flex items-center justify-center flex-shrink-0">
+                <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 border-surface-border bg-psg-950 shadow-md">
                   {player.photo_url ? (
                     <img
                       src={player.photo_url}
                       alt={player.nickname}
-                      className="w-full h-full object-cover"
+                      className="h-full w-full object-cover"
                     />
                   ) : (
-                    <User className="w-6 h-6 text-psg-400" />
+                    <User className="h-7 w-7 text-psg-400" />
                   )}
                 </div>
 
                 <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-sm font-bold text-accent-cyan">
+                  <div className="flex items-center gap-2.5">
+                    <span className="font-display text-lg font-black text-accent-cyan">
                       #{player.dorsal}
                     </span>
-                    <h3 className="text-base font-bold text-white">
+                    <h3 className="font-display text-xl font-bold uppercase text-white">
                       {player.nickname}
                     </h3>
-                    <Badge className={getPositionBadgeColor(player.position)}>
+                    <Badge variant={player.position} dot>
                       {getPositionName(player.position)}
                     </Badge>
                   </div>
-                  <p className="text-xs text-psg-300">
+                  <p className="text-xs font-medium text-psg-300">
                     {player.first_name} {player.last_name || ""}
                   </p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 self-end sm:self-center">
+              <div className="flex items-center gap-2.5 self-end sm:self-center">
                 <button
                   onClick={() => handleToggleStatus(player)}
-                  title={player.is_active ? "Desactivar jugador" : "Activar jugador"}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all ${
+                  title={
+                    player.is_active ? "Desactivar jugador" : "Activar jugador"
+                  }
+                  className={`flex items-center gap-1.5 rounded-xl border px-3.5 py-1.5 font-display text-xs font-bold uppercase tracking-wider transition-all ${
                     player.is_active
-                      ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30 hover:bg-emerald-500/20"
-                      : "bg-surface-muted text-psg-400 border-surface-border hover:text-white"
+                      ? "border-emerald-500/30 bg-emerald-500/15 text-emerald-400 shadow-sm hover:bg-emerald-500/25"
+                      : "border-surface-border bg-surface-muted text-psg-400 hover:text-white"
                   }`}
                 >
-                  <Power className="w-3.5 h-3.5" />
+                  <Power className="h-3.5 w-3.5" />
                   <span>{player.is_active ? "Activo" : "Baja Temporal"}</span>
                 </button>
 
@@ -194,7 +243,7 @@ export default function AdminJugadoresPage() {
                   variant="secondary"
                   size="sm"
                 >
-                  <Edit className="w-3.5 h-3.5" /> Editar
+                  <Edit className="h-3.5 w-3.5" /> Editar Ficha
                 </Button>
               </div>
             </div>
@@ -202,14 +251,16 @@ export default function AdminJugadoresPage() {
         </div>
       </div>
 
-      {/* Modal Alta/Edición Jugador */}
+      {/* Modal Form */}
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        title={editingPlayer ? "Editar Ficha de Jugador" : "Alta de Nuevo Jugador"}
+        title={
+          editingPlayer ? "Editar Ficha de Jugador" : "Alta de Nuevo Jugador"
+        }
       >
         <form onSubmit={handleSave} className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Input
               label="Nombre"
               placeholder="Ej: Álvaro"
@@ -225,7 +276,7 @@ export default function AdminJugadoresPage() {
             />
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Input
               label="Apodo en Camiseta *"
               placeholder="Ej: El Muro"
@@ -234,7 +285,7 @@ export default function AdminJugadoresPage() {
               required
             />
             <Input
-              label="Dorsal *"
+              label="Dorsal Oficial *"
               type="number"
               min="1"
               max="99"
@@ -245,13 +296,13 @@ export default function AdminJugadoresPage() {
           </div>
 
           <div className="space-y-1.5">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-psg-200">
-              Posición
+            <label className="block font-display text-xs font-bold uppercase tracking-wider text-psg-200">
+              Posición Táctica
             </label>
             <select
               value={position}
               onChange={(e) => setPosition(e.target.value as PlayerPosition)}
-              className="w-full rounded-lg bg-surface-muted border border-surface-border px-4 py-2.5 text-sm text-white focus:border-accent-cyan focus:outline-none"
+              className="w-full rounded-xl border border-surface-border bg-surface-muted px-4 py-2.5 text-sm font-medium text-white focus:border-accent-cyan focus:outline-none"
             >
               <option value="portero">Portero</option>
               <option value="defensa">Defensa</option>
@@ -262,23 +313,25 @@ export default function AdminJugadoresPage() {
 
           <Input
             label="URL de Foto Oficial (o enlace de Supabase Storage)"
-            placeholder="https://..."
+            placeholder="https://images.unsplash.com/..."
             value={photoUrl}
             onChange={(e) => setPhotoUrl(e.target.value)}
           />
 
           {photoUrl && (
-            <div className="flex items-center gap-3 p-3 rounded-xl bg-surface-muted border border-surface-border">
+            <div className="flex items-center gap-3 rounded-2xl border border-surface-border bg-surface-muted p-3">
               <img
                 src={photoUrl}
                 alt="Vista previa"
-                className="w-12 h-12 rounded-lg object-cover"
+                className="h-12 w-12 rounded-xl object-cover"
               />
-              <span className="text-xs text-psg-300">Vista previa de la foto</span>
+              <span className="text-xs font-medium text-psg-300">
+                Vista previa de la foto oficial
+              </span>
             </div>
           )}
 
-          <div className="pt-4 border-t border-surface-border flex justify-end gap-3">
+          <div className="flex justify-end gap-3 border-t border-surface-border pt-4">
             <Button
               type="button"
               variant="secondary"
@@ -287,7 +340,7 @@ export default function AdminJugadoresPage() {
               Cancelar
             </Button>
             <Button type="submit" isLoading={saving}>
-              <Check className="w-4 h-4" /> Guardar Jugador
+              <Check className="h-4 w-4" /> Guardar Jugador
             </Button>
           </div>
         </form>
@@ -295,4 +348,3 @@ export default function AdminJugadoresPage() {
     </div>
   );
 }
-
