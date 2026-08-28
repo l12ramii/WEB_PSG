@@ -1,7 +1,6 @@
 import React from "react";
-import { Trophy, Target, Sparkles, ShieldCheck, Flame } from "lucide-react";
+import { Trophy, Target, Sparkles, ShieldCheck, User } from "lucide-react";
 import { PlayerStatsSummary } from "@/lib/supabase/types";
-import { Card } from "@/components/ui/Card";
 
 interface StatLeadersProps {
   topScorer: PlayerStatsSummary;
@@ -21,10 +20,9 @@ export function StatLeaders({
       statLabel: "Goles Totales",
       statValue: topScorer?.total_goals || 0,
       player: topScorer,
-      bgGradient: "from-accent-cyan/15 via-psg-900 to-psg-950",
-      borderHover: "hover:border-accent-cyan/60 hover:shadow-glow",
+      borderHover: "hover:border-accent-cyan/50 hover:shadow-glow-subtle",
       textColor: "text-accent-cyan",
-      badgeColor: "bg-accent-cyan/20 text-accent-cyan border-accent-cyan/40",
+      badgeColor: "bg-accent-cyan/15 text-accent-cyan border-accent-cyan/40",
       badge: "PICHICHI DE ORO",
     },
     {
@@ -33,10 +31,9 @@ export function StatLeaders({
       statLabel: "Asistencias Clave",
       statValue: topAssistant?.total_assists || 0,
       player: topAssistant,
-      bgGradient: "from-emerald-500/15 via-psg-900 to-psg-950",
-      borderHover: "hover:border-emerald-400/60 hover:shadow-glow-emerald",
-      textColor: "text-emerald-400",
-      badgeColor: "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
+      borderHover: "hover:border-success/50 hover:shadow-glow-emerald",
+      textColor: "text-success",
+      badgeColor: "bg-success/15 text-success border-success/40",
       badge: "MEJOR PLAYMAKER",
     },
     {
@@ -45,10 +42,9 @@ export function StatLeaders({
       statLabel: "Porterías a Cero",
       statValue: topKeeper?.total_clean_sheets || 0,
       player: topKeeper,
-      bgGradient: "from-amber-400/15 via-psg-900 to-psg-950",
-      borderHover: "hover:border-amber-400/60 hover:shadow-glow-gold",
-      textColor: "text-amber-400",
-      badgeColor: "bg-amber-400/20 text-amber-300 border-amber-400/40",
+      borderHover: "hover:border-warning/50 hover:shadow-glow-gold",
+      textColor: "text-warning",
+      badgeColor: "bg-warning/15 text-warning border-warning/40",
       badge: "TROFEO ZAMORA",
     },
   ];
@@ -60,53 +56,48 @@ export function StatLeaders({
         return (
           <div
             key={leader.title}
-            className={`rounded-3xl bg-gradient-to-b ${leader.bgGradient} border border-surface-border p-6 shadow-card transition-all duration-300 ${leader.borderHover} group relative flex select-none flex-col justify-between overflow-hidden hover:-translate-y-2`}
+            className={`group relative flex select-none flex-col justify-between overflow-hidden rounded-xl border border-white/10 bg-surface p-6 inner-light transition-all duration-200 ease-out hover:-translate-y-1 ${leader.borderHover}`}
           >
-            {/* Top illumination line */}
-            <div className="absolute left-0 right-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-
             <div>
               {/* Card Header */}
-              <div className="mb-5 flex items-center justify-between">
-                <div className="flex items-center gap-2.5">
-                  <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-surface-border bg-surface-active text-white shadow-inner transition-transform group-hover:scale-110">
-                    <Icon className="h-5 w-5 text-white" />
+              <div className="mb-4 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-surface-elevated text-primary shadow-inner">
+                    <Icon className="h-4 w-4 text-accent-cyan" />
                   </div>
-                  <h4 className="font-display text-base font-bold uppercase tracking-wide text-white">
+                  <h4 className="font-display text-base font-bold uppercase tracking-wide text-primary">
                     {leader.title}
                   </h4>
                 </div>
                 <span
-                  className={`rounded-full border px-2.5 py-1 font-display text-[10px] font-black tracking-widest ${leader.badgeColor}`}
+                  className={`rounded-full border px-2 py-0.5 font-display text-[10px] font-bold tracking-wider ${leader.badgeColor}`}
                 >
                   {leader.badge}
                 </span>
               </div>
 
               {/* Player Portrait & Info */}
-              <div className="my-3 flex items-center gap-4">
-                <div className="w-18 h-18 relative flex flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 border-surface-border bg-psg-950 shadow-lg group-hover:border-white/40 sm:h-20 sm:w-20">
+              <div className="my-4 flex items-center gap-4">
+                <div className="relative flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated shadow-md">
                   {leader.player?.photo_url ? (
                     <img
                       src={leader.player.photo_url}
                       alt={leader.player.nickname}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="h-full w-full object-cover object-top grayscale transition-all duration-300 group-hover:scale-105 group-hover:grayscale-0"
                     />
                   ) : (
-                    <span className="font-display text-2xl font-black text-psg-400">
-                      #{leader.player?.dorsal}
-                    </span>
+                    <User className="h-8 w-8 text-muted" />
                   )}
                 </div>
 
-                <div className="space-y-1">
-                  <span className="font-display text-[11px] font-bold uppercase tracking-wider text-accent-cyan">
+                <div className="space-y-0.5">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-accent-cyan">
                     Dorsal #{leader.player?.dorsal}
                   </span>
-                  <h5 className="font-display text-2xl font-black uppercase tracking-wide text-white transition-colors group-hover:text-accent-cyan">
+                  <h5 className="font-display text-xl font-bold uppercase tracking-wide text-primary transition-colors group-hover:text-accent-cyan">
                     {leader.player?.nickname || "Sin datos"}
                   </h5>
-                  <p className="truncate text-xs font-medium text-psg-300">
+                  <p className="truncate text-xs text-secondary">
                     {leader.player?.first_name} {leader.player?.last_name || ""}
                   </p>
                 </div>
@@ -114,12 +105,12 @@ export function StatLeaders({
             </div>
 
             {/* Stat Counter Footer */}
-            <div className="mt-5 flex items-baseline justify-between border-t border-surface-border/60 pt-4">
-              <span className="font-display text-xs font-bold uppercase tracking-wider text-psg-300">
+            <div className="mt-4 flex items-baseline justify-between border-t border-white/10 pt-4">
+              <span className="font-display text-xs font-bold uppercase tracking-wider text-secondary">
                 {leader.statLabel}
               </span>
               <span
-                className={`font-display text-4xl font-black ${leader.textColor} text-glow`}
+                className={`font-display text-4xl font-black ${leader.textColor} text-glow-subtle`}
               >
                 {leader.statValue}
               </span>

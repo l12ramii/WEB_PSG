@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Users, Search, Filter, Flame, Sparkles } from "lucide-react";
+import { Users, Search, Flame } from "lucide-react";
 import { getPlayerStatsSummary } from "@/lib/data";
 import { PlayerCard } from "@/components/public/PlayerCard";
 import { PlayerPosition, PlayerStatsSummary } from "@/lib/supabase/types";
@@ -48,23 +48,23 @@ export default function PlantillaPage() {
     <div className="container mx-auto space-y-10 px-4 py-12 pb-28">
       {/* Header Banner */}
       <div className="mx-auto max-w-3xl space-y-4 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-surface-border bg-surface-muted px-4 py-1.5 font-display text-xs font-black uppercase tracking-widest text-accent-cyan shadow-glow">
+        <div className="inline-flex items-center gap-2 rounded-full border border-accent-cyan/40 bg-surface-elevated/90 px-4 py-1.5 font-display text-xs font-bold uppercase tracking-widest text-accent-cyan shadow-glow-subtle">
           <Flame className="h-3.5 w-3.5 text-accent-cyan" /> Roster Oficial ·
           Temporada 2026/27
         </div>
-        <h1 className="font-display text-5xl font-black uppercase tracking-tight text-white sm:text-7xl">
-          Plantilla <span className="text-glow text-accent-cyan">Oficial</span>
+        <h1 className="font-display text-4xl font-black uppercase tracking-tight text-primary sm:text-6xl">
+          Plantilla <span className="text-glow-subtle text-accent-cyan">Oficial</span>
         </h1>
-        <p className="mx-auto max-w-xl text-sm font-medium text-psg-300 sm:text-base">
+        <p className="mx-auto max-w-xl text-sm font-medium text-secondary sm:text-base">
           Conoce a los guerreros del PSG Fútbol 7. Consulta sus fichas
           oficiales, dorsales y estadísticas acumuladas.
         </p>
       </div>
 
       {/* Control Panel: Segmented Tabs & Search Bar */}
-      <div className="flex flex-col items-center justify-between gap-4 rounded-3xl border border-surface-border bg-surface p-4 shadow-card backdrop-blur-md md:flex-row">
+      <div className="flex flex-col items-center justify-between gap-4 rounded-xl border border-white/10 bg-surface p-4 inner-light backdrop-blur-md md:flex-row">
         {/* Segmented Position Tabs */}
-        <div className="flex w-full items-center gap-1.5 overflow-x-auto rounded-2xl border border-surface-border bg-surface-muted p-1.5 md:w-auto">
+        <div className="flex w-full items-center gap-1.5 overflow-x-auto rounded-lg border border-white/10 bg-surface-elevated/60 p-1.5 md:w-auto">
           {positions.map((pos) => {
             const count =
               pos.key === "todos"
@@ -78,18 +78,18 @@ export default function PlantillaPage() {
               <button
                 key={pos.key}
                 onClick={() => setActiveTab(pos.key)}
-                className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-3.5 py-2 font-display text-xs font-bold uppercase tracking-wider transition-all ${
+                className={`flex items-center gap-2 whitespace-nowrap rounded-md px-3.5 py-2 font-display text-xs font-bold uppercase tracking-wider transition-all duration-200 focus-ring ${
                   isActive
-                    ? "border border-accent-cyan/40 bg-accent-electric text-white shadow-glow"
-                    : "text-psg-300 hover:bg-white/5 hover:text-white"
+                    ? "border border-accent-cyan/40 bg-surface-elevated text-primary shadow-glow-subtle"
+                    : "text-secondary hover:bg-surface-elevated/60 hover:text-primary"
                 }`}
               >
                 <span>{pos.label}</span>
                 <span
-                  className={`py-0.2 rounded-md px-1.5 text-[10px] ${
+                  className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${
                     isActive
-                      ? "bg-white/20 text-white"
-                      : "bg-black/30 text-psg-400"
+                      ? "bg-accent-cyan/20 text-accent-cyan"
+                      : "bg-surface text-secondary"
                   }`}
                 >
                   {count}
@@ -101,13 +101,13 @@ export default function PlantillaPage() {
 
         {/* Live Search Input */}
         <div className="relative w-full md:w-72">
-          <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-psg-400" />
+          <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
           <input
             type="text"
             placeholder="Buscar por apodo o dorsal..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full rounded-xl border border-surface-border bg-surface-muted py-2.5 pl-10 pr-4 text-sm font-medium text-white placeholder-psg-400 transition-colors focus:border-accent-cyan focus:outline-none"
+            className="w-full rounded-xl border border-white/10 bg-surface-elevated/60 py-2.5 pl-10 pr-4 text-sm font-medium text-primary placeholder-muted transition-colors focus-ring focus:border-accent-cyan focus:outline-none"
           />
         </div>
       </div>
@@ -120,12 +120,13 @@ export default function PlantillaPage() {
           ))}
         </div>
       ) : (
-        <div className="space-y-3 rounded-3xl border border-surface-border bg-surface/40 py-20 text-center text-psg-400">
-          <Users className="mx-auto h-12 w-12 opacity-40" />
-          <p className="font-display text-xl font-bold text-white">
+        /* Empty State (DESIGN_SYSTEM Section 3.2) */
+        <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-surface py-16 text-center">
+          <Users className="h-12 w-12 text-muted" />
+          <h4 className="mt-3 text-lg font-bold text-primary font-display">
             No se encontraron jugadores
-          </p>
-          <p className="text-xs">
+          </h4>
+          <p className="mt-1 text-sm text-secondary">
             Prueba con otro término de búsqueda o selecciona otra posición.
           </p>
         </div>

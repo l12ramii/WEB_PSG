@@ -61,31 +61,28 @@ export default async function MatchDetailPage({ params }: MatchDetailPageProps) 
   const playedSquad = match.stats?.filter((s) => s.played) || [];
 
   return (
-    <div className="container mx-auto px-4 py-12 max-w-4xl space-y-8 pb-28">
+    <div className="container mx-auto max-w-4xl space-y-8 px-4 py-12 pb-28">
       {/* Back button */}
       <Link
         href="/partidos"
-        className="inline-flex items-center gap-2 text-xs font-display font-bold uppercase tracking-wider text-psg-300 hover:text-white transition-colors"
+        className="inline-flex items-center gap-2 font-display text-xs font-bold uppercase tracking-wider text-secondary transition-colors hover:text-primary focus-ring rounded-lg px-2 py-1"
       >
-        <ArrowLeft className="w-4 h-4" /> Volver al Calendario & Resultados
+        <ArrowLeft className="h-4 w-4" /> Volver al Calendario & Resultados
       </Link>
 
       {/* Main Match Header Card */}
-      <div className="rounded-3xl bg-card-gradient border border-surface-border p-6 sm:p-10 shadow-2xl relative overflow-hidden text-center space-y-6">
-        {/* Top ambient illumination */}
-        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-accent-cyan/60 to-transparent" />
-
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-surface-border pb-4">
+      <div className="relative space-y-6 overflow-hidden rounded-xl border border-white/10 bg-surface p-6 text-center shadow-xl inner-light sm:p-10">
+        <div className="flex flex-col items-center justify-between gap-4 border-b border-white/10 pb-4 sm:flex-row">
           <div className="flex items-center gap-2">
             <Badge variant={match.competition} dot>
               {getCompetitionLabel(match.competition)}
             </Badge>
-            <span className="text-xs font-display font-bold uppercase text-psg-300">
+            <span className="font-display text-xs font-bold uppercase text-secondary">
               {match.is_home ? "Local (Campo PSG)" : "Visitante"}
             </span>
           </div>
 
-          <span className="text-xs font-display font-bold uppercase text-accent-cyan tracking-wider capitalize">
+          <span className="font-display text-xs font-bold uppercase tracking-wider text-accent-cyan capitalize">
             {formatMatchDate(match.match_date)}
           </span>
         </div>
@@ -94,10 +91,10 @@ export default async function MatchDetailPage({ params }: MatchDetailPageProps) 
         <div className="grid grid-cols-7 items-center gap-4 py-6">
           {/* PSG Side */}
           <div className="col-span-3 flex flex-col items-center space-y-3">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-gradient-to-br from-psg-600 via-psg-700 to-accent-electric border-2 border-accent-cyan flex items-center justify-center shadow-glow">
-              <Flame className="w-12 h-12 text-white phoenix-glow" />
+            <div className="flex h-20 w-20 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated shadow-glow-subtle sm:h-24 sm:w-24">
+              <Flame className="h-12 w-12 text-accent-cyan" />
             </div>
-            <span className="font-display text-2xl sm:text-3xl font-black uppercase text-white">
+            <span className="font-display text-2xl font-black uppercase text-primary sm:text-3xl">
               PSG F7
             </span>
           </div>
@@ -105,17 +102,17 @@ export default async function MatchDetailPage({ params }: MatchDetailPageProps) 
           {/* Scoreline */}
           <div className="col-span-1 flex flex-col items-center justify-center">
             {match.is_finished ? (
-              <div className="flex items-center gap-2 font-display text-4xl sm:text-6xl font-black text-white">
-                <span className={match.is_home ? "text-accent-cyan text-glow" : "text-psg-200"}>
+              <div className="flex items-center gap-2 font-display text-4xl font-black text-primary sm:text-6xl">
+                <span className={match.is_home ? "text-accent-cyan text-glow-subtle" : "text-primary"}>
                   {match.psg_score}
                 </span>
-                <span className="text-psg-500 font-light">:</span>
-                <span className={!match.is_home ? "text-accent-cyan text-glow" : "text-psg-200"}>
+                <span className="font-light text-muted">:</span>
+                <span className={!match.is_home ? "text-accent-cyan text-glow-subtle" : "text-primary"}>
                   {match.rival_score}
                 </span>
               </div>
             ) : (
-              <span className="font-display text-2xl font-black text-accent-cyan px-4 py-2 rounded-2xl bg-surface-muted border border-surface-border">
+              <span className="rounded-lg border border-white/10 bg-surface-elevated px-4 py-2 font-display text-2xl font-black text-accent-cyan">
                 VS
               </span>
             )}
@@ -123,18 +120,18 @@ export default async function MatchDetailPage({ params }: MatchDetailPageProps) 
 
           {/* Rival Side */}
           <div className="col-span-3 flex flex-col items-center space-y-3">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-surface-muted border-2 border-surface-border flex items-center justify-center overflow-hidden p-3 shadow-inner">
+            <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated p-3 shadow-inner sm:h-24 sm:w-24">
               {match.rival?.shield_url ? (
                 <img
                   src={match.rival.shield_url}
                   alt={match.rival.name}
-                  className="w-full h-full object-contain"
+                  className="h-full w-full object-contain"
                 />
               ) : (
-                <Shield className="w-10 h-10 text-psg-400" />
+                <Shield className="h-10 w-10 text-muted" />
               )}
             </div>
-            <span className="font-display text-2xl sm:text-3xl font-black uppercase text-white truncate max-w-full">
+            <span className="max-w-full truncate font-display text-2xl font-black uppercase text-primary sm:text-3xl">
               {match.rival?.name || "Rival"}
             </span>
           </div>
@@ -142,12 +139,12 @@ export default async function MatchDetailPage({ params }: MatchDetailPageProps) 
 
         {/* Outcome banner */}
         {match.is_finished && (
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-display font-black uppercase tracking-widest border mx-auto">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-surface-elevated px-4 py-1.5 font-display text-xs font-bold uppercase tracking-widest">
             <span
               className={cn(
-                isPsgWin && "text-emerald-400",
-                isPsgDraw && "text-amber-400",
-                isPsgLoss && "text-rose-400"
+                isPsgWin && "text-success",
+                isPsgDraw && "text-warning",
+                isPsgLoss && "text-danger"
               )}
             >
               {isPsgWin ? "Victoria Oficial del PSG F7" : isPsgDraw ? "Empate en el Marcador" : "Derrota"}
@@ -160,9 +157,9 @@ export default async function MatchDetailPage({ params }: MatchDetailPageProps) 
       {match.is_finished ? (
         <div className="space-y-6">
           {/* Scorers and Assists */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-6 rounded-3xl bg-surface border border-surface-border shadow-card space-y-4">
-              <h3 className="font-display text-xl font-bold uppercase text-accent-cyan flex items-center gap-2">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <div className="space-y-4 rounded-xl border border-white/10 bg-surface p-6 inner-light">
+              <h3 className="flex items-center gap-2 font-display text-xl font-bold uppercase text-accent-cyan">
                 ⚽ Goleadores del Partido
               </h3>
               {scorers.length > 0 ? (
@@ -170,24 +167,24 @@ export default async function MatchDetailPage({ params }: MatchDetailPageProps) 
                   {scorers.map((s) => (
                     <div
                       key={s.id}
-                      className="flex items-center justify-between p-3 rounded-2xl bg-surface-muted border border-surface-border text-sm"
+                      className="flex items-center justify-between rounded-lg border border-white/10 bg-surface-elevated/40 p-3 text-sm"
                     >
-                      <span className="font-bold text-white">
+                      <span className="font-bold text-primary">
                         #{s.player?.dorsal} {s.player?.nickname} ({s.player?.first_name})
                       </span>
-                      <span className="font-display font-black text-accent-cyan px-3 py-1 rounded-xl bg-accent-cyan/15 text-sm">
+                      <span className="rounded bg-accent-cyan/15 px-3 py-1 font-display font-black text-accent-cyan text-sm">
                         {s.goals} {s.goals === 1 ? "Gol" : "Goles"}
                       </span>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-xs text-psg-400 italic">No se registraron goles en este partido.</p>
+                <p className="text-xs italic text-muted">No se registraron goles en este partido.</p>
               )}
             </div>
 
-            <div className="p-6 rounded-3xl bg-surface border border-surface-border shadow-card space-y-4">
-              <h3 className="font-display text-xl font-bold uppercase text-emerald-400 flex items-center gap-2">
+            <div className="space-y-4 rounded-xl border border-white/10 bg-surface p-6 inner-light">
+              <h3 className="flex items-center gap-2 font-display text-xl font-bold uppercase text-success">
                 🎯 Asistencias de Gol
               </h3>
               {assistants.length > 0 ? (
@@ -195,46 +192,46 @@ export default async function MatchDetailPage({ params }: MatchDetailPageProps) 
                   {assistants.map((s) => (
                     <div
                       key={s.id}
-                      className="flex items-center justify-between p-3 rounded-2xl bg-surface-muted border border-surface-border text-sm"
+                      className="flex items-center justify-between rounded-lg border border-white/10 bg-surface-elevated/40 p-3 text-sm"
                     >
-                      <span className="font-bold text-white">
+                      <span className="font-bold text-primary">
                         #{s.player?.dorsal} {s.player?.nickname} ({s.player?.first_name})
                       </span>
-                      <span className="font-display font-black text-emerald-400 px-3 py-1 rounded-xl bg-emerald-500/15 text-sm">
+                      <span className="rounded bg-success/15 px-3 py-1 font-display font-black text-success text-sm">
                         {s.assists} {s.assists === 1 ? "Asistencia" : "Asistencias"}
                       </span>
                     </div>
                   ))}
                 </div>
               ) : (
-                <p className="text-xs text-psg-400 italic">Sin asistencias computadas.</p>
+                <p className="text-xs italic text-muted">Sin asistencias computadas.</p>
               )}
             </div>
           </div>
 
           {/* Full Lineup */}
-          <div className="p-6 sm:p-8 rounded-3xl bg-surface border border-surface-border shadow-card space-y-6">
-            <div className="flex items-center justify-between border-b border-surface-border pb-4">
-              <h3 className="font-display text-2xl font-black uppercase text-white flex items-center gap-2.5">
-                <Users className="w-5 h-5 text-accent-cyan" /> Convocatoria PSG F7 ({playedSquad.length} Jugadores)
+          <div className="space-y-6 rounded-xl border border-white/10 bg-surface p-6 inner-light sm:p-8">
+            <div className="flex items-center justify-between border-b border-white/10 pb-4">
+              <h3 className="flex items-center gap-2.5 font-display text-2xl font-bold uppercase text-primary">
+                <Users className="h-5 w-5 text-accent-cyan" /> Convocatoria PSG F7 ({playedSquad.length} Jugadores)
               </h3>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
               {playedSquad.map((s) => (
                 <div
                   key={s.id}
-                  className="p-3 rounded-2xl bg-surface-muted border border-surface-border flex items-center justify-between"
+                  className="flex items-center justify-between rounded-lg border border-white/10 bg-surface-elevated/40 p-3"
                 >
                   <div className="flex items-center gap-2">
-                    <span className="font-display text-sm font-black text-accent-cyan">
+                    <span className="font-display text-sm font-bold text-accent-cyan">
                       #{s.player?.dorsal}
                     </span>
-                    <span className="text-sm font-bold text-white truncate">
+                    <span className="truncate text-sm font-bold text-primary">
                       {s.player?.nickname}
                     </span>
                   </div>
-                  <Badge variant={s.player?.position} className="text-[9px] px-2 py-0.5">
+                  <Badge variant={s.player?.position} className="px-2 py-0.5 text-[9px]">
                     {getPositionName(s.player?.position).slice(0, 3)}
                   </Badge>
                 </div>
@@ -243,10 +240,11 @@ export default async function MatchDetailPage({ params }: MatchDetailPageProps) 
           </div>
         </div>
       ) : (
-        <div className="p-12 rounded-3xl bg-surface text-center space-y-3">
-          <Calendar className="w-12 h-12 mx-auto text-accent-cyan opacity-80" />
-          <h3 className="font-display text-2xl font-bold text-white">Partido por Disputar</h3>
-          <p className="text-sm text-psg-300 max-w-md mx-auto">
+        /* Empty State (DESIGN_SYSTEM Section 3.2) */
+        <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-surface p-12 text-center">
+          <Calendar className="h-12 w-12 text-muted" />
+          <h3 className="mt-3 font-display text-2xl font-bold text-primary">Partido por Disputar</h3>
+          <p className="mt-1 max-w-md text-sm text-secondary">
             El acta digital oficial y las estadísticas de los jugadores se cargarán al finalizar el partido.
           </p>
         </div>

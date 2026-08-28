@@ -45,8 +45,8 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
 
   if (timeLeft.isExpired) {
     return (
-      <div className="inline-flex animate-pulse items-center gap-2.5 rounded-2xl border-2 border-rose-500/50 bg-rose-500/20 px-4 py-2 font-display text-sm font-black uppercase tracking-wider text-rose-300 shadow-glow-crimson">
-        <span className="h-2.5 w-2.5 rounded-full bg-rose-500" /> ¡Partido en
+      <div className="inline-flex animate-pulse items-center gap-2 rounded-xl border border-danger/40 bg-danger/15 px-4 py-2 font-display text-sm font-bold uppercase tracking-wider text-danger shadow-glow-crimson">
+        <span className="h-2 w-2 rounded-full bg-danger" /> ¡Partido en
         Directo / Disputándose!
       </div>
     );
@@ -65,12 +65,12 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
         <React.Fragment key={unit.label}>
           <div className="flex flex-col items-center">
             {/* LED Card Box */}
-            <div className="group relative flex h-16 w-14 items-center justify-center overflow-hidden rounded-2xl border-2 border-surface-border bg-gradient-to-b from-surface to-psg-950 shadow-card sm:h-20 sm:w-20">
+            <div className="group relative flex h-16 w-14 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated inner-light sm:h-20 sm:w-20">
               {/* Top ambient highlight line */}
               <div className="absolute left-0 right-0 top-0 h-[1px] bg-accent-cyan/40" />
 
               {/* Number display */}
-              <span className="text-glow font-display text-2xl font-black text-white transition-transform group-hover:scale-105 sm:text-4xl">
+              <span className="text-glow-subtle font-display text-2xl font-black text-primary transition-transform group-hover:scale-105 sm:text-4xl">
                 {String(unit.value).padStart(2, "0")}
               </span>
 
@@ -79,7 +79,7 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
             </div>
 
             {/* Label */}
-            <span className="mt-2 font-display text-[10px] font-bold uppercase tracking-widest text-psg-300 sm:text-xs">
+            <span className="mt-2 font-display text-[10px] font-bold uppercase tracking-widest text-secondary sm:text-xs">
               {unit.label}
             </span>
           </div>

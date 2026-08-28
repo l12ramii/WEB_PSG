@@ -11,7 +11,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { PlayerStatsSummary } from "@/lib/supabase/types";
-import { getPositionName, getPositionBadgeColor } from "@/lib/utils";
+import { getPositionName } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 
@@ -26,63 +26,69 @@ export function PlayerCard({ player }: PlayerCardProps) {
     <>
       <div
         onClick={() => setShowModal(true)}
-        className="group relative flex cursor-pointer select-none flex-col justify-between overflow-hidden rounded-3xl border border-surface-border bg-card-gradient p-6 transition-all duration-300 hover:-translate-y-2 hover:border-accent-cyan/60 hover:shadow-glow"
+        className="group relative flex cursor-pointer select-none flex-col justify-between overflow-hidden rounded-xl border border-white/10 bg-surface p-4 inner-light transition-all duration-200 ease-out hover:-translate-y-1 hover:border-accent-cyan/50 hover:shadow-glow-subtle"
       >
-        {/* Giant Watermark Dorsal in Background */}
-        <span className="pointer-events-none absolute -right-3 -top-6 select-none font-display text-9xl font-black text-white/[0.03] transition-colors group-hover:text-accent-cyan/[0.08]">
-          #{player.dorsal}
-        </span>
+        {/* Tiger Claw Slash SVG Watermark (Section 3.3 of DESIGN_SYSTEM.md) */}
+        <svg
+          viewBox="0 0 100 100"
+          fill="currentColor"
+          className="pointer-events-none absolute -right-4 -top-4 h-36 w-36 text-accent-cyan opacity-5 transition-opacity duration-300 group-hover:opacity-10"
+        >
+          <path d="M20 5 C 32 35, 38 65, 12 95 C 26 70, 42 35, 28 5 Z" />
+          <path d="M50 2 C 62 35, 68 70, 42 98 C 56 75, 72 38, 58 2 Z" />
+          <path d="M80 12 C 92 40, 96 72, 74 96 C 86 75, 100 45, 88 12 Z" />
+        </svg>
 
-        {/* Diagonal Tiger Claw Slash Accent */}
-        <div className="pointer-events-none absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-accent-cyan/[0.03] to-transparent" />
-
-        {/* Card Header: Position & Dorsal Badge */}
+        {/* Card Header: Position Badge & Dorsal Number */}
         <div className="relative z-10 flex items-center justify-between">
           <Badge variant={player.position} dot>
             {getPositionName(player.position)}
           </Badge>
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-surface-border bg-surface-muted font-display text-lg font-black text-accent-cyan shadow-inner transition-colors group-hover:bg-accent-cyan group-hover:text-psg-950">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/10 bg-surface-elevated font-display text-sm font-black text-accent-cyan transition-colors group-hover:border-accent-cyan/40">
             #{player.dorsal}
-          </div>
+          </span>
         </div>
 
-        {/* Player Portrait */}
-        <div className="relative my-6 flex items-center justify-center">
-          {/* Glowing Aura Ring */}
-          <div className="absolute h-32 w-32 rounded-full bg-accent-cyan/10 blur-xl transition-all group-hover:bg-accent-cyan/25" />
+        {/* Player Official Photo in aspect-[3/4] container (Section 3.3 DESIGN_SYSTEM.md) */}
+        <div className="relative my-4 overflow-hidden rounded-xl border border-white/10 bg-surface-elevated/40">
+          {/* Radial gradient backdrop */}
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-surface-elevated via-surface-elevated/40 to-transparent" />
 
-          <div className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-3xl border-2 border-surface-border bg-psg-900 shadow-2xl transition-all duration-300 group-hover:border-accent-cyan sm:h-32 sm:w-32">
+          <div className="relative flex aspect-[3/4] w-full items-center justify-center overflow-hidden">
             {player.photo_url ? (
               <img
                 src={player.photo_url}
                 alt={player.nickname}
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                className="h-full w-full object-cover object-top grayscale transition-all duration-300 group-hover:scale-105 group-hover:grayscale-0"
               />
             ) : (
-              <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-b from-psg-800 to-psg-950 text-psg-400">
-                <User className="h-14 w-14 text-psg-400/80" />
+              <div className="flex h-full w-full flex-col items-center justify-center text-muted">
+                <User className="h-20 w-20 text-muted transition-transform duration-300 group-hover:scale-105" />
+                <span className="mt-2 font-display text-xs font-bold uppercase tracking-wider text-secondary">
+                  PSG F7
+                </span>
               </div>
             )}
           </div>
         </div>
 
         {/* Player Name and Info */}
-        <div className="relative z-10 mb-4 text-center">
-          <h4 className="font-display text-2xl font-black uppercase tracking-wide text-white transition-colors group-hover:text-accent-cyan">
+        <div className="relative z-10 mb-3 text-center">
+          <h4 className="font-display text-xl font-bold uppercase tracking-wide text-primary transition-colors group-hover:text-accent-cyan">
             {player.nickname}
           </h4>
-          <p className="mt-0.5 truncate text-xs font-medium text-psg-300">
+          <p className="mt-0.5 truncate text-xs text-secondary">
             {player.first_name} {player.last_name || ""}
           </p>
         </div>
 
         {/* Quick Season Stats Bar */}
-        <div className="relative z-10 grid grid-cols-3 gap-2 rounded-2xl border border-surface-border bg-surface-muted/90 px-3 py-3 text-center">
+        <div className="relative z-10 grid grid-cols-3 gap-2 rounded-lg border border-white/5 bg-surface-elevated/60 p-2.5 text-center">
           <div>
-            <span className="block font-display text-[10px] font-bold uppercase tracking-wider text-psg-400">
+            <span className="block font-display text-[10px] uppercase tracking-wider text-secondary">
               Partidos
             </span>
-            <span className="font-display text-lg font-black text-white">
+            <span className="font-display text-base font-bold text-primary">
               {player.matches_played}
             </span>
           </div>
@@ -90,18 +96,18 @@ export function PlayerCard({ player }: PlayerCardProps) {
           {player.position === "portero" ? (
             <>
               <div>
-                <span className="block font-display text-[10px] font-bold uppercase tracking-wider text-amber-400">
+                <span className="block font-display text-[10px] uppercase tracking-wider text-warning">
                   Imbatible
                 </span>
-                <span className="font-display text-lg font-black text-amber-400">
+                <span className="font-display text-base font-bold text-warning">
                   {player.total_clean_sheets}
                 </span>
               </div>
               <div>
-                <span className="block font-display text-[10px] font-bold uppercase tracking-wider text-psg-400">
+                <span className="block font-display text-[10px] uppercase tracking-wider text-secondary">
                   Tarjetas
                 </span>
-                <span className="font-display text-lg font-black text-psg-200">
+                <span className="font-display text-base font-bold text-primary">
                   {player.total_yellow_cards + player.total_red_cards}
                 </span>
               </div>
@@ -109,18 +115,18 @@ export function PlayerCard({ player }: PlayerCardProps) {
           ) : (
             <>
               <div>
-                <span className="block font-display text-[10px] font-bold uppercase tracking-wider text-accent-cyan">
+                <span className="block font-display text-[10px] uppercase tracking-wider text-accent-cyan">
                   Goles
                 </span>
-                <span className="font-display text-lg font-black text-accent-cyan">
+                <span className="font-display text-base font-bold text-accent-cyan">
                   {player.total_goals}
                 </span>
               </div>
               <div>
-                <span className="block font-display text-[10px] font-bold uppercase tracking-wider text-emerald-400">
+                <span className="block font-display text-[10px] uppercase tracking-wider text-success">
                   Asistencias
                 </span>
-                <span className="font-display text-lg font-black text-emerald-400">
+                <span className="font-display text-base font-bold text-success">
                   {player.total_assists}
                 </span>
               </div>
@@ -129,7 +135,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
         </div>
 
         {/* Hover Cue */}
-        <div className="mt-3 flex items-center justify-center gap-1 font-display text-[11px] font-bold uppercase tracking-wider text-psg-400 transition-colors group-hover:text-accent-cyan">
+        <div className="mt-3 flex items-center justify-center gap-1 font-display text-xs font-bold uppercase tracking-wider text-secondary transition-colors group-hover:text-accent-cyan">
           <span>Ver Ficha Completa</span>
           <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
         </div>
@@ -139,20 +145,20 @@ export function PlayerCard({ player }: PlayerCardProps) {
       <Modal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        title={`Ficha Oficial #${player.dorsal}`}
+        title={`Ficha Oficial #${player.dorsal} · ${player.nickname}`}
       >
         <div className="space-y-6">
           {/* Header Showcase */}
-          <div className="flex flex-col items-center gap-6 rounded-2xl border border-surface-border bg-surface-muted p-4 sm:flex-row">
-            <div className="relative flex h-32 w-32 flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 border-accent-cyan bg-psg-950 shadow-glow">
+          <div className="flex flex-col items-center gap-6 rounded-xl border border-white/10 bg-surface-elevated/40 p-4 sm:flex-row">
+            <div className="relative flex aspect-[3/4] w-28 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated">
               {player.photo_url ? (
                 <img
                   src={player.photo_url}
                   alt={player.nickname}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover object-top"
                 />
               ) : (
-                <User className="h-16 w-16 text-psg-400" />
+                <User className="h-14 w-14 text-muted" />
               )}
             </div>
 
@@ -161,82 +167,81 @@ export function PlayerCard({ player }: PlayerCardProps) {
                 <Badge variant={player.position} dot>
                   {getPositionName(player.position)}
                 </Badge>
-                <span className="rounded bg-white/10 px-2 py-0.5 font-display text-xs font-bold text-accent-cyan">
+                <span className="rounded-md border border-white/10 bg-surface-elevated px-2 py-0.5 font-display text-xs font-bold text-accent-cyan">
                   DORSAL #{player.dorsal}
                 </span>
               </div>
 
-              <h3 className="font-display text-3xl font-black uppercase tracking-wide text-white">
+              <h3 className="font-display text-2xl font-bold uppercase tracking-wide text-primary sm:text-3xl">
                 {player.nickname}
               </h3>
-              <p className="text-sm font-medium text-psg-300">
-                Nombre completo: {player.first_name} {player.last_name || ""}
+              <p className="text-sm text-secondary">
+                Nombre: {player.first_name} {player.last_name || ""}
               </p>
-              <div className="inline-flex items-center gap-1.5 font-display text-xs font-bold uppercase tracking-wider text-emerald-400">
-                <CheckCircle2 className="h-4 w-4" /> Jugador Convocable ·
-                Temporada 2026/27
+              <div className="inline-flex items-center gap-1.5 font-display text-xs font-bold uppercase tracking-wider text-success">
+                <CheckCircle2 className="h-4 w-4" /> Jugador en Activo · PSG F7
               </div>
             </div>
           </div>
 
           {/* Full Statistics Breakdown */}
-          <div className="border-t border-surface-border pt-4">
+          <div className="border-t border-white/10 pt-4">
             <h5 className="mb-4 flex items-center gap-1.5 font-display text-xs font-bold uppercase tracking-widest text-accent-cyan">
-              <Sparkles className="h-4 w-4" /> Desglose Estadístico Acumulado
+              <Sparkles className="h-4 w-4" /> Rendimiento Acumulado de la Temporada
             </h5>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              <div className="rounded-2xl border border-surface-border bg-surface-muted p-4 text-center">
-                <span className="font-display text-[11px] font-bold uppercase tracking-wider text-psg-400">
-                  Partidos Jugados
+              <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                <span className="font-display text-xs font-bold uppercase tracking-wider text-secondary">
+                  Partidos
                 </span>
-                <p className="mt-1 font-display text-3xl font-black text-white">
+                <p className="mt-1 font-display text-2xl font-bold text-primary sm:text-3xl">
                   {player.matches_played}
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-surface-border bg-surface-muted p-4 text-center">
-                <span className="font-display text-[11px] font-bold uppercase tracking-wider text-accent-cyan">
-                  Goles Marcados
+              <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                <span className="font-display text-xs font-bold uppercase tracking-wider text-accent-cyan">
+                  Goles
                 </span>
-                <p className="text-glow mt-1 font-display text-3xl font-black text-accent-cyan">
+                <p className="mt-1 font-display text-2xl font-bold text-accent-cyan sm:text-3xl text-glow-subtle">
                   {player.total_goals}
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-surface-border bg-surface-muted p-4 text-center">
-                <span className="font-display text-[11px] font-bold uppercase tracking-wider text-emerald-400">
+              <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                <span className="font-display text-xs font-bold uppercase tracking-wider text-success">
                   Asistencias
                 </span>
-                <p className="mt-1 font-display text-3xl font-black text-emerald-400">
+                <p className="mt-1 font-display text-2xl font-bold text-success sm:text-3xl">
                   {player.total_assists}
                 </p>
               </div>
 
               {player.position === "portero" && (
-                <div className="rounded-2xl border border-surface-border bg-surface-muted p-4 text-center">
-                  <span className="font-display text-[11px] font-bold uppercase tracking-wider text-amber-400">
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-warning">
                     Porterías a Cero
                   </span>
-                  <p className="text-glow-gold mt-1 font-display text-3xl font-black text-amber-400">
+                  <p className="mt-1 font-display text-2xl font-bold text-warning sm:text-3xl">
                     {player.total_clean_sheets}
                   </p>
                 </div>
               )}
 
-              <div className="rounded-2xl border border-surface-border bg-surface-muted p-4 text-center">
-                <span className="font-display text-[11px] font-bold uppercase tracking-wider text-amber-300">
+              <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                <span className="font-display text-xs font-bold uppercase tracking-wider text-warning">
                   Tarjetas Amarillas
                 </span>
-                <p className="mt-1 font-display text-3xl font-black text-amber-300">
+                <p className="mt-1 font-display text-2xl font-bold text-warning sm:text-3xl">
                   {player.total_yellow_cards}
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-surface-border bg-surface-muted p-4 text-center">
-                <span className="font-display text-[11px] font-bold uppercase tracking-wider text-rose-400">
+              <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                <span className="font-display text-xs font-bold uppercase tracking-wider text-danger">
                   Tarjetas Rojas
                 </span>
-                <p className="mt-1 font-display text-3xl font-black text-rose-400">
+                <p className="mt-1 font-display text-2xl font-bold text-danger sm:text-3xl">
                   {player.total_red_cards}
                 </p>
               </div>

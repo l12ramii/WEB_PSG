@@ -8,10 +8,7 @@ import {
   Calendar,
   ArrowRight,
   Sparkles,
-  Zap,
   Clock,
-  Target,
-  Award,
 } from "lucide-react";
 import {
   getNextMatch,
@@ -45,29 +42,40 @@ export default async function HomePage() {
   return (
     <div className="space-y-16 pb-24">
       {/* 1. MONUMENTAL HERO SECTION */}
-      <section className="relative overflow-hidden border-b border-surface-border/60 bg-stadium-spotlight pb-20 pt-14 md:pb-32 md:pt-24">
+      <section className="relative overflow-hidden border-b border-white/10 bg-stadium-spotlight py-16 md:py-24">
         {/* Background stadium lighting aura */}
-        <div className="pointer-events-none absolute left-1/2 top-0 h-[350px] w-[600px] -translate-x-1/2 rounded-full bg-accent-cyan/15 blur-[120px]" />
-        <div className="pointer-events-none absolute left-1/4 top-1/4 h-[300px] w-[400px] rounded-full bg-psg-500/20 blur-[100px]" />
+        <div className="pointer-events-none absolute left-1/2 top-0 h-[350px] w-[600px] -translate-x-1/2 rounded-full bg-accent-cyan/10 blur-[120px]" />
+        <div className="pointer-events-none absolute left-1/4 top-1/4 h-[300px] w-[400px] rounded-full bg-accent-blue/15 blur-[100px]" />
 
         {/* Soccer Net Background Pattern */}
         <div className="bg-soccer-mesh pointer-events-none absolute inset-0 opacity-40" />
 
+        {/* Tiger Claw Slash SVG Watermark (Section 3.3 of DESIGN_SYSTEM.md) */}
+        <svg
+          viewBox="0 0 100 100"
+          fill="currentColor"
+          className="pointer-events-none absolute -right-8 -top-8 h-80 w-80 text-accent-cyan opacity-5 md:h-96 md:w-96"
+        >
+          <path d="M20 5 C 32 35, 38 65, 12 95 C 26 70, 42 35, 28 5 Z" />
+          <path d="M50 2 C 62 35, 68 70, 42 98 C 56 75, 72 38, 58 2 Z" />
+          <path d="M80 12 C 92 40, 96 72, 74 96 C 86 75, 100 45, 88 12 Z" />
+        </svg>
+
         <div className="container relative z-10 mx-auto max-w-5xl space-y-6 px-4 text-center">
           {/* Emblem Badge Pill */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-accent-cyan/40 bg-surface-active/90 px-4 py-1.5 font-display text-xs font-black uppercase tracking-[0.2em] text-accent-cyan shadow-glow backdrop-blur-md">
-            <Flame className="phoenix-glow h-4 w-4 animate-pulse text-accent-cyan" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-accent-cyan/40 bg-surface-elevated/90 px-4 py-1.5 font-display text-xs font-bold uppercase tracking-[0.2em] text-accent-cyan shadow-glow-subtle backdrop-blur-md">
+            <Flame className="h-4 w-4 animate-pulse text-accent-cyan" />
             <span>Fuerza · Resurgimiento · Garra</span>
           </div>
 
           {/* Monumental Headline */}
-          <h1 className="font-display text-5xl font-black uppercase leading-none tracking-tight text-white sm:text-7xl md:text-9xl">
-            PSG <span className="text-glow text-accent-cyan">FÚTBOL 7</span>
+          <h1 className="font-display text-5xl font-black uppercase leading-none tracking-tight text-primary sm:text-7xl md:text-8xl">
+            PSG <span className="text-glow-subtle text-accent-cyan">FÚTBOL 7</span>
           </h1>
 
           {/* Subtitle */}
-          <p className="mx-auto max-w-2xl text-base font-medium leading-relaxed text-psg-200/90 sm:text-xl">
-            El corazón de un equipo de barrio forjado en el compañerismo. Sigue
+          <p className="mx-auto max-w-2xl text-base font-medium leading-relaxed text-secondary sm:text-xl">
+            El corazón de un equipo forjado en el compañerismo y la pasión. Sigue
             todos los partidos, clasificaciones y el rendimiento individual de
             cada jugador.
           </p>
@@ -75,7 +83,7 @@ export default async function HomePage() {
           {/* Action CTAs */}
           <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
             <Link href="/plantilla">
-              <Button size="lg" className="text-base shadow-glow">
+              <Button size="lg" className="text-base shadow-glow-subtle">
                 Ver Plantilla Oficial <ChevronRight className="h-5 w-5" />
               </Button>
             </Link>
@@ -88,39 +96,39 @@ export default async function HomePage() {
           </div>
 
           {/* Quick Stats Ticker Bar */}
-          <div className="mx-auto grid max-w-3xl grid-cols-2 gap-4 pt-10 sm:grid-cols-4">
-            <div className="rounded-2xl border border-surface-border bg-surface-muted/80 p-3.5 backdrop-blur-md">
-              <span className="block font-display text-[11px] font-bold uppercase tracking-wider text-psg-400">
+          <div className="mx-auto grid max-w-3xl grid-cols-2 gap-4 pt-8 sm:grid-cols-4">
+            <div className="rounded-xl border border-white/10 bg-surface p-4 inner-light backdrop-blur-md">
+              <span className="block font-display text-xs font-bold uppercase tracking-wider text-secondary">
                 Plantilla
               </span>
-              <span className="font-display text-2xl font-black text-white">
+              <span className="font-display text-2xl font-bold text-primary">
                 {allPlayers.length} Jugadores
               </span>
             </div>
 
-            <div className="rounded-2xl border border-surface-border bg-surface-muted/80 p-3.5 backdrop-blur-md">
-              <span className="block font-display text-[11px] font-bold uppercase tracking-wider text-psg-400">
+            <div className="rounded-xl border border-white/10 bg-surface p-4 inner-light backdrop-blur-md">
+              <span className="block font-display text-xs font-bold uppercase tracking-wider text-secondary">
                 Partidos Jugados
               </span>
-              <span className="text-glow font-display text-2xl font-black text-accent-cyan">
+              <span className="text-glow-subtle font-display text-2xl font-bold text-accent-cyan">
                 {finishedMatches.length} Jornadas
               </span>
             </div>
 
-            <div className="rounded-2xl border border-surface-border bg-surface-muted/80 p-3.5 backdrop-blur-md">
-              <span className="block font-display text-[11px] font-bold uppercase tracking-wider text-psg-400">
+            <div className="rounded-xl border border-white/10 bg-surface p-4 inner-light backdrop-blur-md">
+              <span className="block font-display text-xs font-bold uppercase tracking-wider text-secondary">
                 Goles a Favor
               </span>
-              <span className="font-display text-2xl font-black text-emerald-400">
+              <span className="font-display text-2xl font-bold text-success">
                 {totalGoals} Goles
               </span>
             </div>
 
-            <div className="rounded-2xl border border-surface-border bg-surface-muted/80 p-3.5 backdrop-blur-md">
-              <span className="block font-display text-[11px] font-bold uppercase tracking-wider text-psg-400">
+            <div className="rounded-xl border border-white/10 bg-surface p-4 inner-light backdrop-blur-md">
+              <span className="block font-display text-xs font-bold uppercase tracking-wider text-secondary">
                 Eficacia
               </span>
-              <span className="font-display text-2xl font-black text-amber-400">
+              <span className="font-display text-2xl font-bold text-warning">
                 100% Pasión
               </span>
             </div>
@@ -132,15 +140,12 @@ export default async function HomePage() {
       <section className="container mx-auto px-4">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           {/* Próximo Partido Card */}
-          <div className="relative flex select-none flex-col justify-between overflow-hidden rounded-3xl border border-accent-cyan/40 bg-card-gradient p-6 shadow-card sm:p-8">
-            {/* Top ambient illumination */}
-            <div className="absolute left-0 right-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-accent-cyan to-transparent" />
-
+          <div className="relative flex select-none flex-col justify-between overflow-hidden rounded-xl border border-white/10 bg-surface p-6 inner-light sm:p-8">
             <div>
-              <div className="mb-6 flex items-center justify-between gap-2">
+              <div className="mb-6 flex items-center justify-between gap-2 border-b border-white/10 pb-4">
                 <div className="flex items-center gap-2">
-                  <span className="h-2.5 w-2.5 animate-ping rounded-full bg-accent-cyan" />
-                  <h3 className="font-display text-sm font-black uppercase tracking-widest text-accent-cyan">
+                  <span className="h-2 w-2 animate-ping rounded-full bg-accent-cyan" />
+                  <h3 className="font-display text-xs font-bold uppercase tracking-widest text-accent-cyan">
                     Próxima Cita Oficial
                   </h3>
                 </div>
@@ -157,34 +162,34 @@ export default async function HomePage() {
                   <div className="flex items-center justify-between gap-4 py-2">
                     {/* PSG Side */}
                     <div className="flex items-center gap-3.5">
-                      <div className="flex h-14 w-14 items-center justify-center rounded-2xl border-2 border-accent-cyan bg-gradient-to-br from-psg-600 to-psg-900 shadow-glow">
-                        <Flame className="phoenix-glow h-8 w-8 text-white" />
+                      <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated shadow-glow-subtle">
+                        <Flame className="h-8 w-8 text-accent-cyan" />
                       </div>
                       <div>
-                        <span className="block font-display text-2xl font-black text-white">
+                        <span className="block font-display text-2xl font-bold text-primary">
                           PSG F7
                         </span>
-                        <span className="font-display text-[11px] font-bold uppercase tracking-wider text-accent-cyan">
+                        <span className="font-display text-xs font-bold uppercase tracking-wider text-accent-cyan">
                           {nextMatch.is_home ? "Local" : "Visitante"}
                         </span>
                       </div>
                     </div>
 
-                    <span className="rounded-lg border border-surface-border bg-surface-muted px-2.5 py-1 font-display text-lg font-black text-psg-400">
+                    <span className="rounded-lg border border-white/10 bg-surface-elevated px-3 py-1 font-display text-sm font-bold text-secondary">
                       VS
                     </span>
 
                     {/* Rival Side */}
                     <div className="flex items-center gap-3.5 text-right">
                       <div>
-                        <span className="block max-w-[140px] truncate font-display text-2xl font-black text-white sm:max-w-none">
+                        <span className="block max-w-[140px] truncate font-display text-2xl font-bold text-primary sm:max-w-none">
                           {nextMatch.rival?.name || "Rival"}
                         </span>
-                        <span className="font-display text-[11px] font-bold uppercase tracking-wider text-psg-400">
+                        <span className="font-display text-xs font-bold uppercase tracking-wider text-secondary">
                           {!nextMatch.is_home ? "Local" : "Visitante"}
                         </span>
                       </div>
-                      <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-2xl border-2 border-surface-border bg-surface-muted p-2">
+                      <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated p-2">
                         {nextMatch.rival?.shield_url ? (
                           <img
                             src={nextMatch.rival.shield_url}
@@ -192,18 +197,18 @@ export default async function HomePage() {
                             className="h-full w-full object-contain"
                           />
                         ) : (
-                          <Shield className="h-7 w-7 text-psg-400" />
+                          <Shield className="h-7 w-7 text-muted" />
                         )}
                       </div>
                     </div>
                   </div>
 
                   {/* Match Date and Field */}
-                  <div className="rounded-2xl border border-surface-border bg-surface-muted/90 p-3.5 text-center text-xs text-psg-200">
-                    <p className="font-display text-sm font-bold capitalize text-white">
+                  <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center text-xs text-secondary">
+                    <p className="font-display text-sm font-bold capitalize text-primary">
                       {formatMatchDate(nextMatch.match_date)}
                     </p>
-                    <p className="mt-0.5 text-xs font-medium text-psg-400">
+                    <p className="mt-1 text-xs text-secondary">
                       Sede:{" "}
                       {nextMatch.is_home
                         ? "Campo Principal PSG F7"
@@ -213,7 +218,7 @@ export default async function HomePage() {
 
                   {/* Countdown Timer */}
                   <div className="flex flex-col items-center pt-2">
-                    <span className="mb-3 flex items-center gap-1.5 font-display text-[10px] font-bold uppercase tracking-widest text-psg-300">
+                    <span className="mb-3 flex items-center gap-1.5 font-display text-xs font-bold uppercase tracking-widest text-secondary">
                       <Clock className="h-3.5 w-3.5 text-accent-cyan" /> Cuenta
                       atrás para el pitido inicial
                     </span>
@@ -221,19 +226,23 @@ export default async function HomePage() {
                   </div>
                 </div>
               ) : (
-                <div className="space-y-3 py-12 text-center text-psg-400">
-                  <Calendar className="mx-auto h-12 w-12 opacity-40" />
-                  <p className="text-sm">
-                    No hay próximos partidos programados actualmente.
+                /* Empty State (DESIGN_SYSTEM Section 3.2) */
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <Calendar className="h-12 w-12 text-muted" />
+                  <h4 className="mt-3 text-lg font-bold text-primary font-display">
+                    No hay próximos partidos
+                  </h4>
+                  <p className="mt-1 text-sm text-secondary">
+                    Actualmente no hay encuentros programados en el calendario.
                   </p>
                 </div>
               )}
             </div>
 
-            <div className="mt-6 flex justify-end border-t border-surface-border pt-4">
+            <div className="mt-6 flex justify-end border-t border-white/10 pt-4">
               <Link
                 href="/partidos"
-                className="inline-flex items-center gap-1.5 font-display text-xs font-bold uppercase tracking-wider text-accent-cyan transition-colors hover:text-white"
+                className="inline-flex items-center gap-1.5 font-display text-xs font-bold uppercase tracking-wider text-accent-cyan transition-colors hover:text-primary"
               >
                 Ver calendario completo de la temporada{" "}
                 <ArrowRight className="h-4 w-4" />
@@ -242,15 +251,12 @@ export default async function HomePage() {
           </div>
 
           {/* Último Resultado Oficial */}
-          <div className="relative flex select-none flex-col justify-between overflow-hidden rounded-3xl border border-surface-border bg-card-gradient p-6 shadow-card sm:p-8">
-            {/* Top ambient illumination */}
-            <div className="absolute left-0 right-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400/40 to-transparent" />
-
+          <div className="relative flex select-none flex-col justify-between overflow-hidden rounded-xl border border-white/10 bg-surface p-6 inner-light sm:p-8">
             <div>
-              <div className="mb-6 flex items-center justify-between gap-2">
+              <div className="mb-6 flex items-center justify-between gap-2 border-b border-white/10 pb-4">
                 <div className="flex items-center gap-2">
-                  <Trophy className="h-4 w-4 text-emerald-400" />
-                  <h3 className="font-display text-sm font-black uppercase tracking-widest text-white">
+                  <Trophy className="h-4 w-4 text-success" />
+                  <h3 className="font-display text-xs font-bold uppercase tracking-widest text-primary">
                     Último Resultado Oficial
                   </h3>
                 </div>
@@ -266,19 +272,23 @@ export default async function HomePage() {
                   <MatchCard match={lastResult} />
                 </div>
               ) : (
-                <div className="space-y-3 py-12 text-center text-psg-400">
-                  <Trophy className="mx-auto h-12 w-12 opacity-40" />
-                  <p className="text-sm">
-                    Aún no hay resultados de partidos registrados.
+                /* Empty State (DESIGN_SYSTEM Section 3.2) */
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <Trophy className="h-12 w-12 text-muted" />
+                  <h4 className="mt-3 text-lg font-bold text-primary font-display">
+                    Sin resultados registrados
+                  </h4>
+                  <p className="mt-1 text-sm text-secondary">
+                    Aún no hay resultados de partidos registrados en el sistema.
                   </p>
                 </div>
               )}
             </div>
 
-            <div className="mt-6 flex justify-end border-t border-surface-border pt-4">
+            <div className="mt-6 flex justify-end border-t border-white/10 pt-4">
               <Link
                 href="/partidos"
-                className="inline-flex items-center gap-1.5 font-display text-xs font-bold uppercase tracking-wider text-psg-300 transition-colors hover:text-white"
+                className="inline-flex items-center gap-1.5 font-display text-xs font-bold uppercase tracking-wider text-secondary transition-colors hover:text-primary"
               >
                 Historial completo de actas y marcadores{" "}
                 <ArrowRight className="h-4 w-4" />
@@ -292,13 +302,13 @@ export default async function HomePage() {
       <section className="container mx-auto px-4">
         <div className="mb-8 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <div className="mb-1 inline-flex items-center gap-2 font-display text-xs font-black uppercase tracking-widest text-accent-gold">
-              <Trophy className="h-4 w-4 text-accent-gold" />
+            <div className="mb-1 inline-flex items-center gap-2 font-display text-xs font-bold uppercase tracking-widest text-warning">
+              <Trophy className="h-4 w-4 text-warning" />
               <span>Rendimiento Individual</span>
             </div>
-            <h2 className="font-display text-4xl font-black uppercase tracking-tight text-white sm:text-5xl">
+            <h2 className="font-display text-4xl font-bold uppercase tracking-tight text-primary sm:text-5xl">
               Cuadro de{" "}
-              <span className="text-glow-gold text-accent-gold">Honor</span>
+              <span className="text-warning">Honor</span>
             </h2>
           </div>
           <Link href="/plantilla">
@@ -317,16 +327,27 @@ export default async function HomePage() {
 
       {/* 4. CLUB IDENTITY & VALUES */}
       <section className="container mx-auto px-4">
-        <div className="relative mx-auto max-w-4xl space-y-6 overflow-hidden rounded-3xl border border-surface-border bg-gradient-to-r from-psg-900 via-surface to-psg-950 p-8 text-center shadow-2xl sm:p-14">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-accent-cyan bg-gradient-to-br from-psg-600 to-accent-electric shadow-glow">
-            <Flame className="phoenix-glow h-10 w-10 text-white" />
+        <div className="relative mx-auto max-w-4xl space-y-6 overflow-hidden rounded-xl border border-white/10 bg-surface p-8 text-center inner-light sm:p-14">
+          {/* Tiger Claw Slash SVG Watermark */}
+          <svg
+            viewBox="0 0 100 100"
+            fill="currentColor"
+            className="pointer-events-none absolute -right-4 -top-4 h-48 w-48 text-accent-cyan opacity-5"
+          >
+            <path d="M20 5 C 32 35, 38 65, 12 95 C 26 70, 42 35, 28 5 Z" />
+            <path d="M50 2 C 62 35, 68 70, 42 98 C 56 75, 72 38, 58 2 Z" />
+            <path d="M80 12 C 92 40, 96 72, 74 96 C 86 75, 100 45, 88 12 Z" />
+          </svg>
+
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated shadow-glow-subtle">
+            <Flame className="h-8 w-8 text-accent-cyan" />
           </div>
 
-          <h3 className="font-display text-3xl font-black uppercase leading-tight tracking-tight text-white sm:text-5xl">
+          <h3 className="font-display text-3xl font-bold uppercase leading-tight tracking-tight text-primary sm:text-5xl">
             El Fénix Nunca se Rinde
           </h3>
-          <p className="mx-auto max-w-xl text-sm font-medium leading-relaxed text-psg-200 sm:text-base">
-            Fútbol 7 con identidad de barrio, entrega en cada balón dividido y
+          <p className="mx-auto max-w-xl text-sm font-medium leading-relaxed text-secondary sm:text-base">
+            Fútbol 7 con identidad, entrega en cada balón dividido y
             el orgullo de competir juntos bajo los mismos colores.
           </p>
 

@@ -48,10 +48,10 @@ Este documento detalla las tareas paso a paso para completar el desarrollo de la
   - [x] Creación de Botones (`Button`) con estados interactivos (hover glow, focus visible, loading con skeleton/spinner).
   - [x] Creación de Inputs y Formularios (`Input`, `Select`, `Label`) con feedback de estados (error, empty, success).
   - [x] Creación de Tarjetas Base (`Card`) con bordes de alto contraste (`border-white/10`) y luz interna sin sombras exteriores.
-- [ ] **3. Capa de Layouts y Vistas Completas**
-  - [ ] Montaje de Layout público (Navbar transparente/Dark, Footer con info del club).
-  - [ ] Ensamblado de la Página de Inicio (Home) con hero banner y widgets deportivos.
-  - [ ] Ensamblado de la Página de Plantilla y Calendario (MatchCards y PlayerCards).
+- [x] **3. Capa de Layouts y Vistas Completas**
+  - [x] Montaje de Layout público (Navbar transparente/Dark, Footer con info del club).
+  - [x] Ensamblado de la Página de Inicio (Home) con hero banner y widgets deportivos.
+  - [x] Ensamblado de la Página de Plantilla y Calendario (MatchCards y PlayerCards).
 - [x] **Página de Inicio (Home)**
   - [x] Hero Banner con el escudo, nombre y lema del club.
   - [x] Widget dinámico: Próximo partido (cuenta atrás).

@@ -3,14 +3,12 @@
 import React, { useState, useEffect } from "react";
 import {
   Calendar,
-  Trophy,
   Filter,
   CheckCircle2,
   Clock,
   Search,
-  Shield,
 } from "lucide-react";
-import { MatchWithRival, CompetitionType } from "@/lib/supabase/types";
+import { MatchWithRival } from "@/lib/supabase/types";
 import { MatchCard } from "@/components/public/MatchCard";
 import { getMatches } from "@/lib/data";
 import { initialMatches } from "@/lib/mock-data";
@@ -49,53 +47,52 @@ export default function PartidosPage() {
     <div className="container mx-auto space-y-10 px-4 py-12 pb-28">
       {/* Header */}
       <div className="mx-auto max-w-3xl space-y-4 text-center">
-        <div className="inline-flex items-center gap-2 rounded-full border border-surface-border bg-surface-muted px-4 py-1.5 font-display text-xs font-black uppercase tracking-widest text-accent-cyan shadow-glow">
+        <div className="inline-flex items-center gap-2 rounded-full border border-accent-cyan/40 bg-surface-elevated/90 px-4 py-1.5 font-display text-xs font-bold uppercase tracking-widest text-accent-cyan shadow-glow-subtle">
           <Calendar className="h-3.5 w-3.5" /> Calendario Oficial & Actas
         </div>
-        <h1 className="font-display text-5xl font-black uppercase tracking-tight text-white sm:text-7xl">
+        <h1 className="font-display text-4xl font-black uppercase tracking-tight text-primary sm:text-6xl">
           Fixture &{" "}
-          <span className="text-glow text-accent-cyan">Marcadores</span>
+          <span className="text-glow-subtle text-accent-cyan">Marcadores</span>
         </h1>
-        <p className="mx-auto max-w-xl text-sm font-medium text-psg-300 sm:text-base">
+        <p className="mx-auto max-w-xl text-sm font-medium text-secondary sm:text-base">
           Consulta la programación de los próximos encuentros y el histórico de
           actas y resultados del PSG Fútbol 7.
         </p>
       </div>
 
       {/* Controls: Segmented Tabs & Filters */}
-      <div className="flex flex-col items-center justify-between gap-4 rounded-3xl border border-surface-border bg-surface p-4 shadow-card backdrop-blur-md lg:flex-row">
+      <div className="flex flex-col items-center justify-between gap-4 rounded-xl border border-white/10 bg-surface p-4 inner-light backdrop-blur-md lg:flex-row">
         {/* Status Tabs */}
-        <div className="flex w-full items-center gap-1.5 rounded-2xl border border-surface-border bg-surface-muted p-1.5 lg:w-auto">
+        <div className="flex w-full items-center gap-1.5 rounded-lg border border-white/10 bg-surface-elevated/60 p-1.5 lg:w-auto">
           <button
             onClick={() => setTab("todos")}
-            className={`flex-1 rounded-xl px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition-all lg:flex-initial ${
+            className={`flex-1 rounded-md px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition-all duration-200 focus-ring lg:flex-initial ${
               tab === "todos"
-                ? "border border-accent-cyan/40 bg-accent-electric text-white shadow-glow"
-                : "text-psg-300 hover:text-white"
+                ? "border border-accent-cyan/40 bg-surface-elevated text-primary shadow-glow-subtle"
+                : "text-secondary hover:text-primary"
             }`}
           >
             Todos ({matches.length})
           </button>
           <button
             onClick={() => setTab("proximos")}
-            className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition-all lg:flex-initial ${
+            className={`flex flex-1 items-center justify-center gap-1.5 rounded-md px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition-all duration-200 focus-ring lg:flex-initial ${
               tab === "proximos"
-                ? "border border-accent-cyan/40 bg-accent-electric text-white shadow-glow"
-                : "text-psg-300 hover:text-white"
+                ? "border border-accent-cyan/40 bg-surface-elevated text-primary shadow-glow-subtle"
+                : "text-secondary hover:text-primary"
             }`}
           >
-            <Clock className="h-3.5 w-3.5" /> Próximos ({upcomingCount})
+            <Clock className="h-3.5 w-3.5 text-accent-cyan" /> Próximos ({upcomingCount})
           </button>
           <button
             onClick={() => setTab("finalizados")}
-            className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition-all lg:flex-initial ${
+            className={`flex flex-1 items-center justify-center gap-1.5 rounded-md px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition-all duration-200 focus-ring lg:flex-initial ${
               tab === "finalizados"
-                ? "border border-accent-cyan/40 bg-accent-electric text-white shadow-glow"
-                : "text-psg-300 hover:text-white"
+                ? "border border-accent-cyan/40 bg-surface-elevated text-primary shadow-glow-subtle"
+                : "text-secondary hover:text-primary"
             }`}
           >
-            <CheckCircle2 className="h-3.5 w-3.5" /> Resultados ({finishedCount}
-            )
+            <CheckCircle2 className="h-3.5 w-3.5 text-success" /> Resultados ({finishedCount})
           </button>
         </div>
 
@@ -103,23 +100,23 @@ export default function PartidosPage() {
         <div className="flex w-full flex-col items-center gap-3 sm:flex-row lg:w-auto">
           {/* Rival search */}
           <div className="relative w-full sm:w-56">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-psg-400" />
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
             <input
               type="text"
               placeholder="Buscar por rival..."
               value={searchRival}
               onChange={(e) => setSearchRival(e.target.value)}
-              className="w-full rounded-xl border border-surface-border bg-surface-muted py-2 pl-9 pr-3 text-xs font-medium text-white placeholder-psg-400 focus:border-accent-cyan focus:outline-none"
+              className="w-full rounded-xl border border-white/10 bg-surface-elevated/60 py-2 pl-9 pr-3 text-xs font-medium text-primary placeholder-muted focus-ring focus:border-accent-cyan focus:outline-none"
             />
           </div>
 
           {/* Competition select */}
           <div className="flex w-full items-center gap-2 sm:w-auto">
-            <Filter className="h-4 w-4 text-psg-400" />
+            <Filter className="h-4 w-4 text-muted" />
             <select
               value={competitionFilter}
               onChange={(e) => setCompetitionFilter(e.target.value)}
-              className="w-full cursor-pointer rounded-xl border border-surface-border bg-surface-muted px-3 py-2 font-display text-xs font-bold uppercase text-white focus:border-accent-cyan focus:outline-none sm:w-auto"
+              className="w-full cursor-pointer rounded-xl border border-white/10 bg-surface-elevated px-3 py-2 font-display text-xs font-bold uppercase text-primary focus-ring focus:border-accent-cyan focus:outline-none sm:w-auto"
             >
               <option value="todas">Todas las Competiciones</option>
               <option value="liga">Liga Oficial F7</option>
@@ -138,12 +135,13 @@ export default function PartidosPage() {
           ))}
         </div>
       ) : (
-        <div className="space-y-3 rounded-3xl border border-surface-border bg-surface/40 py-20 text-center text-psg-400">
-          <Calendar className="mx-auto h-12 w-12 opacity-40" />
-          <p className="font-display text-xl font-bold text-white">
+        /* Empty State (DESIGN_SYSTEM Section 3.2) */
+        <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-surface py-16 text-center">
+          <Calendar className="h-12 w-12 text-muted" />
+          <h4 className="mt-3 text-lg font-bold text-primary font-display">
             No se encontraron partidos
-          </p>
-          <p className="text-xs">
+          </h4>
+          <p className="mt-1 text-sm text-secondary">
             Prueba seleccionando otro filtro de competición o estado.
           </p>
         </div>

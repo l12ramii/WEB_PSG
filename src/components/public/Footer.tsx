@@ -4,7 +4,7 @@ import { Flame, Trophy, Shield, Heart, Zap, Lock } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="relative w-full overflow-hidden border-t border-surface-border bg-psg-950 text-psg-300">
+    <footer className="relative w-full overflow-hidden border-t border-white/10 bg-surface text-secondary">
       {/* Top ambient illumination stripe */}
       <div className="absolute left-0 right-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-accent-cyan/40 to-transparent" />
 
@@ -13,42 +13,41 @@ export function Footer() {
           {/* Brand & Identity */}
           <div className="space-y-4 md:col-span-2">
             <div className="flex items-center gap-3.5">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl border-2 border-accent-cyan/40 bg-gradient-to-br from-psg-600 via-psg-700 to-psg-900 shadow-glow">
-                <Flame className="phoenix-glow h-6 w-6 text-accent-cyan" />
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated shadow-glow-subtle">
+                <Flame className="h-6 w-6 text-accent-cyan" />
               </div>
               <div>
-                <span className="font-display text-3xl font-black tracking-wider text-white">
+                <span className="font-display text-3xl font-black tracking-wider text-primary">
                   PSG <span className="text-lg text-accent-cyan">FÚTBOL 7</span>
                 </span>
-                <span className="-mt-1 block font-display text-[10px] uppercase tracking-[0.2em] text-psg-400">
+                <span className="-mt-1 block font-display text-[10px] uppercase tracking-[0.2em] text-secondary">
                   Club de Barrio Oficial
                 </span>
               </div>
             </div>
 
-            <p className="max-w-md text-sm leading-relaxed text-psg-300/85">
+            <p className="max-w-md text-sm leading-relaxed text-secondary">
               El Fénix renace en cada partido. Pasión, juego colectivo y la
               máxima entrega por los colores azul marino y blanco en la liga de
               Fútbol 7.
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-2 font-display text-xs font-bold uppercase tracking-widest text-accent-cyan">
-              <span className="flex items-center gap-1.5 rounded-full border border-surface-border bg-surface-muted px-3 py-1">
-                <Trophy className="h-3.5 w-3.5 text-accent-gold" /> Pasión
+              <span className="flex items-center gap-1.5 rounded-full border border-white/10 bg-surface-elevated px-3 py-1">
+                <Trophy className="h-3.5 w-3.5 text-warning" /> Pasión
               </span>
-              <span className="flex items-center gap-1.5 rounded-full border border-surface-border bg-surface-muted px-3 py-1">
-                <Shield className="h-3.5 w-3.5 text-accent-cyan" />{" "}
-                Resurgimiento
+              <span className="flex items-center gap-1.5 rounded-full border border-white/10 bg-surface-elevated px-3 py-1">
+                <Shield className="h-3.5 w-3.5 text-accent-cyan" /> Resurgimiento
               </span>
-              <span className="flex items-center gap-1.5 rounded-full border border-surface-border bg-surface-muted px-3 py-1">
-                <Zap className="h-3.5 w-3.5 text-accent-electric" /> Garra
+              <span className="flex items-center gap-1.5 rounded-full border border-white/10 bg-surface-elevated px-3 py-1">
+                <Zap className="h-3.5 w-3.5 text-accent-blue" /> Garra
               </span>
             </div>
           </div>
 
           {/* Quick Links */}
           <div className="space-y-3">
-            <h4 className="font-display text-xs font-black uppercase tracking-widest text-white">
+            <h4 className="font-display text-xs font-bold uppercase tracking-widest text-primary">
               Portal Oficial
             </h4>
             <ul className="space-y-2.5 text-sm font-medium">
@@ -81,17 +80,17 @@ export function Footer() {
 
           {/* CM & Backoffice Access */}
           <div className="space-y-3">
-            <h4 className="font-display text-xs font-black uppercase tracking-widest text-white">
+            <h4 className="font-display text-xs font-bold uppercase tracking-widest text-primary">
               Gestión del Club
             </h4>
-            <p className="text-xs text-psg-400">
+            <p className="text-xs text-secondary">
               Panel ultra-simplificado para el registro de actas, convocatorias
               y estadísticas en vivo.
             </p>
             <div className="pt-2">
               <Link
                 href="/admin"
-                className="inline-flex items-center gap-2 rounded-xl border border-surface-border bg-surface-muted px-4 py-2 font-display text-xs font-bold uppercase tracking-wider text-accent-cyan shadow-sm transition-all hover:bg-surface-active hover:text-white"
+                className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-surface-elevated px-4 py-2 font-display text-xs font-bold uppercase tracking-wider text-accent-cyan shadow-sm transition-all hover:border-accent-cyan/50 hover:bg-surface-elevated/80 hover:text-primary focus-ring"
               >
                 <Lock className="h-3.5 w-3.5" /> Acceso Backoffice CM
               </Link>
@@ -100,14 +99,13 @@ export function Footer() {
         </div>
 
         {/* Bottom Credits Bar */}
-        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-surface-border/60 pt-6 text-xs text-psg-400 sm:flex-row">
+        <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs text-muted sm:flex-row">
           <p>
-            © {new Date().getFullYear()} PSG Fútbol 7. Diseñado con estándar
-            UI/UX Pro Max.
+            © {new Date().getFullYear()} PSG Fútbol 7. Todos los derechos reservados.
           </p>
-          <p className="flex items-center gap-1.5 font-medium">
+          <p className="flex items-center gap-1.5 font-medium text-secondary">
             Hecho con{" "}
-            <Heart className="h-3.5 w-3.5 fill-accent-crimson text-accent-crimson" />{" "}
+            <Heart className="h-3.5 w-3.5 fill-danger text-danger" />{" "}
             para los guerreros del PSG F7
           </p>
         </div>
