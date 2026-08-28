@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 5 9 20;
+    --foreground: 240 245 255;
+  }
+
+  body {
+    background-color: #050914;
+    color: #edf3fe;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Custom athletic scrollbars */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #070e20;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #1c315e;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2b52ac;
+  }
+}
+
+@layer utilities {
+  .text-glow {
+    text-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+  }
+
+  .text-glow-gold {
+    text-shadow: 0 0 15px rgba(255, 184, 0, 0.5);
+  }
+
+  .bg-grid-pattern {
+    background-size: 40px 40px;
+    background-image:
+      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  }
+
+  .phoenix-glow {
+    filter: drop-shadow(0 0 12px rgba(0, 229, 255, 0.6));
+  }
+
+  .claw-mask {
+    position: relative;
+  }
+
+  .claw-mask::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 30%;
+    background: linear-gradient(
+      135deg,
+      transparent 40%,
+      rgba(0, 229, 255, 0.04) 40%,
+      transparent 60%
+    );
+    pointer-events: none;
+  }
+}
