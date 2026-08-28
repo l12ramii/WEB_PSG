@@ -1,25 +1,42 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Calendar, Trophy, Filter, CheckCircle2, Clock } from "lucide-react";
+import {
+  Calendar,
+  Trophy,
+  Filter,
+  CheckCircle2,
+  Clock,
+  Search,
+  Shield,
+} from "lucide-react";
 import { MatchWithRival, CompetitionType } from "@/lib/supabase/types";
 import { MatchCard } from "@/components/public/MatchCard";
+import { getMatches } from "@/lib/data";
 import { initialMatches } from "@/lib/mock-data";
 
 export default function PartidosPage() {
   const [matches, setMatches] = useState<MatchWithRival[]>(initialMatches);
   const [tab, setTab] = useState<"todos" | "proximos" | "finalizados">("todos");
   const [competitionFilter, setCompetitionFilter] = useState<string>("todas");
+  const [searchRival, setSearchRival] = useState("");
 
-  // Filter matches
+  useEffect(() => {
+    getMatches().then(setMatches);
+  }, []);
+
   const filteredMatches = matches.filter((m) => {
-    // Tab filter
     if (tab === "proximos" && m.is_finished) return false;
     if (tab === "finalizados" && !m.is_finished) return false;
 
-    // Competition filter
     if (competitionFilter !== "todas" && m.competition !== competitionFilter) {
       return false;
+    }
+
+    if (searchRival.trim()) {
+      const q = searchRival.toLowerCase();
+      const rivalMatch = m.rival?.name?.toLowerCase().includes(q);
+      return rivalMatch;
     }
 
     return true;
@@ -29,29 +46,31 @@ export default function PartidosPage() {
   const finishedCount = matches.filter((m) => m.is_finished).length;
 
   return (
-    <div className="container mx-auto px-4 py-12 space-y-8 pb-24">
+    <div className="container mx-auto space-y-10 px-4 py-12 pb-28">
       {/* Header */}
-      <div className="text-center max-w-2xl mx-auto space-y-4">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-muted border border-surface-border text-accent-cyan text-xs font-bold uppercase tracking-wider">
-          <Calendar className="w-3.5 h-3.5" /> Temporada Regular & Copas
+      <div className="mx-auto max-w-3xl space-y-4 text-center">
+        <div className="inline-flex items-center gap-2 rounded-full border border-surface-border bg-surface-muted px-4 py-1.5 font-display text-xs font-black uppercase tracking-widest text-accent-cyan shadow-glow">
+          <Calendar className="h-3.5 w-3.5" /> Calendario Oficial & Actas
         </div>
-        <h1 className="font-display text-4xl sm:text-6xl font-black uppercase tracking-tight text-white">
-          Calendario & <span className="text-accent-cyan text-glow">Resultados</span>
+        <h1 className="font-display text-5xl font-black uppercase tracking-tight text-white sm:text-7xl">
+          Fixture &{" "}
+          <span className="text-glow text-accent-cyan">Marcadores</span>
         </h1>
-        <p className="text-sm sm:text-base text-psg-300">
-          Consulta las fechas de los próximos encuentros y el histórico de actas y marcadores del PSG Fútbol 7.
+        <p className="mx-auto max-w-xl text-sm font-medium text-psg-300 sm:text-base">
+          Consulta la programación de los próximos encuentros y el histórico de
+          actas y resultados del PSG Fútbol 7.
         </p>
       </div>
 
-      {/* Control Bar: Tabs & Filter */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-surface border border-surface-border">
+      {/* Controls: Segmented Tabs & Filters */}
+      <div className="flex flex-col items-center justify-between gap-4 rounded-3xl border border-surface-border bg-surface p-4 shadow-card backdrop-blur-md lg:flex-row">
         {/* Status Tabs */}
-        <div className="flex items-center gap-1 p-1 bg-surface-muted rounded-xl border border-surface-border w-full md:w-auto">
+        <div className="flex w-full items-center gap-1.5 rounded-2xl border border-surface-border bg-surface-muted p-1.5 lg:w-auto">
           <button
             onClick={() => setTab("todos")}
-            className={`flex-1 md:flex-initial px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
+            className={`flex-1 rounded-xl px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition-all lg:flex-initial ${
               tab === "todos"
-                ? "bg-accent-electric text-white shadow-sm"
+                ? "border border-accent-cyan/40 bg-accent-electric text-white shadow-glow"
                 : "text-psg-300 hover:text-white"
             }`}
           >
@@ -59,57 +78,76 @@ export default function PartidosPage() {
           </button>
           <button
             onClick={() => setTab("proximos")}
-            className={`flex-1 md:flex-initial px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 ${
+            className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition-all lg:flex-initial ${
               tab === "proximos"
-                ? "bg-accent-electric text-white shadow-sm"
+                ? "border border-accent-cyan/40 bg-accent-electric text-white shadow-glow"
                 : "text-psg-300 hover:text-white"
             }`}
           >
-            <Clock className="w-3.5 h-3.5" /> Próximos ({upcomingCount})
+            <Clock className="h-3.5 w-3.5" /> Próximos ({upcomingCount})
           </button>
           <button
             onClick={() => setTab("finalizados")}
-            className={`flex-1 md:flex-initial px-4 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 ${
+            className={`flex flex-1 items-center justify-center gap-1.5 rounded-xl px-4 py-2 font-display text-xs font-bold uppercase tracking-wider transition-all lg:flex-initial ${
               tab === "finalizados"
-                ? "bg-accent-electric text-white shadow-sm"
+                ? "border border-accent-cyan/40 bg-accent-electric text-white shadow-glow"
                 : "text-psg-300 hover:text-white"
             }`}
           >
-            <CheckCircle2 className="w-3.5 h-3.5" /> Resultados ({finishedCount})
+            <CheckCircle2 className="h-3.5 w-3.5" /> Resultados ({finishedCount}
+            )
           </button>
         </div>
 
-        {/* Competition Dropdown */}
-        <div className="flex items-center gap-2 w-full md:w-auto justify-end">
-          <Filter className="w-4 h-4 text-psg-400" />
-          <select
-            value={competitionFilter}
-            onChange={(e) => setCompetitionFilter(e.target.value)}
-            className="bg-surface-muted border border-surface-border text-white text-xs font-semibold rounded-xl px-3 py-2 focus:outline-none focus:border-accent-cyan cursor-pointer"
-          >
-            <option value="todas">Todas las Competiciones</option>
-            <option value="liga">Solo Liga F7</option>
-            <option value="copa">Solo Copa</option>
-            <option value="amistoso">Solo Amistosos</option>
-          </select>
+        {/* Right Filter Controls */}
+        <div className="flex w-full flex-col items-center gap-3 sm:flex-row lg:w-auto">
+          {/* Rival search */}
+          <div className="relative w-full sm:w-56">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-psg-400" />
+            <input
+              type="text"
+              placeholder="Buscar por rival..."
+              value={searchRival}
+              onChange={(e) => setSearchRival(e.target.value)}
+              className="w-full rounded-xl border border-surface-border bg-surface-muted py-2 pl-9 pr-3 text-xs font-medium text-white placeholder-psg-400 focus:border-accent-cyan focus:outline-none"
+            />
+          </div>
+
+          {/* Competition select */}
+          <div className="flex w-full items-center gap-2 sm:w-auto">
+            <Filter className="h-4 w-4 text-psg-400" />
+            <select
+              value={competitionFilter}
+              onChange={(e) => setCompetitionFilter(e.target.value)}
+              className="w-full cursor-pointer rounded-xl border border-surface-border bg-surface-muted px-3 py-2 font-display text-xs font-bold uppercase text-white focus:border-accent-cyan focus:outline-none sm:w-auto"
+            >
+              <option value="todas">Todas las Competiciones</option>
+              <option value="liga">Liga Oficial F7</option>
+              <option value="copa">Copa F7</option>
+              <option value="amistoso">Amistosos</option>
+            </select>
+          </div>
         </div>
       </div>
 
       {/* Match Grid */}
       {filteredMatches.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {filteredMatches.map((match) => (
             <MatchCard key={match.id} match={match} />
           ))}
         </div>
       ) : (
-        <div className="py-16 text-center rounded-3xl bg-surface/50 border border-surface-border text-psg-400 space-y-3">
-          <Calendar className="w-12 h-12 mx-auto opacity-40" />
-          <p className="text-base font-bold text-white">No se encontraron partidos</p>
-          <p className="text-xs">Prueba seleccionando otro filtro de competición o estado.</p>
+        <div className="space-y-3 rounded-3xl border border-surface-border bg-surface/40 py-20 text-center text-psg-400">
+          <Calendar className="mx-auto h-12 w-12 opacity-40" />
+          <p className="font-display text-xl font-bold text-white">
+            No se encontraron partidos
+          </p>
+          <p className="text-xs">
+            Prueba seleccionando otro filtro de competición o estado.
+          </p>
         </div>
       )}
     </div>
   );
 }
-

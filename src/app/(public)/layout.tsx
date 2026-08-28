@@ -8,11 +8,10 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen flex-col bg-background bg-grid-pattern">
+    <div className="bg-grid-pattern flex min-h-screen flex-col bg-background">
       <Navbar />
       <main className="flex-1">{children}</main>
       <Footer />
     </div>
   );
 }
-

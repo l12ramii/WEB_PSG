@@ -1,5 +1,5 @@
 import React from "react";
-import { Trophy, Target, Sparkles, ShieldCheck } from "lucide-react";
+import { Trophy, Target, Sparkles, ShieldCheck, Flame } from "lucide-react";
 import { PlayerStatsSummary } from "@/lib/supabase/types";
 import { Card } from "@/components/ui/Card";
 
@@ -18,100 +18,115 @@ export function StatLeaders({
     {
       title: "Máximo Goleador",
       icon: Target,
-      statLabel: "Goles",
+      statLabel: "Goles Totales",
       statValue: topScorer?.total_goals || 0,
       player: topScorer,
-      color: "from-accent-cyan to-psg-500",
+      bgGradient: "from-accent-cyan/15 via-psg-900 to-psg-950",
+      borderHover: "hover:border-accent-cyan/60 hover:shadow-glow",
       textColor: "text-accent-cyan",
-      badge: "PICHICHI",
+      badgeColor: "bg-accent-cyan/20 text-accent-cyan border-accent-cyan/40",
+      badge: "PICHICHI DE ORO",
     },
     {
       title: "Máximo Asistente",
       icon: Sparkles,
-      statLabel: "Asistencias",
+      statLabel: "Asistencias Clave",
       statValue: topAssistant?.total_assists || 0,
       player: topAssistant,
-      color: "from-emerald-400 to-emerald-600",
+      bgGradient: "from-emerald-500/15 via-psg-900 to-psg-950",
+      borderHover: "hover:border-emerald-400/60 hover:shadow-glow-emerald",
       textColor: "text-emerald-400",
-      badge: "PLAYMAKER",
+      badgeColor: "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
+      badge: "MEJOR PLAYMAKER",
     },
     {
-      title: "Porterías a Cero",
+      title: "Guante Imbatible",
       icon: ShieldCheck,
-      statLabel: "Imbatibilidad",
+      statLabel: "Porterías a Cero",
       statValue: topKeeper?.total_clean_sheets || 0,
       player: topKeeper,
-      color: "from-amber-400 to-amber-600",
+      bgGradient: "from-amber-400/15 via-psg-900 to-psg-950",
+      borderHover: "hover:border-amber-400/60 hover:shadow-glow-gold",
       textColor: "text-amber-400",
-      badge: "ZAMORA",
+      badgeColor: "bg-amber-400/20 text-amber-300 border-amber-400/40",
+      badge: "TROFEO ZAMORA",
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
       {leaders.map((leader) => {
         const Icon = leader.icon;
         return (
-          <Card
+          <div
             key={leader.title}
-            hoverEffect
-            className="flex flex-col justify-between relative"
+            className={`rounded-3xl bg-gradient-to-b ${leader.bgGradient} border border-surface-border p-6 shadow-card transition-all duration-300 ${leader.borderHover} group relative flex select-none flex-col justify-between overflow-hidden hover:-translate-y-2`}
           >
+            {/* Top illumination line */}
+            <div className="absolute left-0 right-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <div
-                    className={`w-8 h-8 rounded-lg bg-gradient-to-br ${leader.color} flex items-center justify-center text-psg-950 font-bold shadow-sm`}
-                  >
-                    <Icon className="w-4 h-4 text-white" />
+              {/* Card Header */}
+              <div className="mb-5 flex items-center justify-between">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-surface-border bg-surface-active text-white shadow-inner transition-transform group-hover:scale-110">
+                    <Icon className="h-5 w-5 text-white" />
                   </div>
-                  <h4 className="text-sm font-bold text-white uppercase tracking-wider">
+                  <h4 className="font-display text-base font-bold uppercase tracking-wide text-white">
                     {leader.title}
                   </h4>
                 </div>
-                <span className="text-[10px] font-mono font-black tracking-widest px-2 py-0.5 rounded bg-white/10 text-white">
+                <span
+                  className={`rounded-full border px-2.5 py-1 font-display text-[10px] font-black tracking-widest ${leader.badgeColor}`}
+                >
                   {leader.badge}
                 </span>
               </div>
 
-              <div className="flex items-center gap-4 my-2">
-                <div className="w-16 h-16 rounded-2xl bg-psg-900 border border-surface-border overflow-hidden flex-shrink-0 flex items-center justify-center">
+              {/* Player Portrait & Info */}
+              <div className="my-3 flex items-center gap-4">
+                <div className="w-18 h-18 relative flex flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 border-surface-border bg-psg-950 shadow-lg group-hover:border-white/40 sm:h-20 sm:w-20">
                   {leader.player?.photo_url ? (
                     <img
                       src={leader.player.photo_url}
                       alt={leader.player.nickname}
-                      className="w-full h-full object-cover"
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   ) : (
-                    <span className="font-mono text-xl font-bold text-psg-400">
+                    <span className="font-display text-2xl font-black text-psg-400">
                       #{leader.player?.dorsal}
                     </span>
                   )}
                 </div>
 
-                <div>
-                  <h5 className="text-lg font-bold text-white">
+                <div className="space-y-1">
+                  <span className="font-display text-[11px] font-bold uppercase tracking-wider text-accent-cyan">
+                    Dorsal #{leader.player?.dorsal}
+                  </span>
+                  <h5 className="font-display text-2xl font-black uppercase tracking-wide text-white transition-colors group-hover:text-accent-cyan">
                     {leader.player?.nickname || "Sin datos"}
                   </h5>
-                  <p className="text-xs text-psg-300">
-                    Dorsal #{leader.player?.dorsal} · {leader.player?.first_name}
+                  <p className="truncate text-xs font-medium text-psg-300">
+                    {leader.player?.first_name} {leader.player?.last_name || ""}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="mt-4 pt-4 border-t border-surface-border flex items-baseline justify-between">
-              <span className="text-xs text-psg-400 uppercase font-semibold">
+            {/* Stat Counter Footer */}
+            <div className="mt-5 flex items-baseline justify-between border-t border-surface-border/60 pt-4">
+              <span className="font-display text-xs font-bold uppercase tracking-wider text-psg-300">
                 {leader.statLabel}
               </span>
-              <span className={`text-3xl font-mono font-black ${leader.textColor}`}>
+              <span
+                className={`font-display text-4xl font-black ${leader.textColor} text-glow`}
+              >
                 {leader.statValue}
               </span>
             </div>
-          </Card>
+          </div>
         );
       })}
     </div>
   );
 }
-
