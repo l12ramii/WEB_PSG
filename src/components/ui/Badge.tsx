@@ -25,32 +25,31 @@ export function Badge({
   ...props
 }: BadgeProps) {
   const variantStyles = {
-    default: "bg-surface-active text-psg-200 border-surface-border",
-    portero: "bg-amber-500/15 text-amber-300 border-amber-500/40 shadow-sm",
-    defensa: "bg-blue-500/15 text-blue-300 border-blue-500/40 shadow-sm",
-    medio: "bg-emerald-500/15 text-emerald-300 border-emerald-500/40 shadow-sm",
-    delantero: "bg-rose-500/15 text-rose-300 border-rose-500/40 shadow-sm",
-    liga: "bg-accent-electric/15 text-accent-cyan border-accent-electric/40 shadow-sm",
-    copa: "bg-purple-500/15 text-purple-300 border-purple-500/40 shadow-sm",
-    amistoso: "bg-slate-500/15 text-slate-300 border-slate-500/40 shadow-sm",
-    live: "bg-accent-crimson/20 text-rose-300 border-accent-crimson/50 animate-pulse shadow-glow-crimson",
-    gold: "bg-amber-400/20 text-amber-300 border-amber-400/50 shadow-glow-gold",
-    emerald:
-      "bg-emerald-500/20 text-emerald-300 border-emerald-500/50 shadow-glow-emerald",
+    default: "bg-surface-elevated text-secondary border-white/10",
+    portero: "bg-warning/15 text-warning border-warning/40",
+    defensa: "bg-accent-blue/15 text-accent-blue border-accent-blue/40",
+    medio: "bg-success/15 text-success border-success/40",
+    delantero: "bg-danger/15 text-danger border-danger/40",
+    liga: "bg-accent-cyan/15 text-accent-cyan border-accent-cyan/40",
+    copa: "bg-purple-500/15 text-purple-300 border-purple-500/40",
+    amistoso: "bg-slate-500/15 text-slate-300 border-slate-500/40",
+    live: "bg-danger/20 text-danger border-danger/50 animate-pulse shadow-glow-crimson",
+    gold: "bg-warning/20 text-warning border-warning/50 shadow-glow-gold",
+    emerald: "bg-success/20 text-success border-success/50 shadow-glow-emerald",
   };
 
   const dotColors = {
-    default: "bg-psg-400",
-    portero: "bg-amber-400",
-    defensa: "bg-blue-400",
-    medio: "bg-emerald-400",
-    delantero: "bg-rose-400",
+    default: "bg-secondary",
+    portero: "bg-warning",
+    defensa: "bg-accent-blue",
+    medio: "bg-success",
+    delantero: "bg-danger",
     liga: "bg-accent-cyan",
     copa: "bg-purple-400",
     amistoso: "bg-slate-400",
-    live: "bg-rose-500 animate-ping",
-    gold: "bg-amber-300",
-    emerald: "bg-emerald-400",
+    live: "bg-danger animate-ping",
+    gold: "bg-warning",
+    emerald: "bg-success",
   };
 
   return (

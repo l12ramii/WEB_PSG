@@ -44,10 +44,10 @@ Este documento detalla las tareas paso a paso para completar el desarrollo de la
 - [x] **1. Capa de Fundamentos (Tokens y variables CSS)**
   - [x] Configuración de tokens/Tailwind/CSS variables según `DESIGN_SYSTEM.md` (colores neutros reales, acentos, espaciado múltiplo de 8px).
   - [x] Integración de jerarquía tipográfica (Oswald/Inter) en `tailwind.config.ts` y fuentes globales.
-- [ ] **2. Capa de Componentes Atómicos Base**
-  - [ ] Creación de Botones (`Button`) con estados interactivos (hover glow, focus visible, loading con skeleton/spinner).
-  - [ ] Creación de Inputs y Formularios (`Input`, `Select`, `Label`) con feedback de estados (error, empty, success).
-  - [ ] Creación de Tarjetas Base (`Card`) con bordes de alto contraste (`border-white/10`) y luz interna sin sombras exteriores.
+- [x] **2. Capa de Componentes Atómicos Base**
+  - [x] Creación de Botones (`Button`) con estados interactivos (hover glow, focus visible, loading con skeleton/spinner).
+  - [x] Creación de Inputs y Formularios (`Input`, `Select`, `Label`) con feedback de estados (error, empty, success).
+  - [x] Creación de Tarjetas Base (`Card`) con bordes de alto contraste (`border-white/10`) y luz interna sin sombras exteriores.
 - [ ] **3. Capa de Layouts y Vistas Completas**
   - [ ] Montaje de Layout público (Navbar transparente/Dark, Footer con info del club).
   - [ ] Ensamblado de la Página de Inicio (Home) con hero banner y widgets deportivos.

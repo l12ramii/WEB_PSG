@@ -7,61 +7,74 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   hoverEffect?: boolean;
 }
 
-export function Card({
-  className,
-  glow = false,
-  glowColor = "cyan",
-  hoverEffect = false,
-  children,
-  ...props
-}: CardProps) {
-  const glowClasses = {
-    cyan: "border-accent-cyan/40 shadow-glow",
-    gold: "border-amber-400/40 shadow-glow-gold",
-    emerald: "border-emerald-400/40 shadow-glow-emerald",
-    crimson: "border-rose-400/40 shadow-glow-crimson",
-    blue: "border-psg-400/40 shadow-glow-blue",
-  };
+export const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  (
+    {
+      className,
+      glow = false,
+      glowColor = "cyan",
+      hoverEffect = false,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const glowClasses = {
+      cyan: "border-accent-cyan/40 shadow-glow-subtle",
+      gold: "border-warning/40 shadow-glow-gold",
+      emerald: "border-success/40 shadow-glow-emerald",
+      crimson: "border-danger/40 shadow-glow-crimson",
+      blue: "border-accent-blue/40 shadow-glow-blue",
+    };
 
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          // Base card strictly according to DESIGN_SYSTEM.md:
+          // bg-surface (#0A1128), border-white/10, rounded-xl, inner-light, without heavy external shadow
+          "relative overflow-hidden rounded-xl border border-white/10 bg-surface inner-light transition-all duration-200 ease-out",
+          hoverEffect &&
+            "hover:-translate-y-1 hover:border-accent-cyan/50 hover:shadow-glow-subtle",
+          glow && glowClasses[glowColor],
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </div>
+    );
+  }
+);
+
+Card.displayName = "Card";
+
+export const CardHeader = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, children, ...props }, ref) => {
   return (
     <div
-      className={cn(
-        "relative overflow-hidden rounded-3xl border border-surface-border bg-surface/80 p-6 shadow-card backdrop-blur-md transition-all duration-300",
-        hoverEffect &&
-          "hover:-translate-y-1.5 hover:border-accent-cyan/40 hover:shadow-glow",
-        glow && glowClasses[glowColor],
-        className
-      )}
+      ref={ref}
+      className={cn("flex flex-col space-y-1.5 p-6 pb-2", className)}
       {...props}
     >
-      {/* Subtle athletic top corner glow line */}
-      <div className="pointer-events-none absolute left-0 right-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-accent-cyan/30 to-transparent opacity-60" />
       {children}
     </div>
   );
-}
+});
 
-export function CardHeader({
-  className,
-  children,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div className={cn("flex flex-col space-y-1.5 pb-4", className)} {...props}>
-      {children}
-    </div>
-  );
-}
+CardHeader.displayName = "CardHeader";
 
-export function CardTitle({
-  className,
-  children,
-  ...props
-}: React.HTMLAttributes<HTMLHeadingElement>) {
+export const CardTitle = React.forwardRef<
+  HTMLHeadingElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, children, ...props }, ref) => {
   return (
     <h3
+      ref={ref}
       className={cn(
-        "flex items-center gap-2 font-display text-xl font-bold tracking-wide text-white",
+        "flex items-center gap-2 font-display text-xl font-bold uppercase tracking-wide text-primary",
         className
       )}
       {...props}
@@ -69,16 +82,53 @@ export function CardTitle({
       {children}
     </h3>
   );
-}
+});
 
-export function CardContent({
-  className,
-  children,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) {
+CardTitle.displayName = "CardTitle";
+
+export const CardDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, children, ...props }, ref) => {
   return (
-    <div className={cn("pt-0", className)} {...props}>
+    <p
+      ref={ref}
+      className={cn("text-sm text-secondary font-sans", className)}
+      {...props}
+    >
+      {children}
+    </p>
+  );
+});
+
+CardDescription.displayName = "CardDescription";
+
+export const CardContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, children, ...props }, ref) => {
+  return (
+    <div ref={ref} className={cn("p-6 pt-2", className)} {...props}>
       {children}
     </div>
   );
-}
+});
+
+CardContent.displayName = "CardContent";
+
+export const CardFooter = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, children, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={cn("flex items-center p-6 pt-2 border-t border-white/5", className)}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+});
+
+CardFooter.displayName = "CardFooter";
