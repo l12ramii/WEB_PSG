@@ -18,8 +18,8 @@ const config: Config = {
     extend: {
       colors: {
         psg: {
-          950: "#040814",
-          900: "#070E20",
+          950: "#03060E",
+          900: "#060D1E",
           850: "#0A142F",
           800: "#0E1C40",
           700: "#152B5F",
@@ -33,36 +33,91 @@ const config: Config = {
         },
         accent: {
           cyan: "#00E5FF",
-          electric: "#0088FF",
+          electric: "#0077FF",
           gold: "#FFB800",
-          crimson: "#FF3366",
+          crimson: "#FF2A55",
           emerald: "#10B981",
         },
-        background: "#050914",
+        background: "#040711",
         surface: {
-          DEFAULT: "#0B152B",
-          hover: "#101E3D",
-          active: "#15274E",
-          border: "#1C315E",
-          muted: "#081022",
+          DEFAULT: "#081023",
+          hover: "#0D1936",
+          active: "#12224A",
+          border: "#182B57",
+          muted: "#050B19",
+          card: "#091228",
         },
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "sans-serif"],
-        display: ["var(--font-teko)", "var(--font-inter)", "sans-serif"],
-        mono: ["monospace"],
+        sans: [
+          "'Plus Jakarta Sans'",
+          "'Inter'",
+          "system-ui",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "'Segoe UI'",
+          "sans-serif",
+        ],
+        display: [
+          "'Rajdhani'",
+          "'Teko'",
+          "'Bebas Neue'",
+          "'Impact'",
+          "system-ui",
+          "sans-serif",
+        ],
+        mono: [
+          "ui-monospace",
+          "SFMono-Regular",
+          "Menlo",
+          "Monaco",
+          "Consolas",
+          "monospace",
+        ],
       },
       boxShadow: {
-        glow: "0 0 25px -5px rgba(0, 229, 255, 0.3)",
-        "glow-blue": "0 0 25px -5px rgba(61, 109, 216, 0.4)",
-        "glow-gold": "0 0 25px -5px rgba(255, 184, 0, 0.4)",
-        card: "0 4px 20px -2px rgba(0, 0, 0, 0.5)",
+        glow: "0 0 30px -5px rgba(0, 229, 255, 0.35)",
+        "glow-lg": "0 0 50px -10px rgba(0, 229, 255, 0.45)",
+        "glow-blue": "0 0 30px -5px rgba(43, 82, 172, 0.5)",
+        "glow-gold": "0 0 30px -5px rgba(255, 184, 0, 0.4)",
+        "glow-crimson": "0 0 30px -5px rgba(255, 42, 85, 0.4)",
+        "glow-emerald": "0 0 30px -5px rgba(16, 185, 129, 0.4)",
+        card: "0 10px 30px -5px rgba(0, 0, 0, 0.7)",
       },
       backgroundImage: {
-        "hero-pattern": "radial-gradient(ellipse at top, #102454 0%, #050914 70%)",
-        "card-gradient": "linear-gradient(135deg, rgba(16, 30, 61, 0.8) 0%, rgba(8, 16, 34, 0.9) 100%)",
-        "accent-gradient": "linear-gradient(135deg, #00E5FF 0%, #0088FF 100%)",
-        "gold-gradient": "linear-gradient(135deg, #FFD700 0%, #FF9900 100%)",
+        "hero-stadium":
+          "radial-gradient(circle at 50% 0%, rgba(31, 61, 130, 0.4) 0%, rgba(6, 13, 30, 0.8) 50%, #040711 100%)",
+        "stadium-spotlight":
+          "radial-gradient(ellipse at top, rgba(0, 229, 255, 0.15) 0%, rgba(10, 20, 47, 0.6) 45%, #040711 90%)",
+        "card-gradient":
+          "linear-gradient(135deg, rgba(14, 28, 64, 0.6) 0%, rgba(6, 13, 30, 0.85) 100%)",
+        "accent-gradient":
+          "linear-gradient(135deg, #00E5FF 0%, #0077FF 100%)",
+        "gold-gradient":
+          "linear-gradient(135deg, #FFE066 0%, #FFB800 50%, #FF8800 100%)",
+        "crimson-gradient":
+          "linear-gradient(135deg, #FF5577 0%, #FF2A55 100%)",
+        "emerald-gradient":
+          "linear-gradient(135deg, #34D399 0%, #059669 100%)",
+      },
+      animation: {
+        float: "float 4s ease-in-out infinite",
+        "pulse-glow": "pulse-glow 3s ease-in-out infinite",
+        shimmer: "shimmer 2.5s linear infinite",
+      },
+      keyframes: {
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-6px)" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { opacity: "0.6", transform: "scale(1)" },
+          "50%": { opacity: "1", transform: "scale(1.03)" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-200% 0" },
+          "100%": { backgroundPosition: "200% 0" },
+        },
       },
     },
   },
@@ -70,4 +125,3 @@ const config: Config = {
 };
 
 export default config;
-

@@ -4,12 +4,12 @@
 
 @layer base {
   :root {
-    --background: 5 9 20;
-    --foreground: 240 245 255;
+    --background: 4 7 17;
+    --foreground: 237 243 254;
   }
 
   body {
-    background-color: #050914;
+    background-color: #040711;
     color: #edf3fe;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     min-height: 100vh;
@@ -18,57 +18,126 @@
 
   /* Custom athletic scrollbars */
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #070e20;
+    background: #040711;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #1c315e;
-    border-radius: 4px;
+    background: #152b5f;
+    border-radius: 9999px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #2b52ac;
+    background: #00e5ff;
   }
 }
 
 @layer utilities {
   .text-glow {
-    text-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+    text-shadow:
+      0 0 20px rgba(0, 229, 255, 0.6),
+      0 0 40px rgba(0, 229, 255, 0.2);
   }
 
   .text-glow-gold {
-    text-shadow: 0 0 15px rgba(255, 184, 0, 0.5);
+    text-shadow:
+      0 0 20px rgba(255, 184, 0, 0.6),
+      0 0 40px rgba(255, 184, 0, 0.2);
   }
 
-  .bg-grid-pattern {
-    background-size: 40px 40px;
-    background-image: 
-      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  .text-glow-crimson {
+    text-shadow: 0 0 20px rgba(255, 42, 85, 0.6);
+  }
+
+  /* Hexagonal soccer goal net pattern */
+  .bg-soccer-mesh {
+    background-size: 32px 32px;
+    background-image:
+      radial-gradient(
+        circle at 50% 50%,
+        rgba(255, 255, 255, 0.05) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to right,
+        rgba(255, 255, 255, 0.015) 1px,
+        transparent 1px
+      ),
+      linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.015) 1px,
+        transparent 1px
+      );
+  }
+
+  /* Pitch tactical lines */
+  .bg-pitch-grid {
+    background-size: 80px 80px;
+    background-image:
+      linear-gradient(to right, rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+  }
+
+  .glass-panel {
+    background: rgba(8, 16, 35, 0.7);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(24, 43, 87, 0.8);
+  }
+
+  .glass-card {
+    background: linear-gradient(
+      135deg,
+      rgba(14, 28, 64, 0.5) 0%,
+      rgba(6, 13, 30, 0.7) 100%
+    );
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(28, 49, 94, 0.6);
+  }
+
+  .glass-card-hover {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .glass-card-hover:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 229, 255, 0.5);
+    box-shadow: 0 12px 35px -5px rgba(0, 229, 255, 0.2);
   }
 
   .phoenix-glow {
-    filter: drop-shadow(0 0 12px rgba(0, 229, 255, 0.6));
+    filter: drop-shadow(0 0 14px rgba(0, 229, 255, 0.8));
   }
 
-  .claw-mask {
+  .gold-glow {
+    filter: drop-shadow(0 0 14px rgba(255, 184, 0, 0.8));
+  }
+
+  /* Tiger claw slash visual mark */
+  .tiger-slash {
     position: relative;
   }
-  
-  .claw-mask::after {
-    content: '';
+
+  .tiger-slash::before {
+    content: "";
     position: absolute;
     top: 0;
     right: 0;
-    bottom: 0;
-    width: 30%;
-    background: linear-gradient(135deg, transparent 40%, rgba(0, 229, 255, 0.04) 40%, transparent 60%);
+    width: 60px;
+    height: 100%;
+    background: linear-gradient(
+      115deg,
+      transparent 40%,
+      rgba(0, 229, 255, 0.08) 45%,
+      rgba(0, 229, 255, 0.15) 50%,
+      rgba(0, 229, 255, 0.08) 55%,
+      transparent 60%
+    );
     pointer-events: none;
   }
 }
-
