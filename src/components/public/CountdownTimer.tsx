@@ -60,19 +60,16 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
   ];
 
   return (
-    <div className="flex items-center gap-2 sm:gap-4">
     <div className="flex items-center justify-center gap-1.5 sm:gap-3 max-w-full">
       {units.map((unit, index) => (
         <React.Fragment key={unit.label}>
           <div className="flex flex-col items-center">
             {/* LED Card Box */}
-            <div className="group relative flex h-16 w-14 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated inner-light sm:h-20 sm:w-20">
             <div className="group relative flex h-14 w-12 items-center justify-center overflow-hidden rounded-lg sm:rounded-xl border border-white/10 bg-surface-elevated inner-light sm:h-18 sm:w-16 md:h-20 md:w-20">
               {/* Top ambient highlight line */}
               <div className="absolute left-0 right-0 top-0 h-[1px] bg-accent-cyan/40" />
 
               {/* Number display */}
-              <span className="text-glow-subtle font-display text-2xl font-black text-primary transition-transform group-hover:scale-105 sm:text-4xl">
               <span className="text-glow-subtle font-display text-xl sm:text-3xl md:text-4xl font-black text-primary transition-transform group-hover:scale-105">
                 {String(unit.value).padStart(2, "0")}
               </span>
@@ -82,7 +79,6 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
             </div>
 
             {/* Label */}
-            <span className="mt-2 font-display text-[10px] font-bold uppercase tracking-widest text-secondary sm:text-xs">
             <span className="mt-1.5 font-display text-[9px] sm:text-xs font-bold uppercase tracking-widest text-secondary">
               {unit.label}
             </span>
@@ -90,7 +86,6 @@ export function CountdownTimer({ targetDate }: CountdownTimerProps) {
 
           {/* Separator Colons */}
           {index < units.length - 1 && (
-            <span className="mb-6 animate-pulse font-display text-2xl font-black text-accent-cyan opacity-70 sm:text-3xl">
             <span className="mb-4 sm:mb-6 animate-pulse font-display text-lg sm:text-2xl md:text-3xl font-black text-accent-cyan opacity-70">
               :
             </span>

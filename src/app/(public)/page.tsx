@@ -158,34 +158,23 @@ export default async function HomePage() {
 
               {nextMatch ? (
                 <div className="space-y-6">
-                  {/* Teams Row */}
-                  <div className="flex items-center justify-between gap-4 py-2">
                   {/* Teams Row (Symmetric & Centered on all devices) */}
                   <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 py-2 w-full">
                     {/* PSG Side */}
-                    <div className="flex items-center gap-3.5">
-                      <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated shadow-glow-subtle">
-                        <Flame className="h-8 w-8 text-accent-cyan" />
                     <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3.5 min-w-0 text-center sm:text-left">
                       <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated shadow-glow-subtle flex-shrink-0">
                         <Flame className="h-7 w-7 sm:h-8 sm:w-8 text-accent-cyan" />
                       </div>
-                      <div>
-                        <span className="block font-display text-2xl font-bold text-primary">
                       <div className="min-w-0 flex-1">
                         <span className="block truncate font-display text-lg sm:text-2xl font-bold text-primary">
                           PSG F7
                         </span>
-                        <span className="font-display text-xs font-bold uppercase tracking-wider text-accent-cyan">
                         <span className="font-display text-[10px] sm:text-xs font-bold uppercase tracking-wider text-accent-cyan">
                           {nextMatch.is_home ? "Local" : "Visitante"}
                         </span>
                       </div>
                     </div>
 
-                    <span className="rounded-lg border border-white/10 bg-surface-elevated px-3 py-1 font-display text-sm font-bold text-secondary">
-                      VS
-                    </span>
                     {/* VS Badge (Always Centered) */}
                     <div className="flex justify-center flex-shrink-0 px-1 sm:px-2 min-w-[50px] sm:min-w-[70px]">
                       <span className="rounded-lg border border-white/10 bg-surface-elevated px-2.5 py-1 sm:px-3 font-display text-xs sm:text-sm font-bold text-accent-cyan">
@@ -194,9 +183,6 @@ export default async function HomePage() {
                     </div>
 
                     {/* Rival Side */}
-                    <div className="flex items-center gap-3.5 text-right">
-                      <div>
-                        <span className="block max-w-[140px] truncate font-display text-2xl font-bold text-primary sm:max-w-none">
                     <div className="flex flex-col-reverse sm:flex-row items-center justify-end gap-2 sm:gap-3.5 min-w-0 text-center sm:text-right">
                       <div className="min-w-0 flex-1">
                         <span
@@ -205,12 +191,10 @@ export default async function HomePage() {
                         >
                           {nextMatch.rival?.name || "Rival"}
                         </span>
-                        <span className="font-display text-xs font-bold uppercase tracking-wider text-secondary">
                         <span className="font-display text-[10px] sm:text-xs font-bold uppercase tracking-wider text-secondary">
                           {!nextMatch.is_home ? "Local" : "Visitante"}
                         </span>
                       </div>
-                      <div className="flex h-14 w-14 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated p-2">
                       <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated p-2 flex-shrink-0">
                         {nextMatch.rival?.shield_url ? (
                           <img

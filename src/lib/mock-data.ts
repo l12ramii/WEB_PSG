@@ -52,7 +52,6 @@ export const initialPlayers: Player[] = [
     dorsal: 1,
     position: "portero",
     photo_url:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1518091043644-c1d4457512c6?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
@@ -65,7 +64,6 @@ export const initialPlayers: Player[] = [
     dorsal: 13,
     position: "portero",
     photo_url:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
@@ -78,7 +76,6 @@ export const initialPlayers: Player[] = [
     dorsal: 3,
     position: "defensa",
     photo_url:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
@@ -91,7 +88,6 @@ export const initialPlayers: Player[] = [
     dorsal: 4,
     position: "defensa",
     photo_url:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
@@ -104,7 +100,6 @@ export const initialPlayers: Player[] = [
     dorsal: 5,
     position: "defensa",
     photo_url:
-      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
@@ -117,7 +112,6 @@ export const initialPlayers: Player[] = [
     dorsal: 8,
     position: "medio",
     photo_url:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1511886929837-354d827aae26?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
@@ -130,7 +124,6 @@ export const initialPlayers: Player[] = [
     dorsal: 6,
     position: "medio",
     photo_url:
-      "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
@@ -143,7 +136,6 @@ export const initialPlayers: Player[] = [
     dorsal: 10,
     position: "medio",
     photo_url:
-      "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
@@ -156,7 +148,6 @@ export const initialPlayers: Player[] = [
     dorsal: 9,
     position: "delantero",
     photo_url:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
@@ -169,7 +160,6 @@ export const initialPlayers: Player[] = [
     dorsal: 7,
     position: "delantero",
     photo_url:
-      "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1518091043644-c1d4457512c6?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
@@ -182,7 +172,6 @@ export const initialPlayers: Player[] = [
     dorsal: 11,
     position: "delantero",
     photo_url:
-      "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     created_at: new Date().toISOString(),
@@ -256,7 +245,6 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     dorsal: 1,
     position: "portero",
     photo_url:
-      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1518091043644-c1d4457512c6?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 2,
@@ -274,7 +262,6 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     dorsal: 13,
     position: "portero",
     photo_url:
-      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 0,
@@ -292,7 +279,6 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     dorsal: 3,
     position: "defensa",
     photo_url:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 2,
@@ -310,7 +296,6 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     dorsal: 4,
     position: "defensa",
     photo_url:
-      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 1,
@@ -328,7 +313,6 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     dorsal: 5,
     position: "defensa",
     photo_url:
-      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 1,
@@ -346,7 +330,6 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     dorsal: 8,
     position: "medio",
     photo_url:
-      "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1511886929837-354d827aae26?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 2,
@@ -364,7 +347,6 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     dorsal: 6,
     position: "medio",
     photo_url:
-      "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 1,
@@ -382,7 +364,6 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     dorsal: 10,
     position: "medio",
     photo_url:
-      "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1574629810360-7efbbe195018?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 1,
@@ -400,7 +381,6 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     dorsal: 9,
     position: "delantero",
     photo_url:
-      "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1508098682722-e99c43a406b2?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 2,
@@ -418,7 +398,6 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     dorsal: 7,
     position: "delantero",
     photo_url:
-      "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=500&auto=format&fit=crop&q=80, https://images.unsplash.com/photo-1518091043644-c1d4457512c6?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 1,
@@ -436,7 +415,6 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     dorsal: 11,
     position: "delantero",
     photo_url:
-      "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&auto=format&fit=crop&q=80",
       "https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=500&auto=format&fit=crop&q=80",
     is_active: true,
     matches_played: 1,

@@ -65,6 +65,8 @@ export default function PlantillaPage() {
       <div className="flex flex-col items-center justify-between gap-4 rounded-xl border border-white/10 bg-surface p-4 inner-light backdrop-blur-md md:flex-row">
         {/* Segmented Position Tabs */}
         <div className="flex w-full items-center gap-1.5 overflow-x-auto rounded-lg border border-white/10 bg-surface-elevated/60 p-1.5 md:w-auto">
+        {/* Segmented Position Tabs (Mobile Responsive Wrap & Desktop Single Line) */}
+        <div className="flex w-full flex-wrap sm:flex-nowrap items-center gap-1.5 rounded-lg border border-white/10 bg-surface-elevated/60 p-1.5 md:w-auto max-w-full">
           {positions.map((pos) => {
             const count =
               pos.key === "todos"
@@ -79,6 +81,7 @@ export default function PlantillaPage() {
                 key={pos.key}
                 onClick={() => setActiveTab(pos.key)}
                 className={`flex items-center gap-2 whitespace-nowrap rounded-md px-3.5 py-2 font-display text-xs font-bold uppercase tracking-wider transition-all duration-200 focus-ring ${
+                className={`flex flex-1 sm:flex-initial items-center justify-center gap-2 whitespace-nowrap rounded-md px-3 py-2 font-display text-xs font-bold uppercase tracking-wider transition-all duration-200 focus-ring ${
                   isActive
                     ? "border border-accent-cyan/40 bg-surface-elevated text-primary shadow-glow-subtle"
                     : "text-secondary hover:bg-surface-elevated/60 hover:text-primary"

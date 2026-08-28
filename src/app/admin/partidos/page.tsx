@@ -23,13 +23,10 @@ export default async function AdminPartidosPage() {
       {/* Header */}
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="font-display text-3xl font-black uppercase tracking-tight text-white sm:text-5xl">
           <h1 className="font-display text-3xl font-black uppercase tracking-tight text-primary sm:text-5xl">
             Partidos y{" "}
-            <span className="text-glow text-accent-cyan">Actas Digitales</span>
             <span className="text-glow-subtle text-accent-cyan">Actas Digitales</span>
           </h1>
-          <p className="text-xs font-medium text-psg-300 sm:text-sm">
           <p className="text-xs font-medium text-secondary sm:text-sm">
             Gestiona los partidos programados, introduce marcadores y actualiza
             las estadísticas oficiales.
@@ -37,7 +34,6 @@ export default async function AdminPartidosPage() {
         </div>
 
         <Link href="/admin/partidos/nuevo">
-          <Button size="lg" className="shadow-glow">
           <Button size="lg" className="shadow-glow-subtle">
             <CalendarPlus className="h-4 w-4" /> Programar Nuevo Partido
           </Button>
@@ -45,19 +41,14 @@ export default async function AdminPartidosPage() {
       </div>
 
       {/* Matches List */}
-      <div className="space-y-4 rounded-3xl border border-surface-border bg-surface p-6 shadow-card sm:p-8">
-        <div className="divide-y divide-surface-border">
       <div className="space-y-4 rounded-xl border border-white/10 bg-surface p-4 sm:p-6 inner-light">
         <div className="divide-y divide-white/10">
           {matches.map((match) => (
             <div
               key={match.id}
-              className="flex select-none flex-col justify-between gap-4 py-5 md:flex-row md:items-center"
               className="flex select-none flex-col justify-between gap-4 py-5 md:flex-row md:items-center min-w-0"
             >
               {/* Match Details */}
-              <div className="flex items-start gap-4">
-                <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl border-2 border-surface-border bg-surface-muted p-2 shadow-sm">
               <div className="flex items-start gap-4 min-w-0 flex-1">
                 <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl border border-white/10 bg-surface-elevated p-2 shadow-inner">
                   {match.rival?.shield_url ? (
@@ -67,35 +58,26 @@ export default async function AdminPartidosPage() {
                       className="h-full w-full object-contain"
                     />
                   ) : (
-                    <Shield className="h-7 w-7 text-psg-400" />
                     <Shield className="h-7 w-7 text-muted" />
                   )}
                 </div>
 
-                <div className="space-y-1.5">
-                  <div className="flex items-center gap-2">
                 <div className="space-y-1.5 min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <Badge variant={match.competition} dot>
                       {getCompetitionLabel(match.competition)}
                     </Badge>
-                    <span className="font-display text-xs font-bold uppercase text-psg-300">
                     <span className="font-display text-xs font-bold uppercase text-secondary">
                       {match.is_home ? "Local (Campo PSG)" : "Visitante"}
                     </span>
                   </div>
 
-                  <h3 className="font-display text-xl font-black uppercase tracking-wide text-white sm:text-2xl">
                   <h3 className="truncate font-display text-xl font-bold uppercase tracking-wide text-primary sm:text-2xl">
                     PSG Fútbol 7{" "}
-                    <span className="font-normal text-psg-400">vs</span>{" "}
                     <span className="font-normal text-muted">vs</span>{" "}
                     {match.rival?.name || "Rival"}
                   </h3>
 
-                  <p className="flex items-center gap-1.5 text-xs font-medium capitalize text-psg-300">
-                    <Calendar className="h-3.5 w-3.5 text-accent-cyan" />
-                    {formatMatchDate(match.match_date)}
                   <p className="flex items-center gap-1.5 text-xs font-medium capitalize text-secondary truncate">
                     <Calendar className="h-3.5 w-3.5 flex-shrink-0 text-accent-cyan" />
                     <span className="truncate">{formatMatchDate(match.match_date)}</span>
@@ -104,16 +86,13 @@ export default async function AdminPartidosPage() {
               </div>
 
               {/* Status and Action */}
-              <div className="flex items-center gap-4 self-end md:self-center">
               <div className="flex items-center gap-4 self-end md:self-center flex-shrink-0">
                 {match.is_finished ? (
                   <div className="flex items-center gap-3">
                     <div className="text-right">
-                      <span className="block font-display text-[10px] font-bold uppercase tracking-wider text-emerald-400">
                       <span className="block font-display text-[10px] font-bold uppercase tracking-wider text-success">
                         Acta Cerrada
                       </span>
-                      <span className="font-display text-2xl font-black text-white">
                       <span className="font-display text-2xl font-black text-primary">
                         {match.psg_score} - {match.rival_score}
                       </span>
@@ -127,13 +106,11 @@ export default async function AdminPartidosPage() {
                   </div>
                 ) : (
                   <div className="flex items-center gap-3">
-                    <span className="rounded-xl border border-amber-500/25 bg-amber-500/10 px-3 py-1.5 font-display text-xs font-bold uppercase tracking-wider text-amber-400">
                     <span className="rounded-lg border border-warning/25 bg-warning/10 px-3 py-1.5 font-display text-xs font-bold uppercase tracking-wider text-warning">
                       Pendiente de Acta
                     </span>
 
                     <Link href={`/admin/partidos/${match.id}/acta`}>
-                      <Button size="md" className="shadow-glow">
                       <Button size="md" className="shadow-glow-subtle">
                         <FileSpreadsheet className="h-4 w-4" /> Rellenar Acta
                       </Button>

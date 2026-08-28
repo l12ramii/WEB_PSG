@@ -7,11 +7,9 @@ import {
   Award,
   Sparkles,
   CheckCircle2,
-  User,
   ChevronRight,
 } from "lucide-react";
 import { PlayerStatsSummary } from "@/lib/supabase/types";
-import { getPositionName } from "@/lib/utils";
 import { getPositionName, parsePhotoUrls } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
@@ -31,7 +29,6 @@ export function PlayerCard({ player }: PlayerCardProps) {
         onClick={() => setShowModal(true)}
         className="group relative flex cursor-pointer select-none flex-col justify-between overflow-hidden rounded-xl border border-white/10 bg-surface p-4 inner-light transition-all duration-200 ease-out hover:-translate-y-1 hover:border-accent-cyan/50 hover:shadow-glow-subtle"
       >
-        {/* Tiger Claw Slash SVG Watermark (Section 3.3 of DESIGN_SYSTEM.md) */}
         {/* Tiger Claw Slash SVG Watermark */}
         <svg
           viewBox="0 0 100 100"
@@ -53,35 +50,34 @@ export function PlayerCard({ player }: PlayerCardProps) {
           </span>
         </div>
 
-        {/* Player Official Photo in aspect-[3/4] container (Section 3.3 DESIGN_SYSTEM.md) */}
-        <div className="relative my-4 overflow-hidden rounded-xl border border-white/10 bg-surface-elevated/40">
-          {/* Radial gradient backdrop */}
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-surface-elevated via-surface-elevated/40 to-transparent" />
-
-          <div className="relative flex aspect-[3/4] w-full items-center justify-center overflow-hidden">
-            {player.photo_url ? (
-              <img
-                src={player.photo_url}
-                alt={player.nickname}
-                className="h-full w-full object-cover object-top grayscale transition-all duration-300 group-hover:scale-105 group-hover:grayscale-0"
-              />
-            ) : (
-              <div className="flex h-full w-full flex-col items-center justify-center text-muted">
-                <User className="h-20 w-20 text-muted transition-transform duration-300 group-hover:scale-105" />
-                <span className="mt-2 font-display text-xs font-bold uppercase tracking-wider text-secondary">
-                  PSG F7
-                </span>
-              </div>
-            )}
-          </div>
         {/* Player Official Photo Carousel (Always Full Color, Never Grayscale) */}
         <div className="relative my-3 w-full">
           <PlayerPhotoCarousel photos={photos} alt={player.nickname} />
+        {/* Player Official Photo (Clean, 100% full color, subtle hover zoom) */}
+        <div className="relative my-3 aspect-[3/4] w-full overflow-hidden rounded-xl border border-white/10 bg-surface-elevated/40">
+          {photos.length > 0 ? (
+            <img
+              src={photos[0]}
+              alt={player.nickname}
+              className="h-full w-full object-cover object-top transition-transform duration-300 ease-out group-hover:scale-105"
+            />
+          ) : (
+            <div className="flex h-full w-full flex-col items-center justify-center text-muted">
+              <Shield className="h-12 w-12 text-muted transition-transform duration-300 group-hover:scale-105" />
+              <span className="mt-2 font-display text-xs font-bold uppercase tracking-wider text-secondary">
+                PSG F7
+              </span>
+            </div>
+          )}
+          {photos.length > 1 && (
+            <div className="absolute right-2 top-2 z-10 flex items-center gap-1 rounded-full border border-white/10 bg-surface-elevated/90 px-2 py-0.5 font-display text-[10px] font-bold text-accent-cyan shadow-sm backdrop-blur-md">
+              <Sparkles className="h-3 w-3" />
+              <span>{photos.length} fotos</span>
+            </div>
+          )}
         </div>
 
         {/* Player Name and Info */}
-        <div className="relative z-10 mb-3 text-center">
-          <h4 className="font-display text-xl font-bold uppercase tracking-wide text-primary transition-colors group-hover:text-accent-cyan">
         <div className="relative z-10 mb-3 text-center min-w-0">
           <h4 className="truncate font-display text-xl font-bold uppercase tracking-wide text-primary transition-colors group-hover:text-accent-cyan">
             {player.nickname}
@@ -150,7 +146,6 @@ export function PlayerCard({ player }: PlayerCardProps) {
         </div>
       </div>
 
-      {/* Expanded Player Profile Modal */}
       {/* Expanded Player Profile Modal with Full Photo Gallery */}
       <Modal
         isOpen={showModal}
@@ -158,19 +153,8 @@ export function PlayerCard({ player }: PlayerCardProps) {
         title={`Ficha Oficial #${player.dorsal} · ${player.nickname}`}
       >
         <div className="space-y-6">
-          {/* Header Showcase */}
           {/* Header Showcase with Carousel */}
           <div className="flex flex-col items-center gap-6 rounded-xl border border-white/10 bg-surface-elevated/40 p-4 sm:flex-row">
-            <div className="relative flex aspect-[3/4] w-28 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated">
-              {player.photo_url ? (
-                <img
-                  src={player.photo_url}
-                  alt={player.nickname}
-                  className="h-full w-full object-cover object-top"
-                />
-              ) : (
-                <User className="h-14 w-14 text-muted" />
-              )}
             <div className="w-36 sm:w-44 flex-shrink-0">
               <PlayerPhotoCarousel
                 photos={photos}
@@ -180,7 +164,6 @@ export function PlayerCard({ player }: PlayerCardProps) {
               />
             </div>
 
-            <div className="flex-1 space-y-2 text-center sm:text-left">
             <div className="flex-1 space-y-2 text-center sm:text-left min-w-0">
               <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
                 <Badge variant={player.position} dot>
@@ -191,7 +174,6 @@ export function PlayerCard({ player }: PlayerCardProps) {
                 </span>
               </div>
 
-              <h3 className="font-display text-2xl font-bold uppercase tracking-wide text-primary sm:text-3xl">
               <h3 className="truncate font-display text-2xl font-bold uppercase tracking-wide text-primary sm:text-3xl">
                 {player.nickname}
               </h3>

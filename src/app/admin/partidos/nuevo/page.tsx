@@ -4,6 +4,15 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { CalendarPlus, ArrowLeft, Shield, Plus, Calendar } from "lucide-react";
+import {
+  CalendarPlus,
+  ArrowLeft,
+  Shield,
+  Plus,
+  Calendar,
+  ChevronDown,
+  Check,
+} from "lucide-react";
 import { getRivals, addMatch } from "@/lib/data";
 import { Rival } from "@/lib/supabase/types";
 import { Button } from "@/components/ui/Button";
@@ -13,6 +22,7 @@ export default function NuevoPartidoPage() {
   const router = useRouter();
   const [rivals, setRivals] = useState<Rival[]>(initialRivals);
   const [rivalId, setRivalId] = useState<string>(initialRivals[0]?.id || "");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isHome, setIsHome] = useState<boolean>(true);
   const [matchDate, setMatchDate] = useState<string>("");
   const [competition, setCompetition] = useState<"liga" | "copa" | "amistoso">(
@@ -31,6 +41,8 @@ export default function NuevoPartidoPage() {
       if (data.length > 0) setRivalId(data[0].id);
     });
   }, []);
+
+  const selectedRival = rivals.find((r) => r.id === rivalId) || rivals[0];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,26 +74,17 @@ export default function NuevoPartidoPage() {
       {/* Back Button */}
       <Link
         href="/admin/partidos"
-        className="inline-flex items-center gap-2 font-display text-xs font-bold uppercase tracking-wider text-psg-300 transition-colors hover:text-white"
         className="inline-flex items-center gap-2 font-display text-xs font-bold uppercase tracking-wider text-secondary transition-colors hover:text-primary focus-ring rounded-lg px-2 py-1"
       >
         <ArrowLeft className="h-4 w-4" /> Volver a Partidos
       </Link>
 
-      <div className="relative space-y-6 overflow-hidden rounded-3xl border border-surface-border bg-card-gradient p-6 shadow-2xl sm:p-10">
-        {/* Top ambient illumination */}
-        <div className="absolute left-0 right-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-accent-cyan to-transparent" />
-
-        <div className="space-y-1 border-b border-surface-border pb-4">
-          <h1 className="font-display text-3xl font-black uppercase tracking-wide text-white sm:text-4xl">
       <div className="relative space-y-6 overflow-hidden rounded-xl border border-white/10 bg-surface p-6 shadow-xl inner-light sm:p-10">
         <div className="space-y-1 border-b border-white/10 pb-4">
           <h1 className="font-display text-3xl font-black uppercase tracking-wide text-primary sm:text-4xl">
             Programar{" "}
-            <span className="text-glow text-accent-cyan">Nuevo Encuentro</span>
             <span className="text-glow-subtle text-accent-cyan">Nuevo Encuentro</span>
           </h1>
-          <p className="text-xs font-medium text-psg-300">
           <p className="text-xs font-medium text-secondary">
             Fija la fecha, hora, condición y rival para el próximo partido del
             PSG F7.
@@ -91,8 +94,9 @@ export default function NuevoPartidoPage() {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Rival Selector */}
           <div className="space-y-2">
+          {/* Rich Visual Rival Selector with Crest / Shield */}
+          <div className="space-y-2 relative">
             <div className="flex items-center justify-between">
-              <label className="font-display text-xs font-bold uppercase tracking-wider text-psg-200">
               <label className="font-display text-xs font-bold uppercase tracking-wider text-secondary">
                 Equipo Rival *
               </label>
@@ -107,9 +111,13 @@ export default function NuevoPartidoPage() {
             <select
               value={rivalId}
               onChange={(e) => setRivalId(e.target.value)}
-              className="w-full rounded-2xl border border-surface-border bg-surface-muted px-4 py-3 text-sm font-medium text-white focus:border-accent-cyan focus:outline-none"
               className="w-full rounded-xl border border-white/10 bg-surface-elevated px-4 py-3 text-sm font-medium text-primary focus-ring focus:border-accent-cyan focus:outline-none"
               required
+            {/* Custom Dropdown Trigger */}
+            <button
+              type="button"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="w-full flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-surface-elevated px-4 py-3 text-left transition-all hover:border-accent-cyan/50 focus-ring"
             >
               {rivals.map((rival) => (
                 <option key={rival.id} value={rival.id}>
@@ -117,11 +125,80 @@ export default function NuevoPartidoPage() {
                 </option>
               ))}
             </select>
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="h-8 w-8 flex-shrink-0 rounded-lg border border-white/10 bg-background/50 p-1 flex items-center justify-center overflow-hidden">
+                  {selectedRival?.shield_url ? (
+                    <img
+                      src={selectedRival.shield_url}
+                      alt={selectedRival.name}
+                      className="h-full w-full object-contain"
+                    />
+                  ) : (
+                    <Shield className="h-4 w-4 text-muted" />
+                  )}
+                </div>
+                <span className="truncate font-display text-sm font-bold uppercase tracking-wide text-primary">
+                  {selectedRival?.name || "Seleccionar equipo rival..."}
+                </span>
+              </div>
+              <ChevronDown
+                className={`h-4 w-4 text-secondary transition-transform duration-200 ${
+                  isDropdownOpen ? "rotate-180 text-accent-cyan" : ""
+                }`}
+              />
+            </button>
+
+            {/* Dropdown Options List */}
+            {isDropdownOpen && (
+              <>
+                <div
+                  className="fixed inset-0 z-20"
+                  onClick={() => setIsDropdownOpen(false)}
+                />
+                <div className="absolute left-0 right-0 top-full mt-2 z-30 max-h-60 overflow-y-auto rounded-xl border border-white/10 bg-surface-elevated p-1.5 shadow-2xl backdrop-blur-xl">
+                  {rivals.map((rival) => {
+                    const isSelected = rival.id === rivalId;
+                    return (
+                      <button
+                        key={rival.id}
+                        type="button"
+                        onClick={() => {
+                          setRivalId(rival.id);
+                          setIsDropdownOpen(false);
+                        }}
+                        className={`w-full flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left transition-colors ${
+                          isSelected
+                            ? "bg-accent-cyan/15 text-accent-cyan border border-accent-cyan/30"
+                            : "text-primary hover:bg-white/5"
+                        }`}
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="h-7 w-7 flex-shrink-0 rounded-md border border-white/10 bg-background/40 p-0.5 flex items-center justify-center overflow-hidden">
+                            {rival.shield_url ? (
+                              <img
+                                src={rival.shield_url}
+                                alt={rival.name}
+                                className="h-full w-full object-contain"
+                              />
+                            ) : (
+                              <Shield className="h-3.5 w-3.5 text-muted" />
+                            )}
+                          </div>
+                          <span className="truncate font-display text-xs font-bold uppercase">
+                            {rival.name}
+                          </span>
+                        </div>
+                        {isSelected && <Check className="h-4 w-4 flex-shrink-0 text-accent-cyan" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </div>
 
           {/* Condition: Home / Away */}
           <div className="space-y-2">
-            <label className="block font-display text-xs font-bold uppercase tracking-wider text-psg-200">
             <label className="block font-display text-xs font-bold uppercase tracking-wider text-secondary">
               Condición de Juego
             </label>
@@ -129,11 +206,8 @@ export default function NuevoPartidoPage() {
               <button
                 type="button"
                 onClick={() => setIsHome(true)}
-                className={`rounded-2xl border px-4 py-3.5 font-display text-sm font-bold uppercase tracking-wider transition-all ${
                 className={`rounded-xl border px-4 py-3.5 font-display text-sm font-bold uppercase tracking-wider transition-all focus-ring ${
                   isHome
-                    ? "border-accent-cyan bg-accent-electric text-white shadow-glow"
-                    : "border-surface-border bg-surface-muted text-psg-300 hover:text-white"
                     ? "border-accent-cyan/40 bg-surface-elevated text-primary shadow-glow-subtle"
                     : "border-white/10 bg-surface-elevated/40 text-secondary hover:text-primary"
                 }`}
@@ -143,11 +217,8 @@ export default function NuevoPartidoPage() {
               <button
                 type="button"
                 onClick={() => setIsHome(false)}
-                className={`rounded-2xl border px-4 py-3.5 font-display text-sm font-bold uppercase tracking-wider transition-all ${
                 className={`rounded-xl border px-4 py-3.5 font-display text-sm font-bold uppercase tracking-wider transition-all focus-ring ${
                   !isHome
-                    ? "border-accent-cyan bg-accent-electric text-white shadow-glow"
-                    : "border-surface-border bg-surface-muted text-psg-300 hover:text-white"
                     ? "border-accent-cyan/40 bg-surface-elevated text-primary shadow-glow-subtle"
                     : "border-white/10 bg-surface-elevated/40 text-secondary hover:text-primary"
                 }`}
@@ -159,7 +230,6 @@ export default function NuevoPartidoPage() {
 
           {/* Date & Time */}
           <div className="space-y-2">
-            <label className="block font-display text-xs font-bold uppercase tracking-wider text-psg-200">
             <label className="block font-display text-xs font-bold uppercase tracking-wider text-secondary">
               Fecha y Hora del Encuentro
             </label>
@@ -167,7 +237,6 @@ export default function NuevoPartidoPage() {
               type="datetime-local"
               value={matchDate}
               onChange={(e) => setMatchDate(e.target.value)}
-              className="w-full rounded-2xl border border-surface-border bg-surface-muted px-4 py-3 text-sm font-medium text-white focus:border-accent-cyan focus:outline-none"
               className="w-full rounded-xl border border-white/10 bg-surface-elevated px-4 py-3 text-sm font-medium text-primary focus-ring focus:border-accent-cyan focus:outline-none"
               required
             />
@@ -175,14 +244,12 @@ export default function NuevoPartidoPage() {
 
           {/* Competición */}
           <div className="space-y-2">
-            <label className="block font-display text-xs font-bold uppercase tracking-wider text-psg-200">
             <label className="block font-display text-xs font-bold uppercase tracking-wider text-secondary">
               Competición
             </label>
             <select
               value={competition}
               onChange={(e) => setCompetition(e.target.value as any)}
-              className="w-full rounded-2xl border border-surface-border bg-surface-muted px-4 py-3 text-sm font-medium text-white focus:border-accent-cyan focus:outline-none"
               className="w-full rounded-xl border border-white/10 bg-surface-elevated px-4 py-3 text-sm font-medium text-primary focus-ring focus:border-accent-cyan focus:outline-none"
             >
               <option value="liga">Liga Oficial F7</option>
@@ -192,10 +259,18 @@ export default function NuevoPartidoPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex justify-end gap-3 border-t border-surface-border pt-4">
           <div className="flex justify-end gap-3 border-t border-white/10 pt-4">
             <Link href="/admin/partidos">
               <Button type="button" variant="secondary">
+          {/* Action Buttons: Generous Cancelar and Submit Button Sizing */}
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 border-t border-white/10 pt-4">
+            <Link href="/admin/partidos" className="w-full sm:w-auto">
+              <Button
+                type="button"
+                variant="secondary"
+                size="lg"
+                className="w-full sm:w-auto px-6 py-3 min-h-[44px]"
+              >
                 Cancelar
               </Button>
             </Link>
@@ -203,8 +278,8 @@ export default function NuevoPartidoPage() {
               type="submit"
               isLoading={isLoading}
               size="lg"
-              className="shadow-glow"
               className="shadow-glow-subtle"
+              className="w-full sm:w-auto px-6 py-3 min-h-[44px] shadow-glow-subtle"
             >
               <CalendarPlus className="h-4 w-4" /> Guardar Partido
             </Button>
