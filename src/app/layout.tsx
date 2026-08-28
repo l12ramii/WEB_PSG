@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -15,13 +15,16 @@ export const metadata: Metadata = {
     "Liga",
     "Estadísticas",
   ],
-  themeColor: "#040711",
   openGraph: {
     title: "PSG Fútbol 7 | Web Oficial",
     description:
       "Ave Fénix y Garra. Consulta la plantilla, resultados y actas oficiales.",
     type: "website",
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#050814",
 };
 
 export default function RootLayout({
@@ -31,7 +34,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className="dark">
-      <body className="text-foreground flex min-h-screen flex-col bg-background font-sans antialiased selection:bg-accent-cyan/30 selection:text-white">
+      <body className="text-primary flex min-h-screen flex-col bg-background font-sans antialiased selection:bg-accent-cyan/30 selection:text-white">
         {children}
       </body>
     </html>

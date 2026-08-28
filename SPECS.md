@@ -260,5 +260,5 @@ src/
 | :--- | :--- | :--- |
 | **Fase 1** | **Setup e Infraestructura** | Configuración de Next.js, Tailwind, Supabase (tablas, RLS, Storage) y Vercel. |
 | **Fase 2** | **Panel del CM & Backoffice** | Autenticación del CM, CRUD de rivales con escudos, CRUD de jugadores y formulario de actas de partido. |
-| **Fase 3** | **Portal Público & UI/UX** | Diseño Dark Theme con identidad Fénix/Zarpazo, vista de plantilla, estadísticas dinámicas y calendario/resultados. |
+| **Fase 3** | **UI/UX y Maquetación por Capas** | 1. Configuración tokens/Tailwind según DESIGN_SYSTEM. 2. Componentes atómicos base (Buttons, Inputs, Cards). 3. Montaje de layouts y vistas (Portal Público completo). |
 | **Fase 4** | **Testing, Responsive & Despliegue** | Pruebas de usabilidad en móvil para el CM, optimización de imágenes y despliegue final en producción en Vercel. |

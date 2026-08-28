@@ -40,10 +40,18 @@ Este documento detalla las tareas paso a paso para completar el desarrollo de la
     - [x] Asignación de goles, asistencias y tarjetas por jugador.
     - [x] Lógica para guardar porterías a cero en porteros.
 
-## Fase 3: Portal Público (UI/UX)
-- [x] **Diseño Base**
-  - [x] Crear el Layout público (Navbar transparente/Dark, Footer con info del club).
-  - [x] Implementar la tipografía y estilos del Dark Theme Deportivo.
+## Fase 3: Portal Público (UI/UX y Maquetación por Capas)
+- [x] **1. Capa de Fundamentos (Tokens y variables CSS)**
+  - [x] Configuración de tokens/Tailwind/CSS variables según `DESIGN_SYSTEM.md` (colores neutros reales, acentos, espaciado múltiplo de 8px).
+  - [x] Integración de jerarquía tipográfica (Oswald/Inter) en `tailwind.config.ts` y fuentes globales.
+- [ ] **2. Capa de Componentes Atómicos Base**
+  - [ ] Creación de Botones (`Button`) con estados interactivos (hover glow, focus visible, loading con skeleton/spinner).
+  - [ ] Creación de Inputs y Formularios (`Input`, `Select`, `Label`) con feedback de estados (error, empty, success).
+  - [ ] Creación de Tarjetas Base (`Card`) con bordes de alto contraste (`border-white/10`) y luz interna sin sombras exteriores.
+- [ ] **3. Capa de Layouts y Vistas Completas**
+  - [ ] Montaje de Layout público (Navbar transparente/Dark, Footer con info del club).
+  - [ ] Ensamblado de la Página de Inicio (Home) con hero banner y widgets deportivos.
+  - [ ] Ensamblado de la Página de Plantilla y Calendario (MatchCards y PlayerCards).
 - [x] **Página de Inicio (Home)**
   - [x] Hero Banner con el escudo, nombre y lema del club.
   - [x] Widget dinámico: Próximo partido (cuenta atrás).
