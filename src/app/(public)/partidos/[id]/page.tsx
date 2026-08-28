@@ -89,20 +89,32 @@ export default async function MatchDetailPage({ params }: MatchDetailPageProps) 
 
         {/* Head-to-Head Arena */}
         <div className="grid grid-cols-7 items-center gap-4 py-6">
+        {/* Head-to-Head Arena (Symmetric & Centered on all devices) */}
+        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 py-6 w-full">
           {/* PSG Side */}
           <div className="col-span-3 flex flex-col items-center space-y-3">
             <div className="flex h-20 w-20 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated shadow-glow-subtle sm:h-24 sm:w-24">
               <Flame className="h-12 w-12 text-accent-cyan" />
+          <div className="flex flex-col items-center justify-center text-center min-w-0 px-1">
+            <div className="mb-2 flex h-16 w-16 sm:h-24 sm:w-24 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated shadow-glow-subtle">
+              <Flame className="h-9 w-9 sm:h-12 sm:w-12 text-accent-cyan" />
             </div>
             <span className="font-display text-2xl font-black uppercase text-primary sm:text-3xl">
+            <span className="w-full truncate font-display text-lg sm:text-3xl font-black uppercase text-primary">
               PSG F7
+            </span>
+            <span className="text-[10px] font-bold uppercase text-accent-cyan">
+              {match.is_home ? "Local" : "Visitante"}
             </span>
           </div>
 
           {/* Scoreline */}
           <div className="col-span-1 flex flex-col items-center justify-center">
+          {/* Center Scoreline / VS */}
+          <div className="flex flex-shrink-0 flex-col items-center justify-center text-center px-1 sm:px-2 min-w-[70px] sm:min-w-[100px]">
             {match.is_finished ? (
               <div className="flex items-center gap-2 font-display text-4xl font-black text-primary sm:text-6xl">
+              <div className="flex items-center gap-1.5 font-display text-3xl font-black text-primary sm:text-6xl">
                 <span className={match.is_home ? "text-accent-cyan text-glow-subtle" : "text-primary"}>
                   {match.psg_score}
                 </span>
@@ -113,6 +125,7 @@ export default async function MatchDetailPage({ params }: MatchDetailPageProps) 
               </div>
             ) : (
               <span className="rounded-lg border border-white/10 bg-surface-elevated px-4 py-2 font-display text-2xl font-black text-accent-cyan">
+              <span className="rounded-lg border border-white/10 bg-surface-elevated px-3 py-1 sm:px-4 sm:py-2 font-display text-xl sm:text-2xl font-black text-accent-cyan">
                 VS
               </span>
             )}
@@ -121,6 +134,8 @@ export default async function MatchDetailPage({ params }: MatchDetailPageProps) 
           {/* Rival Side */}
           <div className="col-span-3 flex flex-col items-center space-y-3">
             <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated p-3 shadow-inner sm:h-24 sm:w-24">
+          <div className="flex flex-col items-center justify-center text-center min-w-0 px-1">
+            <div className="mb-2 flex h-16 w-16 sm:h-24 sm:w-24 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated p-2 sm:p-3 shadow-inner">
               {match.rival?.shield_url ? (
                 <img
                   src={match.rival.shield_url}
@@ -129,10 +144,18 @@ export default async function MatchDetailPage({ params }: MatchDetailPageProps) 
                 />
               ) : (
                 <Shield className="h-10 w-10 text-muted" />
+                <Shield className="h-8 w-8 sm:h-10 sm:w-10 text-muted" />
               )}
             </div>
             <span className="max-w-full truncate font-display text-2xl font-black uppercase text-primary sm:text-3xl">
+            <span
+              title={match.rival?.name || "Rival"}
+              className="w-full truncate font-display text-lg sm:text-3xl font-black uppercase text-primary"
+            >
               {match.rival?.name || "Rival"}
+            </span>
+            <span className="text-[10px] font-bold uppercase text-secondary">
+              {!match.is_home ? "Local" : "Visitante"}
             </span>
           </div>
         </div>

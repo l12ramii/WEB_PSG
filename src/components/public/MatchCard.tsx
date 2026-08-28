@@ -132,9 +132,13 @@ export function MatchCard({ match, showActaButton = true }: MatchCardProps) {
 
         {/* Head-to-Head Arena Showcase */}
         <div className="my-2 grid grid-cols-7 items-center gap-3">
+        {/* Head-to-Head Arena Showcase (Symmetric & Centered on all devices) */}
+        <div className="my-2 grid grid-cols-[1fr_auto_1fr] items-center gap-2 py-2 sm:gap-4">
           {/* Team 1 */}
           <div className="col-span-3 flex flex-col items-center space-y-2 text-center">
             <div className="relative flex h-14 w-14 items-center justify-center rounded-xl border border-white/10 bg-surface-elevated p-2 shadow-inner transition-transform duration-200 group-hover:scale-105 sm:h-16 sm:w-16">
+          <div className="flex flex-col items-center justify-center text-center min-w-0 px-1">
+            <div className="relative mb-2 flex h-14 w-14 items-center justify-center rounded-xl border border-white/10 bg-surface-elevated p-2 shadow-inner transition-transform duration-200 group-hover:scale-105 sm:h-16 sm:w-16">
               {match.is_home ? (
                 <Flame className="h-8 w-8 text-accent-cyan" />
               ) : match.rival?.shield_url ? (
@@ -148,14 +152,21 @@ export function MatchCard({ match, showActaButton = true }: MatchCardProps) {
               )}
             </div>
             <span className="max-w-full truncate font-display text-base font-bold uppercase tracking-wide text-primary sm:text-lg">
+            <span
+              title={match.is_home ? "PSG F7" : match.rival?.name || "Rival"}
+              className="w-full truncate font-display text-sm font-bold uppercase tracking-wide text-primary sm:text-base md:text-lg"
+            >
               {match.is_home ? "PSG F7" : match.rival?.name || "Rival"}
             </span>
           </div>
 
           {/* Center: Score or VS Badge */}
           <div className="col-span-1 flex flex-col items-center justify-center text-center">
+          {/* Center: Score or VS Badge (Always Strictly Centered) */}
+          <div className="flex flex-shrink-0 flex-col items-center justify-center text-center px-1 sm:px-2 min-w-[68px] sm:min-w-[90px]">
             {match.is_finished ? (
               <div className="flex items-center gap-1 font-display text-3xl font-black text-primary sm:text-4xl">
+              <div className="flex items-center gap-1 font-display text-2xl font-black text-primary sm:text-4xl">
                 <span
                   className={
                     match.is_home
@@ -186,6 +197,8 @@ export function MatchCard({ match, showActaButton = true }: MatchCardProps) {
           {/* Team 2 */}
           <div className="col-span-3 flex flex-col items-center space-y-2 text-center">
             <div className="relative flex h-14 w-14 items-center justify-center rounded-xl border border-white/10 bg-surface-elevated p-2 shadow-inner transition-transform duration-200 group-hover:scale-105 sm:h-16 sm:w-16">
+          <div className="flex flex-col items-center justify-center text-center min-w-0 px-1">
+            <div className="relative mb-2 flex h-14 w-14 items-center justify-center rounded-xl border border-white/10 bg-surface-elevated p-2 shadow-inner transition-transform duration-200 group-hover:scale-105 sm:h-16 sm:w-16">
               {!match.is_home ? (
                 <Flame className="h-8 w-8 text-accent-cyan" />
               ) : match.rival?.shield_url ? (
@@ -199,6 +212,10 @@ export function MatchCard({ match, showActaButton = true }: MatchCardProps) {
               )}
             </div>
             <span className="max-w-full truncate font-display text-base font-bold uppercase tracking-wide text-primary sm:text-lg">
+            <span
+              title={!match.is_home ? "PSG F7" : match.rival?.name || "Rival"}
+              className="w-full truncate font-display text-sm font-bold uppercase tracking-wide text-primary sm:text-base md:text-lg"
+            >
               {!match.is_home ? "PSG F7" : match.rival?.name || "Rival"}
             </span>
           </div>
@@ -209,11 +226,15 @@ export function MatchCard({ match, showActaButton = true }: MatchCardProps) {
           <div className="flex items-center gap-1.5">
             <Calendar className="h-3.5 w-3.5 text-accent-cyan" />
             <span className="capitalize">
+          <div className="flex items-center gap-1.5 min-w-0">
+            <Calendar className="h-3.5 w-3.5 flex-shrink-0 text-accent-cyan" />
+            <span className="truncate capitalize">
               {formatMatchDate(match.match_date)}
             </span>
           </div>
 
           <div className="flex items-center gap-1 font-display text-xs font-bold uppercase tracking-wider text-accent-cyan transition-colors group-hover:text-primary">
+          <div className="flex flex-shrink-0 items-center gap-1 font-display text-xs font-bold uppercase tracking-wider text-accent-cyan transition-colors group-hover:text-primary">
             <span>{match.is_finished ? "Ver Acta" : "Detalles"}</span>
             <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
           </div>
@@ -235,19 +256,28 @@ export function MatchCard({ match, showActaButton = true }: MatchCardProps) {
         <div className="space-y-6">
           {/* Match Scoreline Card */}
           <div className="space-y-4 rounded-xl border border-white/10 bg-surface-elevated/40 p-6 text-center">
+          {/* Match Scoreline Card - Symmetrical 3-Column Layout */}
+          <div className="space-y-4 rounded-xl border border-white/10 bg-surface-elevated/40 p-4 sm:p-6 text-center">
             <div className="flex items-center justify-between border-b border-white/10 pb-2 font-display text-xs font-bold uppercase tracking-wider text-secondary">
               <Badge variant={match.competition} dot>
                 {getCompetitionLabel(match.competition)}
               </Badge>
               <span>{formatMatchDate(match.match_date)}</span>
+              <span className="truncate ml-2">{formatMatchDate(match.match_date)}</span>
             </div>
 
             <div className="flex items-center justify-around py-3">
               <div className="flex flex-col items-center space-y-1">
                 <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated shadow-glow-subtle">
                   <Flame className="h-8 w-8 text-accent-cyan" />
+            <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 py-3">
+              {/* Left Side: PSG */}
+              <div className="flex flex-col items-center justify-center text-center min-w-0 px-1">
+                <div className="mb-1.5 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated shadow-glow-subtle">
+                  <Flame className="h-7 w-7 sm:h-8 sm:w-8 text-accent-cyan" />
                 </div>
                 <span className="font-display text-lg font-bold text-primary">
+                <span className="w-full truncate font-display text-sm sm:text-lg font-bold text-primary">
                   PSG F7
                 </span>
                 <span className="text-[10px] font-bold uppercase text-accent-cyan">
@@ -256,9 +286,12 @@ export function MatchCard({ match, showActaButton = true }: MatchCardProps) {
               </div>
 
               <div className="flex flex-col items-center">
+              {/* Center: Score or VS Badge (Always Centered) */}
+              <div className="flex flex-shrink-0 flex-col items-center justify-center text-center px-1 sm:px-2 min-w-[70px] sm:min-w-[90px]">
                 {match.is_finished ? (
                   <>
                     <div className="flex items-center gap-2 font-display text-4xl font-black tracking-wider text-primary sm:text-5xl">
+                    <div className="flex items-center gap-1.5 font-display text-3xl font-black tracking-wider text-primary sm:text-5xl">
                       <span className="text-glow-subtle text-accent-cyan">
                         {match.psg_score}
                       </span>
@@ -268,6 +301,7 @@ export function MatchCard({ match, showActaButton = true }: MatchCardProps) {
                     <span
                       className={cn(
                         "mt-1 rounded-full border px-2.5 py-0.5 font-display text-[10px] font-bold uppercase",
+                        "mt-1 rounded-full border px-2 py-0.5 font-display text-[9px] sm:text-[10px] font-bold uppercase whitespace-nowrap",
                         isPsgWin &&
                           "border-success/40 bg-success/15 text-success",
                         isPsgDraw &&
@@ -285,6 +319,7 @@ export function MatchCard({ match, showActaButton = true }: MatchCardProps) {
                   </>
                 ) : (
                   <div className="rounded-lg border border-white/10 bg-surface-elevated px-4 py-1.5 font-display text-2xl font-black text-accent-cyan">
+                  <div className="rounded-lg border border-white/10 bg-surface-elevated px-3 py-1 sm:px-4 sm:py-1.5 font-display text-xl sm:text-2xl font-black text-accent-cyan">
                     VS
                   </div>
                 )}
@@ -292,6 +327,9 @@ export function MatchCard({ match, showActaButton = true }: MatchCardProps) {
 
               <div className="flex flex-col items-center space-y-1">
                 <div className="flex h-14 w-14 items-center justify-center rounded-xl border border-white/10 bg-surface-elevated p-2">
+              {/* Right Side: Rival */}
+              <div className="flex flex-col items-center justify-center text-center min-w-0 px-1">
+                <div className="mb-1.5 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated p-2">
                   {match.rival?.shield_url ? (
                     <img
                       src={match.rival.shield_url}
@@ -303,6 +341,10 @@ export function MatchCard({ match, showActaButton = true }: MatchCardProps) {
                   )}
                 </div>
                 <span className="max-w-[120px] truncate font-display text-lg font-bold text-primary">
+                <span
+                  title={match.rival?.name || "Rival"}
+                  className="w-full truncate font-display text-sm sm:text-lg font-bold text-primary"
+                >
                   {match.rival?.name || "Rival"}
                 </span>
                 <span className="text-[10px] font-bold uppercase text-secondary">

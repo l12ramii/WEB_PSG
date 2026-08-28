@@ -63,6 +63,7 @@ export default function NuevoPartidoPage() {
       <Link
         href="/admin/partidos"
         className="inline-flex items-center gap-2 font-display text-xs font-bold uppercase tracking-wider text-psg-300 transition-colors hover:text-white"
+        className="inline-flex items-center gap-2 font-display text-xs font-bold uppercase tracking-wider text-secondary transition-colors hover:text-primary focus-ring rounded-lg px-2 py-1"
       >
         <ArrowLeft className="h-4 w-4" /> Volver a Partidos
       </Link>
@@ -73,10 +74,15 @@ export default function NuevoPartidoPage() {
 
         <div className="space-y-1 border-b border-surface-border pb-4">
           <h1 className="font-display text-3xl font-black uppercase tracking-wide text-white sm:text-4xl">
+      <div className="relative space-y-6 overflow-hidden rounded-xl border border-white/10 bg-surface p-6 shadow-xl inner-light sm:p-10">
+        <div className="space-y-1 border-b border-white/10 pb-4">
+          <h1 className="font-display text-3xl font-black uppercase tracking-wide text-primary sm:text-4xl">
             Programar{" "}
             <span className="text-glow text-accent-cyan">Nuevo Encuentro</span>
+            <span className="text-glow-subtle text-accent-cyan">Nuevo Encuentro</span>
           </h1>
           <p className="text-xs font-medium text-psg-300">
+          <p className="text-xs font-medium text-secondary">
             Fija la fecha, hora, condición y rival para el próximo partido del
             PSG F7.
           </p>
@@ -87,6 +93,7 @@ export default function NuevoPartidoPage() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <label className="font-display text-xs font-bold uppercase tracking-wider text-psg-200">
+              <label className="font-display text-xs font-bold uppercase tracking-wider text-secondary">
                 Equipo Rival *
               </label>
               <Link
@@ -101,6 +108,7 @@ export default function NuevoPartidoPage() {
               value={rivalId}
               onChange={(e) => setRivalId(e.target.value)}
               className="w-full rounded-2xl border border-surface-border bg-surface-muted px-4 py-3 text-sm font-medium text-white focus:border-accent-cyan focus:outline-none"
+              className="w-full rounded-xl border border-white/10 bg-surface-elevated px-4 py-3 text-sm font-medium text-primary focus-ring focus:border-accent-cyan focus:outline-none"
               required
             >
               {rivals.map((rival) => (
@@ -114,6 +122,7 @@ export default function NuevoPartidoPage() {
           {/* Condition: Home / Away */}
           <div className="space-y-2">
             <label className="block font-display text-xs font-bold uppercase tracking-wider text-psg-200">
+            <label className="block font-display text-xs font-bold uppercase tracking-wider text-secondary">
               Condición de Juego
             </label>
             <div className="grid grid-cols-2 gap-3">
@@ -121,9 +130,12 @@ export default function NuevoPartidoPage() {
                 type="button"
                 onClick={() => setIsHome(true)}
                 className={`rounded-2xl border px-4 py-3.5 font-display text-sm font-bold uppercase tracking-wider transition-all ${
+                className={`rounded-xl border px-4 py-3.5 font-display text-sm font-bold uppercase tracking-wider transition-all focus-ring ${
                   isHome
                     ? "border-accent-cyan bg-accent-electric text-white shadow-glow"
                     : "border-surface-border bg-surface-muted text-psg-300 hover:text-white"
+                    ? "border-accent-cyan/40 bg-surface-elevated text-primary shadow-glow-subtle"
+                    : "border-white/10 bg-surface-elevated/40 text-secondary hover:text-primary"
                 }`}
               >
                 Local (Campo PSG)
@@ -132,9 +144,12 @@ export default function NuevoPartidoPage() {
                 type="button"
                 onClick={() => setIsHome(false)}
                 className={`rounded-2xl border px-4 py-3.5 font-display text-sm font-bold uppercase tracking-wider transition-all ${
+                className={`rounded-xl border px-4 py-3.5 font-display text-sm font-bold uppercase tracking-wider transition-all focus-ring ${
                   !isHome
                     ? "border-accent-cyan bg-accent-electric text-white shadow-glow"
                     : "border-surface-border bg-surface-muted text-psg-300 hover:text-white"
+                    ? "border-accent-cyan/40 bg-surface-elevated text-primary shadow-glow-subtle"
+                    : "border-white/10 bg-surface-elevated/40 text-secondary hover:text-primary"
                 }`}
               >
                 Visitante
@@ -145,6 +160,7 @@ export default function NuevoPartidoPage() {
           {/* Date & Time */}
           <div className="space-y-2">
             <label className="block font-display text-xs font-bold uppercase tracking-wider text-psg-200">
+            <label className="block font-display text-xs font-bold uppercase tracking-wider text-secondary">
               Fecha y Hora del Encuentro
             </label>
             <input
@@ -152,6 +168,7 @@ export default function NuevoPartidoPage() {
               value={matchDate}
               onChange={(e) => setMatchDate(e.target.value)}
               className="w-full rounded-2xl border border-surface-border bg-surface-muted px-4 py-3 text-sm font-medium text-white focus:border-accent-cyan focus:outline-none"
+              className="w-full rounded-xl border border-white/10 bg-surface-elevated px-4 py-3 text-sm font-medium text-primary focus-ring focus:border-accent-cyan focus:outline-none"
               required
             />
           </div>
@@ -159,12 +176,14 @@ export default function NuevoPartidoPage() {
           {/* Competición */}
           <div className="space-y-2">
             <label className="block font-display text-xs font-bold uppercase tracking-wider text-psg-200">
+            <label className="block font-display text-xs font-bold uppercase tracking-wider text-secondary">
               Competición
             </label>
             <select
               value={competition}
               onChange={(e) => setCompetition(e.target.value as any)}
               className="w-full rounded-2xl border border-surface-border bg-surface-muted px-4 py-3 text-sm font-medium text-white focus:border-accent-cyan focus:outline-none"
+              className="w-full rounded-xl border border-white/10 bg-surface-elevated px-4 py-3 text-sm font-medium text-primary focus-ring focus:border-accent-cyan focus:outline-none"
             >
               <option value="liga">Liga Oficial F7</option>
               <option value="copa">Copa</option>
@@ -174,6 +193,7 @@ export default function NuevoPartidoPage() {
 
           {/* Action Buttons */}
           <div className="flex justify-end gap-3 border-t border-surface-border pt-4">
+          <div className="flex justify-end gap-3 border-t border-white/10 pt-4">
             <Link href="/admin/partidos">
               <Button type="button" variant="secondary">
                 Cancelar
@@ -184,6 +204,7 @@ export default function NuevoPartidoPage() {
               isLoading={isLoading}
               size="lg"
               className="shadow-glow"
+              className="shadow-glow-subtle"
             >
               <CalendarPlus className="h-4 w-4" /> Guardar Partido
             </Button>
@@ -193,3 +214,4 @@ export default function NuevoPartidoPage() {
     </div>
   );
 }
+

@@ -151,34 +151,43 @@ export default function AdminJugadoresPage() {
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="font-display text-3xl font-black uppercase tracking-tight text-white sm:text-5xl">
+          <h1 className="font-display text-3xl font-black uppercase tracking-tight text-primary sm:text-5xl">
             Gestión de{" "}
             <span className="text-glow text-accent-cyan">Plantilla</span>
+            <span className="text-glow-subtle text-accent-cyan">Plantilla</span>
           </h1>
           <p className="text-xs font-medium text-psg-300 sm:text-sm">
             Alta de fichajes, edición de dorsales, posiciones y fotos oficiales
+          <p className="text-xs font-medium text-secondary sm:text-sm">
+            Alta de fichajes, edición de dorsales, posiciones y galería de fotos oficiales
             de los jugadores.
           </p>
         </div>
 
         <Button onClick={openNewPlayerModal} size="lg" className="shadow-glow">
+        <Button onClick={openNewPlayerModal} size="lg" className="shadow-glow-subtle">
           <UserPlus className="h-4 w-4" /> Añadir Jugador
         </Button>
       </div>
 
       {/* Control Bar: Search & Filter */}
       <div className="flex flex-col items-center justify-between gap-4 rounded-3xl border border-surface-border bg-surface p-4 shadow-card sm:flex-row">
+      <div className="flex flex-col items-center justify-between gap-4 rounded-xl border border-white/10 bg-surface p-4 inner-light sm:flex-row">
         <div className="relative w-full sm:w-80">
           <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-psg-400" />
+          <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
           <input
             type="text"
             placeholder="Buscar por apodo, nombre o dorsal..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full rounded-xl border border-surface-border bg-surface-muted py-2.5 pl-10 pr-4 text-xs font-medium text-white placeholder-psg-400 focus:border-accent-cyan focus:outline-none"
+            className="w-full rounded-xl border border-white/10 bg-surface-elevated/60 py-2.5 pl-10 pr-4 text-xs font-medium text-primary placeholder-muted focus-ring focus:border-accent-cyan focus:outline-none"
           />
         </div>
 
         <span className="rounded-xl border border-surface-border bg-surface-muted px-3 py-1.5 font-display text-xs font-bold uppercase text-psg-300">
+        <span className="rounded-lg border border-white/10 bg-surface-elevated px-3 py-1.5 font-display text-xs font-bold uppercase text-secondary">
           Total: {filteredPlayers.length} Jugadores
         </span>
       </div>
@@ -203,6 +212,29 @@ export default function AdminJugadoresPage() {
                     <User className="h-7 w-7 text-psg-400" />
                   )}
                 </div>
+      <div className="space-y-4 rounded-xl border border-white/10 bg-surface p-4 sm:p-6 inner-light">
+        <div className="divide-y divide-white/10">
+          {filteredPlayers.map((player) => {
+            const playerPhotos = player.photo_url
+              ? player.photo_url.split(/[\n,]+/).map((u) => u.trim()).filter(Boolean)
+              : [];
+            return (
+              <div
+                key={player.id}
+                className="py-4 flex flex-col justify-between gap-4 sm:flex-row sm:items-center min-w-0"
+              >
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated shadow-md">
+                    {playerPhotos.length > 0 ? (
+                      <img
+                        src={playerPhotos[0]}
+                        alt={player.nickname}
+                        className="h-full w-full object-cover object-top"
+                      />
+                    ) : (
+                      <User className="h-7 w-7 text-muted" />
+                    )}
+                  </div>
 
                 <div>
                   <div className="flex items-center gap-2.5">
@@ -215,6 +247,26 @@ export default function AdminJugadoresPage() {
                     <Badge variant={player.position} dot>
                       {getPositionName(player.position)}
                     </Badge>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="font-display text-lg font-black text-accent-cyan">
+                        #{player.dorsal}
+                      </span>
+                      <h3 className="truncate font-display text-xl font-bold uppercase text-primary">
+                        {player.nickname}
+                      </h3>
+                      <Badge variant={player.position} dot>
+                        {getPositionName(player.position)}
+                      </Badge>
+                      {playerPhotos.length > 1 && (
+                        <span className="rounded bg-accent-cyan/15 px-1.5 py-0.5 font-display text-[10px] font-bold text-accent-cyan">
+                          {playerPhotos.length} fotos
+                        </span>
+                      )}
+                    </div>
+                    <p className="truncate text-xs font-medium text-secondary">
+                      {player.first_name} {player.last_name || ""}
+                    </p>
                   </div>
                   <p className="text-xs font-medium text-psg-300">
                     {player.first_name} {player.last_name || ""}
@@ -237,6 +289,21 @@ export default function AdminJugadoresPage() {
                   <Power className="h-3.5 w-3.5" />
                   <span>{player.is_active ? "Activo" : "Baja Temporal"}</span>
                 </button>
+                <div className="flex items-center gap-2.5 self-end sm:self-center flex-shrink-0">
+                  <button
+                    onClick={() => handleToggleStatus(player)}
+                    title={
+                      player.is_active ? "Desactivar jugador" : "Activar jugador"
+                    }
+                    className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 font-display text-xs font-bold uppercase tracking-wider transition-all focus-ring ${
+                      player.is_active
+                        ? "border-success/30 bg-success/15 text-success shadow-sm hover:bg-success/25"
+                        : "border-white/10 bg-surface-elevated text-muted hover:text-primary"
+                    }`}
+                  >
+                    <Power className="h-3.5 w-3.5" />
+                    <span>{player.is_active ? "Activo" : "Baja Temporal"}</span>
+                  </button>
 
                 <Button
                   onClick={() => openEditModal(player)}
@@ -245,9 +312,19 @@ export default function AdminJugadoresPage() {
                 >
                   <Edit className="h-3.5 w-3.5" /> Editar Ficha
                 </Button>
+                  <Button
+                    onClick={() => openEditModal(player)}
+                    variant="secondary"
+                    size="sm"
+                  >
+                    <Edit className="h-3.5 w-3.5" /> Editar Ficha
+                  </Button>
+                </div>
               </div>
             </div>
           ))}
+            );
+          })}
         </div>
       </div>
 
@@ -297,12 +374,14 @@ export default function AdminJugadoresPage() {
 
           <div className="space-y-1.5">
             <label className="block font-display text-xs font-bold uppercase tracking-wider text-psg-200">
+            <label className="block font-display text-xs font-bold uppercase tracking-wider text-secondary">
               Posición Táctica
             </label>
             <select
               value={position}
               onChange={(e) => setPosition(e.target.value as PlayerPosition)}
               className="w-full rounded-xl border border-surface-border bg-surface-muted px-4 py-2.5 text-sm font-medium text-white focus:border-accent-cyan focus:outline-none"
+              className="w-full rounded-xl border border-white/10 bg-surface-elevated px-4 py-2.5 text-sm font-medium text-primary focus-ring focus:border-accent-cyan focus:outline-none"
             >
               <option value="portero">Portero</option>
               <option value="defensa">Defensa</option>
@@ -317,6 +396,18 @@ export default function AdminJugadoresPage() {
             value={photoUrl}
             onChange={(e) => setPhotoUrl(e.target.value)}
           />
+          <div className="space-y-1.5">
+            <label className="block font-display text-xs font-bold uppercase tracking-wider text-secondary">
+              URLs de Fotos Oficiales (Separa con comas o saltos de línea para el carrusel)
+            </label>
+            <textarea
+              rows={3}
+              placeholder="https://images.unsplash.com/foto1...&#10;https://images.unsplash.com/foto2..."
+              value={photoUrl}
+              onChange={(e) => setPhotoUrl(e.target.value)}
+              className="w-full rounded-xl border border-white/10 bg-surface-elevated p-3 text-xs font-medium text-primary placeholder-muted focus-ring focus:border-accent-cyan focus:outline-none"
+            />
+          </div>
 
           {photoUrl && (
             <div className="flex items-center gap-3 rounded-2xl border border-surface-border bg-surface-muted p-3">
@@ -327,11 +418,38 @@ export default function AdminJugadoresPage() {
               />
               <span className="text-xs font-medium text-psg-300">
                 Vista previa de la foto oficial
+          {/* Live Photo Gallery Preview */}
+          {photoUrl.trim() && (
+            <div className="space-y-2 rounded-xl border border-white/10 bg-surface-elevated/40 p-3">
+              <span className="block font-display text-[10px] font-bold uppercase tracking-wider text-secondary">
+                Vista previa del carrusel ({photoUrl.split(/[\n,]+/).map((u) => u.trim()).filter(Boolean).length} fotos):
               </span>
+              <div className="flex items-center gap-2 overflow-x-auto py-1">
+                {photoUrl
+                  .split(/[\n,]+/)
+                  .map((u) => u.trim())
+                  .filter(Boolean)
+                  .map((url, idx) => (
+                    <div
+                      key={idx}
+                      className="relative flex aspect-[3/4] w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-surface-elevated shadow-sm"
+                    >
+                      <img
+                        src={url}
+                        alt={`Foto ${idx + 1}`}
+                        className="h-full w-full object-cover object-top"
+                      />
+                      <span className="absolute bottom-0.5 right-0.5 rounded bg-black/70 px-1 py-0.2 font-display text-[8px] font-bold text-accent-cyan">
+                        #{idx + 1}
+                      </span>
+                    </div>
+                  ))}
+              </div>
             </div>
           )}
 
           <div className="flex justify-end gap-3 border-t border-surface-border pt-4">
+          <div className="flex justify-end gap-3 border-t border-white/10 pt-4">
             <Button
               type="button"
               variant="secondary"

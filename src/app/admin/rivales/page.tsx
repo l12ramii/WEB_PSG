@@ -52,10 +52,13 @@ export default function AdminRivalesPage() {
       <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="font-display text-3xl font-black uppercase tracking-tight text-white sm:text-5xl">
+          <h1 className="font-display text-3xl font-black uppercase tracking-tight text-primary sm:text-5xl">
             Directorio de{" "}
             <span className="text-glow text-accent-cyan">Rivales</span>
+            <span className="text-glow-subtle text-accent-cyan">Rivales</span>
           </h1>
           <p className="text-xs font-medium text-psg-300 sm:text-sm">
+          <p className="text-xs font-medium text-secondary sm:text-sm">
             Base de datos reutilizable de equipos rivales y sus escudos para
             vincularlos a los partidos.
           </p>
@@ -65,6 +68,7 @@ export default function AdminRivalesPage() {
           onClick={() => setIsModalOpen(true)}
           size="lg"
           className="shadow-glow"
+          className="shadow-glow-subtle"
         >
           <Plus className="h-4 w-4" /> Añadir Nuevo Rival
         </Button>
@@ -72,18 +76,22 @@ export default function AdminRivalesPage() {
 
       {/* Search & Counter */}
       <div className="flex flex-col items-center justify-between gap-4 rounded-3xl border border-surface-border bg-surface p-4 shadow-card sm:flex-row">
+      <div className="flex flex-col items-center justify-between gap-4 rounded-xl border border-white/10 bg-surface p-4 inner-light sm:flex-row">
         <div className="relative w-full sm:w-80">
           <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-psg-400" />
+          <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
           <input
             type="text"
             placeholder="Buscar rival por nombre..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full rounded-xl border border-surface-border bg-surface-muted py-2.5 pl-10 pr-4 text-xs font-medium text-white placeholder-psg-400 focus:border-accent-cyan focus:outline-none"
+            className="w-full rounded-xl border border-white/10 bg-surface-elevated/60 py-2.5 pl-10 pr-4 text-xs font-medium text-primary placeholder-muted focus-ring focus:border-accent-cyan focus:outline-none"
           />
         </div>
 
         <span className="rounded-xl border border-surface-border bg-surface-muted px-3 py-1.5 font-display text-xs font-bold uppercase text-psg-300">
+        <span className="rounded-lg border border-white/10 bg-surface-elevated px-3 py-1.5 font-display text-xs font-bold uppercase text-secondary">
           {filteredRivals.length} Rivales en Base de Datos
         </span>
       </div>
@@ -94,8 +102,10 @@ export default function AdminRivalesPage() {
           <div
             key={rival.id}
             className="group flex select-none items-center gap-4 rounded-3xl border border-surface-border bg-card-gradient p-6 shadow-card transition-all duration-300 hover:border-accent-cyan/50 hover:shadow-glow"
+            className="group flex select-none items-center gap-4 rounded-xl border border-white/10 bg-surface p-6 inner-light transition-all duration-200 ease-out hover:-translate-y-1 hover:border-accent-cyan/50 hover:shadow-glow-subtle min-w-0"
           >
             <div className="w-18 h-18 flex flex-shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 border-surface-border bg-surface-muted p-2.5 shadow-inner transition-transform duration-300 group-hover:scale-105 sm:h-20 sm:w-20">
+            <div className="h-16 w-16 flex flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated p-2 shadow-inner transition-transform duration-200 group-hover:scale-105 sm:h-18 sm:w-18">
               {rival.shield_url ? (
                 <img
                   src={rival.shield_url}
@@ -104,14 +114,21 @@ export default function AdminRivalesPage() {
                 />
               ) : (
                 <Shield className="h-8 w-8 text-psg-400" />
+                <Shield className="h-8 w-8 text-muted" />
               )}
             </div>
 
             <div>
               <h3 className="font-display text-xl font-bold uppercase tracking-wide text-white transition-colors group-hover:text-accent-cyan">
+            <div className="min-w-0 flex-1">
+              <h3
+                title={rival.name}
+                className="truncate font-display text-xl font-bold uppercase tracking-wide text-primary transition-colors group-hover:text-accent-cyan"
+              >
                 {rival.name}
               </h3>
               <span className="mt-1 flex items-center gap-1 font-display text-xs font-bold uppercase tracking-wider text-emerald-400">
+              <span className="mt-1 flex items-center gap-1 font-display text-xs font-bold uppercase tracking-wider text-success">
                 <Check className="h-3.5 w-3.5" /> Disponible en Partidos
               </span>
             </div>
@@ -143,18 +160,22 @@ export default function AdminRivalesPage() {
 
           {shieldUrl && (
             <div className="flex items-center gap-3 rounded-2xl border border-surface-border bg-surface-muted p-3">
+            <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-surface-elevated p-3">
               <img
                 src={shieldUrl}
                 alt="Vista previa del escudo"
                 className="h-12 w-12 rounded-xl object-contain"
+                className="h-12 w-12 rounded-lg object-contain"
               />
               <span className="text-xs font-medium text-psg-300">
+              <span className="text-xs font-medium text-secondary">
                 Vista previa del escudo del equipo
               </span>
             </div>
           )}
 
           <div className="flex justify-end gap-3 border-t border-surface-border pt-4">
+          <div className="flex justify-end gap-3 border-t border-white/10 pt-4">
             <Button
               type="button"
               variant="secondary"

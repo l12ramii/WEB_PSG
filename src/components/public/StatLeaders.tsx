@@ -78,12 +78,15 @@ export function StatLeaders({
 
               {/* Player Portrait & Info */}
               <div className="my-4 flex items-center gap-4">
+              <div className="my-4 flex items-center gap-4 min-w-0">
                 <div className="relative flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated shadow-md">
                   {leader.player?.photo_url ? (
                     <img
                       src={leader.player.photo_url}
+                      src={leader.player.photo_url.split(/[\n,]+/)[0].trim()}
                       alt={leader.player.nickname}
                       className="h-full w-full object-cover object-top grayscale transition-all duration-300 group-hover:scale-105 group-hover:grayscale-0"
+                      className="h-full w-full object-cover object-top transition-all duration-300 group-hover:scale-105"
                     />
                   ) : (
                     <User className="h-8 w-8 text-muted" />
@@ -91,10 +94,12 @@ export function StatLeaders({
                 </div>
 
                 <div className="space-y-0.5">
+                <div className="min-w-0 flex-1 space-y-0.5">
                   <span className="font-display text-xs font-bold uppercase tracking-wider text-accent-cyan">
                     Dorsal #{leader.player?.dorsal}
                   </span>
                   <h5 className="font-display text-xl font-bold uppercase tracking-wide text-primary transition-colors group-hover:text-accent-cyan">
+                  <h5 className="truncate font-display text-xl font-bold uppercase tracking-wide text-primary transition-colors group-hover:text-accent-cyan">
                     {leader.player?.nickname || "Sin datos"}
                   </h5>
                   <p className="truncate text-xs text-secondary">

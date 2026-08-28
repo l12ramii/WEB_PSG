@@ -101,3 +101,18 @@ export function getCompetitionLabel(comp: CompetitionType): string {
       return comp;
   }
 }
+
+export function parsePhotoUrls(
+  photoUrl?: string | null,
+  photoUrls?: string[] | null
+): string[] {
+  if (Array.isArray(photoUrls) && photoUrls.length > 0) {
+    return photoUrls.filter(Boolean);
+  }
+  if (!photoUrl) return [];
+  return photoUrl
+    .split(/[\n,]+/)
+    .map((u) => u.trim())
+    .filter((u) => u.length > 0);
+}
+

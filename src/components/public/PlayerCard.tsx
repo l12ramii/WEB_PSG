@@ -12,8 +12,10 @@ import {
 } from "lucide-react";
 import { PlayerStatsSummary } from "@/lib/supabase/types";
 import { getPositionName } from "@/lib/utils";
+import { getPositionName, parsePhotoUrls } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
+import { PlayerPhotoCarousel } from "@/components/public/PlayerPhotoCarousel";
 
 interface PlayerCardProps {
   player: PlayerStatsSummary;
@@ -21,6 +23,7 @@ interface PlayerCardProps {
 
 export function PlayerCard({ player }: PlayerCardProps) {
   const [showModal, setShowModal] = useState(false);
+  const photos = parsePhotoUrls(player.photo_url);
 
   return (
     <>
@@ -29,6 +32,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
         className="group relative flex cursor-pointer select-none flex-col justify-between overflow-hidden rounded-xl border border-white/10 bg-surface p-4 inner-light transition-all duration-200 ease-out hover:-translate-y-1 hover:border-accent-cyan/50 hover:shadow-glow-subtle"
       >
         {/* Tiger Claw Slash SVG Watermark (Section 3.3 of DESIGN_SYSTEM.md) */}
+        {/* Tiger Claw Slash SVG Watermark */}
         <svg
           viewBox="0 0 100 100"
           fill="currentColor"
@@ -70,11 +74,16 @@ export function PlayerCard({ player }: PlayerCardProps) {
               </div>
             )}
           </div>
+        {/* Player Official Photo Carousel (Always Full Color, Never Grayscale) */}
+        <div className="relative my-3 w-full">
+          <PlayerPhotoCarousel photos={photos} alt={player.nickname} />
         </div>
 
         {/* Player Name and Info */}
         <div className="relative z-10 mb-3 text-center">
           <h4 className="font-display text-xl font-bold uppercase tracking-wide text-primary transition-colors group-hover:text-accent-cyan">
+        <div className="relative z-10 mb-3 text-center min-w-0">
+          <h4 className="truncate font-display text-xl font-bold uppercase tracking-wide text-primary transition-colors group-hover:text-accent-cyan">
             {player.nickname}
           </h4>
           <p className="mt-0.5 truncate text-xs text-secondary">
@@ -142,6 +151,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
       </div>
 
       {/* Expanded Player Profile Modal */}
+      {/* Expanded Player Profile Modal with Full Photo Gallery */}
       <Modal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
@@ -149,6 +159,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
       >
         <div className="space-y-6">
           {/* Header Showcase */}
+          {/* Header Showcase with Carousel */}
           <div className="flex flex-col items-center gap-6 rounded-xl border border-white/10 bg-surface-elevated/40 p-4 sm:flex-row">
             <div className="relative flex aspect-[3/4] w-28 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated">
               {player.photo_url ? (
@@ -160,9 +171,17 @@ export function PlayerCard({ player }: PlayerCardProps) {
               ) : (
                 <User className="h-14 w-14 text-muted" />
               )}
+            <div className="w-36 sm:w-44 flex-shrink-0">
+              <PlayerPhotoCarousel
+                photos={photos}
+                alt={player.nickname}
+                showThumbnails={true}
+                isModal={true}
+              />
             </div>
 
             <div className="flex-1 space-y-2 text-center sm:text-left">
+            <div className="flex-1 space-y-2 text-center sm:text-left min-w-0">
               <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-start">
                 <Badge variant={player.position} dot>
                   {getPositionName(player.position)}
@@ -173,6 +192,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
               </div>
 
               <h3 className="font-display text-2xl font-bold uppercase tracking-wide text-primary sm:text-3xl">
+              <h3 className="truncate font-display text-2xl font-bold uppercase tracking-wide text-primary sm:text-3xl">
                 {player.nickname}
               </h3>
               <p className="text-sm text-secondary">
@@ -252,3 +272,4 @@ export function PlayerCard({ player }: PlayerCardProps) {
     </>
   );
 }
+
