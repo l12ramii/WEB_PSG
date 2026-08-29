@@ -127,30 +127,6 @@ export function PlayerPhotoCarousel({
             </button>
           </>
         )}
-
-        {/* Bottom Dot Indicators */}
-        {hasMultiple && (
-          <div className="absolute bottom-2 left-0 right-0 z-10 flex items-center justify-center gap-1.5 pointer-events-auto">
-            {photos.map((_, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  setCurrentIndex(idx);
-                }}
-                aria-label={`Ver foto ${idx + 1}`}
-                className={cn(
-                  "h-1.5 rounded-full transition-all duration-200",
-                  idx === currentIndex
-                    ? "w-4 bg-accent-cyan shadow-glow-subtle"
-                    : "w-1.5 bg-white/40 hover:bg-white/70"
-                )}
-              />
-            ))}
-          </div>
-        )}
       </div>
 
       {/* Optional Thumbnail Strip (ideal for detailed modal) */}

@@ -72,18 +72,15 @@ export function PlayerCard({ player }: PlayerCardProps) {
         </div>
 
         {/* Quick Season Stats Bar */}
-        <div className="relative z-10 grid grid-cols-3 gap-2 rounded-lg border border-white/5 bg-surface-elevated/60 p-2.5 text-center">
         <div
           className={`relative z-10 grid ${
             isStaff ? "grid-cols-3" : "grid-cols-4"
           } gap-1 rounded-lg border border-white/5 bg-surface-elevated/60 p-2 text-center`}
         >
           <div>
-            <span className="block font-display text-[10px] uppercase tracking-wider text-secondary">
             <span className="block font-display text-[9px] uppercase tracking-wider text-secondary truncate">
               Partidos
             </span>
-            <span className="font-display text-base font-bold text-primary">
             <span className="font-display text-sm font-bold text-primary sm:text-base">
               {player.matches_played}
             </span>
@@ -92,21 +89,17 @@ export function PlayerCard({ player }: PlayerCardProps) {
           {isStaff ? (
             <>
               <div>
-                <span className="block font-display text-[10px] uppercase tracking-wider text-accent-cyan">
                 <span className="block font-display text-[9px] uppercase tracking-wider text-accent-cyan truncate">
                   Rol
                 </span>
-                <span className="font-display text-xs font-bold text-accent-cyan truncate block pt-1">
                 <span className="font-display text-xs font-bold text-accent-cyan truncate block pt-0.5">
                   {getPositionName(player.position)}
                 </span>
               </div>
               <div>
-                <span className="block font-display text-[10px] uppercase tracking-wider text-secondary">
                 <span className="block font-display text-[9px] uppercase tracking-wider text-secondary truncate">
                   Tarjetas
                 </span>
-                <span className="font-display text-base font-bold text-primary">
                 <span className="font-display text-sm font-bold text-primary sm:text-base">
                   {player.total_yellow_cards + player.total_red_cards}
                 </span>
@@ -115,17 +108,14 @@ export function PlayerCard({ player }: PlayerCardProps) {
           ) : player.position === "portero" ? (
             <>
               <div>
-                <span className="block font-display text-[10px] uppercase tracking-wider text-warning">
                 <span className="block font-display text-[9px] uppercase tracking-wider text-warning truncate" title="Porterías a Cero">
                   Imbatible
                 </span>
-                <span className="font-display text-base font-bold text-warning">
                 <span className="font-display text-sm font-bold text-warning sm:text-base">
                   {player.total_clean_sheets}
                 </span>
               </div>
               <div>
-                <span className="block font-display text-[10px] uppercase tracking-wider text-secondary">
                 <span className="block font-display text-[9px] uppercase tracking-wider text-danger truncate" title="Goles Encajados">
                   Encajados
                 </span>
@@ -137,7 +127,6 @@ export function PlayerCard({ player }: PlayerCardProps) {
                 <span className="block font-display text-[9px] uppercase tracking-wider text-secondary truncate">
                   Tarjetas
                 </span>
-                <span className="font-display text-base font-bold text-primary">
                 <span className="font-display text-sm font-bold text-primary sm:text-base">
                   {player.total_yellow_cards + player.total_red_cards}
                 </span>
@@ -146,22 +135,17 @@ export function PlayerCard({ player }: PlayerCardProps) {
           ) : (
             <>
               <div>
-                <span className="block font-display text-[10px] uppercase tracking-wider text-accent-cyan">
                 <span className="block font-display text-[9px] uppercase tracking-wider text-accent-cyan truncate">
                   Goles
                 </span>
-                <span className="font-display text-base font-bold text-accent-cyan">
                 <span className="font-display text-sm font-bold text-accent-cyan sm:text-base">
                   {player.total_goals}
                 </span>
               </div>
               <div>
-                <span className="block font-display text-[10px] uppercase tracking-wider text-success">
-                  Asistencias
                 <span className="block font-display text-[9px] uppercase tracking-wider text-success truncate">
                   Asist.
                 </span>
-                <span className="font-display text-base font-bold text-success">
                 <span className="font-display text-sm font-bold text-success sm:text-base">
                   {player.total_assists}
                 </span>
@@ -472,7 +456,6 @@ export function PlayerCard({ player }: PlayerCardProps) {
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
                   <span className="font-display text-xs font-bold uppercase tracking-wider text-secondary">
-                    Partidos
                     Partidos Jugados
                   </span>
                   <p className="mt-1 font-display text-2xl font-bold text-primary sm:text-3xl">
@@ -482,7 +465,6 @@ export function PlayerCard({ player }: PlayerCardProps) {
 
                 <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
                   <span className="font-display text-xs font-bold uppercase tracking-wider text-accent-cyan">
-                    Goles
                     Goles Marcados
                   </span>
                   <p className="mt-1 font-display text-2xl font-bold text-accent-cyan sm:text-3xl text-glow-subtle">
@@ -499,16 +481,6 @@ export function PlayerCard({ player }: PlayerCardProps) {
                   </p>
                 </div>
 
-                {player.position === "portero" && (
-                  <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
-                    <span className="font-display text-xs font-bold uppercase tracking-wider text-warning">
-                      Porterías a Cero
-                    </span>
-                    <p className="mt-1 font-display text-2xl font-bold text-warning sm:text-3xl">
-                      {player.total_clean_sheets}
-                    </p>
-                  </div>
-                )}
                 <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
                   <span className="font-display text-xs font-bold uppercase tracking-wider text-accent-cyan">
                     Promedio Goles / Partido

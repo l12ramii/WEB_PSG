@@ -79,7 +79,6 @@ export async function getPlayerStatsSummary(): Promise<PlayerStatsSummary[]> {
         }))
       );
     }
-    return sortPlayersByPositionAndDorsal((data as PlayerStatsSummary[]) || []);
     const formatted = ((data as PlayerStatsSummary[]) || []).map((p) => ({
       ...p,
       goals_conceded: p.goals_conceded ?? 0,

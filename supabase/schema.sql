@@ -80,7 +80,6 @@ SELECT
     COALESCE(SUM(mps.assists), 0)::INTEGER AS total_assists,
     COALESCE(SUM(mps.yellow_cards), 0)::INTEGER AS total_yellow_cards,
     COALESCE(SUM(mps.red_cards), 0)::INTEGER AS total_red_cards,
-    COUNT(mps.id) FILTER (WHERE mps.clean_sheet = true AND p.position = 'portero')::INTEGER AS total_clean_sheets
     COUNT(mps.id) FILTER (WHERE mps.clean_sheet = true AND p.position = 'portero')::INTEGER AS total_clean_sheets,
     COALESCE(SUM(m.rival_score) FILTER (WHERE mps.played = true AND p.position = 'portero'), 0)::INTEGER AS goals_conceded
 FROM players p

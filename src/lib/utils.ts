@@ -83,12 +83,6 @@ export function getPositionShort(pos: PlayerPosition): string {
 }
 
 export const POSITION_ORDER: Record<PlayerPosition, number> = {
-  portero: 1,
-  defensa: 2,
-  medio: 3,
-  delantero: 4,
-  entrenador: 5,
-  utillero: 6,
   entrenador: 1,
   utillero: 2,
   portero: 3,
