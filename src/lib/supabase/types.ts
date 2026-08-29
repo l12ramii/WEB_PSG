@@ -6,7 +6,13 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
-export type PlayerPosition = "portero" | "defensa" | "medio" | "delantero";
+export type PlayerPosition =
+  | "portero"
+  | "defensa"
+  | "medio"
+  | "delantero"
+  | "entrenador"
+  | "utillero";
 export type CompetitionType = "liga" | "copa" | "amistoso";
 
 export interface Database {

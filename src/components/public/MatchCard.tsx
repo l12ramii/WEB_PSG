@@ -22,6 +22,7 @@ import {
   cn,
   getPositionName,
   getPositionBadgeColor,
+  getPositionShort,
 } from "@/lib/utils";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
@@ -457,9 +458,15 @@ export function MatchCard({ match, showActaButton = true }: MatchCardProps) {
                       key={s.id}
                       className="flex items-center justify-between rounded-lg border border-white/10 bg-surface-elevated/50 p-2.5 text-xs"
                     >
-                      <div className="flex items-center gap-2">
-                        <span className="font-display font-bold text-accent-cyan">
-                          #{s.player?.dorsal}
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="font-display font-bold text-accent-cyan flex-shrink-0">
+                          {(s.player?.position === "entrenador" ||
+                            s.player?.position === "utillero") &&
+                          s.player?.dorsal === 0
+                            ? s.player?.position === "entrenador"
+                              ? "DT"
+                              : "UTI"
+                            : `#${s.player?.dorsal}`}
                         </span>
                         <span className="max-w-[100px] truncate font-medium text-primary">
                           {s.player?.nickname}
@@ -467,9 +474,9 @@ export function MatchCard({ match, showActaButton = true }: MatchCardProps) {
                       </div>
                       <Badge
                         variant={s.player?.position}
-                        className="px-1.5 py-0 text-[9px]"
+                        className="px-1.5 py-0 text-[9px] flex-shrink-0"
                       >
-                        {getPositionName(s.player?.position).slice(0, 3)}
+                        {getPositionShort(s.player?.position)}
                       </Badge>
                     </div>
                   ))}

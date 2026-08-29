@@ -4,7 +4,7 @@
 
 -- 1. Enums
 DO $$ BEGIN
-    CREATE TYPE player_position AS ENUM ('portero', 'defensa', 'medio', 'delantero');
+    CREATE TYPE player_position AS ENUM ('portero', 'defensa', 'medio', 'delantero', 'entrenador', 'utillero');
 EXCEPTION
     WHEN duplicate_object THEN null;
 END $$;

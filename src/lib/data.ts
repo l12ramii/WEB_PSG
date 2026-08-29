@@ -170,15 +170,21 @@ export async function getMatchById(id: string): Promise<MatchDetail | null> {
 }
 
 export async function getStatLeaders() {
-  const stats = await getPlayerStatsSummary();
+  const allStats = await getPlayerStatsSummary();
 
-  if (!stats || stats.length === 0) {
+  if (!allStats || allStats.length === 0) {
     return {
       topScorer: null,
       topAssistant: null,
       topKeeper: null,
     };
   }
+
+  // Filtrar jugadores de campo y porteros (excluyendo cuerpo técnico para líderes de juego)
+  const playersOnly = allStats.filter(
+    (p) => p.position !== "entrenador" && p.position !== "utillero"
+  );
+  const stats = playersOnly.length > 0 ? playersOnly : allStats;
 
   const topScorer = [...stats].sort(
     (a, b) => (b.total_goals || 0) - (a.total_goals || 0)

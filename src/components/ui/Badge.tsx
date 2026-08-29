@@ -8,6 +8,8 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
     | "defensa"
     | "medio"
     | "delantero"
+    | "entrenador"
+    | "utillero"
     | "liga"
     | "copa"
     | "amistoso"
@@ -30,6 +32,8 @@ export function Badge({
     defensa: "bg-accent-blue/15 text-accent-blue border-accent-blue/40",
     medio: "bg-success/15 text-success border-success/40",
     delantero: "bg-danger/15 text-danger border-danger/40",
+    entrenador: "bg-purple-500/15 text-purple-300 border-purple-500/40",
+    utillero: "bg-teal-500/15 text-teal-300 border-teal-500/40",
     liga: "bg-accent-cyan/15 text-accent-cyan border-accent-cyan/40",
     copa: "bg-purple-500/15 text-purple-300 border-purple-500/40",
     amistoso: "bg-slate-500/15 text-slate-300 border-slate-500/40",
@@ -44,6 +48,8 @@ export function Badge({
     defensa: "bg-accent-blue",
     medio: "bg-success",
     delantero: "bg-danger",
+    entrenador: "bg-purple-400",
+    utillero: "bg-teal-400",
     liga: "bg-accent-cyan",
     copa: "bg-purple-400",
     amistoso: "bg-slate-400",

@@ -333,8 +333,14 @@ export function MatchSheetEditor({ match, allPlayers }: MatchSheetEditorProps) {
                     </button>
 
                     <div className="flex items-center gap-2.5 min-w-0">
-                      <span className="w-8 flex-shrink-0 font-display text-lg font-black text-accent-cyan">
-                        #{player.dorsal}
+                      <span className="w-10 flex-shrink-0 font-display text-lg font-black text-accent-cyan">
+                        {(player.position === "entrenador" ||
+                          player.position === "utillero") &&
+                        player.dorsal === 0
+                          ? player.position === "entrenador"
+                            ? "DT"
+                            : "UTI"
+                          : `#${player.dorsal}`}
                       </span>
                       <div className="min-w-0">
                         <span className="block truncate font-display text-base font-bold text-primary">

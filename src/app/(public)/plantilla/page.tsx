@@ -7,10 +7,12 @@ import { PlayerCard } from "@/components/public/PlayerCard";
 import { PlayerPosition, PlayerStatsSummary } from "@/lib/supabase/types";
 import { sortPlayersByPositionAndDorsal } from "@/lib/utils";
 
+type FilterTab = "todos" | PlayerPosition | "cuerpo-tecnico";
+
 export default function PlantillaPage() {
   const [players, setPlayers] = useState<PlayerStatsSummary[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"todos" | PlayerPosition>("todos");
+  const [activeTab, setActiveTab] = useState<FilterTab>("todos");
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
@@ -23,12 +25,13 @@ export default function PlantillaPage() {
       });
   }, []);
 
-  const positions: { key: "todos" | PlayerPosition; label: string }[] = [
+  const positions: { key: FilterTab; label: string }[] = [
     { key: "todos", label: "Toda la Plantilla" },
     { key: "portero", label: "Porteros" },
     { key: "defensa", label: "Defensas" },
     { key: "medio", label: "Medios" },
     { key: "delantero", label: "Delanteros" },
+    { key: "cuerpo-tecnico", label: "Cuerpo Técnico" },
   ];
 
   // Filter players by tab and search, guaranteeing sorting by position and dorsal
@@ -36,7 +39,11 @@ export default function PlantillaPage() {
     players.filter((player) => {
       if (!player.is_active) return false;
 
-      if (activeTab !== "todos" && player.position !== activeTab) {
+      if (activeTab === "cuerpo-tecnico") {
+        if (player.position !== "entrenador" && player.position !== "utillero") {
+          return false;
+        }
+      } else if (activeTab !== "todos" && player.position !== activeTab) {
         return false;
       }
 
@@ -44,8 +51,16 @@ export default function PlantillaPage() {
         const q = searchQuery.toLowerCase();
         const matchNickname = player.nickname?.toLowerCase().includes(q);
         const matchFirstName = player.first_name?.toLowerCase().includes(q);
+        const matchLastName = player.last_name?.toLowerCase().includes(q);
         const matchDorsal = String(player.dorsal).includes(q);
-        return matchNickname || matchFirstName || matchDorsal;
+        const matchPosition = player.position?.toLowerCase().includes(q);
+        return (
+          matchNickname ||
+          matchFirstName ||
+          matchLastName ||
+          matchDorsal ||
+          matchPosition
+        );
       }
 
       return true;
@@ -77,6 +92,12 @@ export default function PlantillaPage() {
             const count =
               pos.key === "todos"
                 ? players.filter((p) => p.is_active).length
+                : pos.key === "cuerpo-tecnico"
+                ? players.filter(
+                    (p) =>
+                      p.is_active &&
+                      (p.position === "entrenador" || p.position === "utillero")
+                  ).length
                 : players.filter((p) => p.is_active && p.position === pos.key)
                     .length;
 

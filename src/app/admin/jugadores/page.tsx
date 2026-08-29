@@ -131,7 +131,7 @@ export default function AdminJugadoresPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!firstName || !nickname || !dorsal) {
+    if (!firstName || !nickname || dorsal === undefined || isNaN(dorsal) || dorsal < 0) {
       alert("Por favor completa los campos obligatorios.");
       return;
     }
@@ -169,7 +169,7 @@ export default function AdminJugadoresPage() {
       }
       setIsModalOpen(false);
     } catch (err: any) {
-      alert("Error al guardar el jugador en Supabase: " + (err?.message || ""));
+      alert("Error al guardar el miembro en Supabase: " + (err?.message || ""));
     } finally {
       setSaving(false);
     }
@@ -182,6 +182,8 @@ export default function AdminJugadoresPage() {
       return (
         p.nickname?.toLowerCase().includes(q) ||
         p.first_name?.toLowerCase().includes(q) ||
+        (p.last_name && p.last_name.toLowerCase().includes(q)) ||
+        getPositionName(p.position).toLowerCase().includes(q) ||
         String(p.dorsal).includes(q)
       );
     })
@@ -270,7 +272,13 @@ export default function AdminJugadoresPage() {
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
                           <span className="font-display text-lg font-black text-accent-cyan">
-                            #{player.dorsal}
+                            {(player.position === "entrenador" ||
+                              player.position === "utillero") &&
+                            player.dorsal === 0
+                              ? player.position === "entrenador"
+                                ? "DT"
+                                : "STAFF"
+                              : `#${player.dorsal}`}
                           </span>
                           <h3 className="truncate font-display text-xl font-bold uppercase text-primary">
                             {player.nickname}
@@ -356,29 +364,35 @@ export default function AdminJugadoresPage() {
               required
             />
             <Input
-              label="Dorsal Oficial *"
+              label="Dorsal Oficial (0 para Cuerpo Técnico) *"
               type="number"
-              min="1"
+              min="0"
               max="99"
               value={dorsal}
-              onChange={(e) => setDorsal(parseInt(e.target.value) || 1)}
+              onChange={(e) => setDorsal(parseInt(e.target.value) || 0)}
               required
             />
           </div>
 
           <div className="space-y-1.5">
             <label className="block font-display text-xs font-bold uppercase tracking-wider text-secondary">
-              Posición Táctica
+              Posición / Rol
             </label>
             <select
               value={position}
               onChange={(e) => setPosition(e.target.value as PlayerPosition)}
               className="w-full rounded-xl border border-white/10 bg-surface-elevated px-4 py-2.5 text-sm font-medium text-primary focus-ring focus:border-accent-cyan focus:outline-none"
             >
-              <option value="portero">Portero</option>
-              <option value="defensa">Defensa</option>
-              <option value="medio">Centrocampista / Medio</option>
-              <option value="delantero">Delantero</option>
+              <optgroup label="Plantilla de Jugadores (F7)">
+                <option value="portero">Portero</option>
+                <option value="defensa">Defensa</option>
+                <option value="medio">Centrocampista / Medio</option>
+                <option value="delantero">Delantero</option>
+              </optgroup>
+              <optgroup label="Cuerpo Técnico / Staff">
+                <option value="entrenador">Entrenador (Director Técnico)</option>
+                <option value="utillero">Utillero (Staff Técnico)</option>
+              </optgroup>
             </select>
           </div>
 

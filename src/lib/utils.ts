@@ -54,6 +54,10 @@ export function getPositionName(pos: PlayerPosition): string {
       return "Centrocampista";
     case "delantero":
       return "Delantero";
+    case "entrenador":
+      return "Entrenador";
+    case "utillero":
+      return "Utillero";
     default:
       return pos;
   }
@@ -69,6 +73,10 @@ export function getPositionShort(pos: PlayerPosition): string {
       return "MED";
     case "delantero":
       return "DEL";
+    case "entrenador":
+      return "DT";
+    case "utillero":
+      return "UTI";
     default:
       return pos;
   }
@@ -79,6 +87,8 @@ export const POSITION_ORDER: Record<PlayerPosition, number> = {
   defensa: 2,
   medio: 3,
   delantero: 4,
+  entrenador: 5,
+  utillero: 6,
 };
 
 export function sortPlayersByPositionAndDorsal<
@@ -104,6 +114,10 @@ export function getPositionBadgeColor(pos: PlayerPosition): string {
       return "bg-emerald-500/20 text-emerald-300 border-emerald-500/30";
     case "delantero":
       return "bg-rose-500/20 text-rose-300 border-rose-500/30";
+    case "entrenador":
+      return "bg-purple-500/20 text-purple-300 border-purple-500/30";
+    case "utillero":
+      return "bg-teal-500/20 text-teal-300 border-teal-500/30";
     default:
       return "bg-slate-500/20 text-slate-300 border-slate-500/30";
   }

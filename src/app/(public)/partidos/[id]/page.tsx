@@ -16,7 +16,13 @@ import { getMatchById } from "@/lib/data";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { PsgShield } from "@/components/ui/PsgShield";
-import { formatMatchDate, getCompetitionLabel, cn, getPositionName } from "@/lib/utils";
+import {
+  formatMatchDate,
+  getCompetitionLabel,
+  cn,
+  getPositionName,
+  getPositionShort,
+} from "@/lib/utils";
 
 export const revalidate = 0;
 
@@ -233,16 +239,22 @@ export default async function MatchDetailPage({ params }: MatchDetailPageProps) 
                   key={s.id}
                   className="flex items-center justify-between rounded-lg border border-white/10 bg-surface-elevated/40 p-3"
                 >
-                  <div className="flex items-center gap-2">
-                    <span className="font-display text-sm font-bold text-accent-cyan">
-                      #{s.player?.dorsal}
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="font-display text-sm font-bold text-accent-cyan flex-shrink-0">
+                      {(s.player?.position === "entrenador" ||
+                        s.player?.position === "utillero") &&
+                      s.player?.dorsal === 0
+                        ? s.player?.position === "entrenador"
+                          ? "DT"
+                          : "UTI"
+                        : `#${s.player?.dorsal}`}
                     </span>
                     <span className="truncate text-sm font-bold text-primary">
                       {s.player?.nickname}
                     </span>
                   </div>
-                  <Badge variant={s.player?.position} className="px-2 py-0.5 text-[9px]">
-                    {getPositionName(s.player?.position).slice(0, 3)}
+                  <Badge variant={s.player?.position} className="px-2 py-0.5 text-[9px] flex-shrink-0">
+                    {getPositionShort(s.player?.position)}
                   </Badge>
                 </div>
               ))}

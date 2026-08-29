@@ -30,7 +30,11 @@ INSERT INTO players (id, first_name, last_name, nickname, dorsal, position, phot
 -- Delanteros
 ('22222222-2222-2222-2222-222222222209', 'Lucas', 'Pérez', 'Pistolero', 9, 'delantero', 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=300&auto=format&fit=crop&q=80', true),
 ('22222222-2222-2222-2222-222222222210', 'Daniel', 'Gómez', 'Rayo', 7, 'delantero', 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=300&auto=format&fit=crop&q=80', true),
-('22222222-2222-2222-2222-222222222211', 'Gonzalo', 'Castro', 'Tanque', 11, 'delantero', 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&auto=format&fit=crop&q=80', true)
+('22222222-2222-2222-2222-222222222211', 'Gonzalo', 'Castro', 'Tanque', 11, 'delantero', 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=300&auto=format&fit=crop&q=80', true),
+
+-- Cuerpo Técnico
+('22222222-2222-2222-2222-222222222212', 'David', 'Guerrero', 'Míster', 0, 'entrenador', 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&auto=format&fit=crop&q=80', true),
+('22222222-2222-2222-2222-222222222213', 'Manuel', 'Torres', 'Manu', 0, 'utillero', 'https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=300&auto=format&fit=crop&q=80', true)
 ON CONFLICT (id) DO NOTHING;
 
 -- 3. Insertar Partidos
