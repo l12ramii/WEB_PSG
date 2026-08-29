@@ -113,7 +113,7 @@ export default function NuevoPartidoPage() {
             {loadingRivals ? (
               <div className="flex items-center gap-2 p-3 text-xs text-secondary">
                 <Loader2 className="h-4 w-4 animate-spin text-accent-cyan" />
-                <span>Cargando rivales desde Supabase...</span>
+                <span>Cargando...</span>
               </div>
             ) : rivals.length === 0 ? (
               <div className="rounded-xl border border-warning/30 bg-warning/15 p-4 text-xs text-warning">

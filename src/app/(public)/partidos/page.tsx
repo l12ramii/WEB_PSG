@@ -150,7 +150,7 @@ export default function PartidosPage() {
         <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-surface py-20 text-center">
           <Loader2 className="h-10 w-10 animate-spin text-accent-cyan" />
           <p className="mt-4 font-display text-sm font-bold uppercase tracking-wider text-secondary">
-            Cargando partidos desde Supabase...
+            Cargando...
           </p>
         </div>
       ) : filteredMatches.length > 0 ? (

@@ -22,6 +22,8 @@ export function PlayerPhotoCarousel({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [touchStart, setTouchStart] = useState<number | null>(null);
 
+  const safeIndex = photos.length > 0 && currentIndex >= photos.length ? 0 : currentIndex;
+  const currentPhoto = photos[safeIndex] || "";
   const hasMultiple = photos.length > 1;
 
   const handlePrev = (e?: React.MouseEvent) => {
@@ -29,7 +31,7 @@ export function PlayerPhotoCarousel({
       e.stopPropagation();
       e.preventDefault();
     }
-    setCurrentIndex((prev) => (prev === 0 ? photos.length - 1 : prev - 1));
+    setCurrentIndex((prev) => (prev <= 0 ? photos.length - 1 : prev - 1));
   };
 
   const handleNext = (e?: React.MouseEvent) => {
@@ -37,7 +39,7 @@ export function PlayerPhotoCarousel({
       e.stopPropagation();
       e.preventDefault();
     }
-    setCurrentIndex((prev) => (prev === photos.length - 1 ? 0 : prev + 1));
+    setCurrentIndex((prev) => (prev >= photos.length - 1 ? 0 : prev + 1));
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -89,8 +91,8 @@ export function PlayerPhotoCarousel({
       >
         {/* Current Photo - Always in 100% full color */}
         <img
-          src={photos[currentIndex]}
-          alt={`${alt} (Foto ${currentIndex + 1})`}
+          src={currentPhoto}
+          alt={`${alt} (Foto ${safeIndex + 1})`}
           className="h-full w-full object-cover object-top transition-transform duration-300 group-hover/carousel:scale-105"
         />
 
@@ -99,7 +101,7 @@ export function PlayerPhotoCarousel({
           <div className="absolute right-2 top-2 z-10 flex items-center gap-1 rounded-full border border-white/10 bg-surface-elevated/85 px-2 py-0.5 font-display text-[10px] font-bold text-accent-cyan shadow-sm backdrop-blur-md">
             <Images className="h-3 w-3" />
             <span>
-              {currentIndex + 1}/{photos.length}
+              {safeIndex + 1}/{photos.length}
             </span>
           </div>
         )}

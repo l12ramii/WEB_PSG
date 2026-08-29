@@ -5,6 +5,7 @@ import { Users, Search, Flame, Loader2 } from "lucide-react";
 import { getPlayerStatsSummary } from "@/lib/data";
 import { PlayerCard } from "@/components/public/PlayerCard";
 import { PlayerPosition, PlayerStatsSummary } from "@/lib/supabase/types";
+import { sortPlayersByPositionAndDorsal } from "@/lib/utils";
 
 export default function PlantillaPage() {
   const [players, setPlayers] = useState<PlayerStatsSummary[]>([]);
@@ -15,7 +16,7 @@ export default function PlantillaPage() {
   useEffect(() => {
     getPlayerStatsSummary()
       .then((data) => {
-        setPlayers(data);
+        setPlayers(sortPlayersByPositionAndDorsal(data));
       })
       .finally(() => {
         setLoading(false);
@@ -30,24 +31,26 @@ export default function PlantillaPage() {
     { key: "delantero", label: "Delanteros" },
   ];
 
-  // Filter players by tab and search
-  const filteredPlayers = players.filter((player) => {
-    if (!player.is_active) return false;
+  // Filter players by tab and search, guaranteeing sorting by position and dorsal
+  const filteredPlayers = sortPlayersByPositionAndDorsal(
+    players.filter((player) => {
+      if (!player.is_active) return false;
 
-    if (activeTab !== "todos" && player.position !== activeTab) {
-      return false;
-    }
+      if (activeTab !== "todos" && player.position !== activeTab) {
+        return false;
+      }
 
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
-      const matchNickname = player.nickname?.toLowerCase().includes(q);
-      const matchFirstName = player.first_name?.toLowerCase().includes(q);
-      const matchDorsal = String(player.dorsal).includes(q);
-      return matchNickname || matchFirstName || matchDorsal;
-    }
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase();
+        const matchNickname = player.nickname?.toLowerCase().includes(q);
+        const matchFirstName = player.first_name?.toLowerCase().includes(q);
+        const matchDorsal = String(player.dorsal).includes(q);
+        return matchNickname || matchFirstName || matchDorsal;
+      }
 
-    return true;
-  });
+      return true;
+    })
+  );
 
   return (
     <div className="container mx-auto space-y-10 px-4 py-12 pb-28">
@@ -122,7 +125,7 @@ export default function PlantillaPage() {
         <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-surface py-20 text-center">
           <Loader2 className="h-10 w-10 animate-spin text-accent-cyan" />
           <p className="mt-4 font-display text-sm font-bold uppercase tracking-wider text-secondary">
-            Cargando plantilla desde Supabase...
+            Cargando...
           </p>
         </div>
       ) : filteredPlayers.length > 0 ? (
@@ -140,7 +143,7 @@ export default function PlantillaPage() {
           </h4>
           <p className="mt-1 text-sm text-secondary">
             {players.length === 0
-              ? "Aún no hay jugadores registrados en la base de datos de Supabase."
+              ? "Aún no hay jugadores registrados en la base de datos."
               : "Prueba con otro término de búsqueda o selecciona otra posición."}
           </p>
         </div>

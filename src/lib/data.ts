@@ -6,6 +6,7 @@ import {
   PlayerStatsSummary,
   MatchDetail,
 } from "./supabase/types";
+import { sortPlayersByPositionAndDorsal } from "./utils";
 
 // ==========================================
 // QUERIES (Lecturas desde Supabase)
@@ -40,7 +41,7 @@ export async function getPlayers(): Promise<Player[]> {
       console.error("Error fetching players from Supabase:", error.message);
       return [];
     }
-    return (data as Player[]) || [];
+    return sortPlayersByPositionAndDorsal((data as Player[]) || []);
   } catch (err) {
     console.error("Unexpected error in getPlayers:", err);
     return [];
@@ -58,24 +59,26 @@ export async function getPlayerStatsSummary(): Promise<PlayerStatsSummary[]> {
       console.error("Error fetching player_stats_summary from Supabase:", error.message);
       // Fallback: si la vista no se ha creado aún, consultar players directamente
       const players = await getPlayers();
-      return players.map((p) => ({
-        player_id: p.id,
-        first_name: p.first_name,
-        last_name: p.last_name,
-        nickname: p.nickname,
-        dorsal: p.dorsal,
-        position: p.position,
-        photo_url: p.photo_url,
-        is_active: p.is_active,
-        matches_played: 0,
-        total_goals: 0,
-        total_assists: 0,
-        total_yellow_cards: 0,
-        total_red_cards: 0,
-        total_clean_sheets: 0,
-      }));
+      return sortPlayersByPositionAndDorsal(
+        players.map((p) => ({
+          player_id: p.id,
+          first_name: p.first_name,
+          last_name: p.last_name,
+          nickname: p.nickname,
+          dorsal: p.dorsal,
+          position: p.position,
+          photo_url: p.photo_url,
+          is_active: p.is_active,
+          matches_played: 0,
+          total_goals: 0,
+          total_assists: 0,
+          total_yellow_cards: 0,
+          total_red_cards: 0,
+          total_clean_sheets: 0,
+        }))
+      );
     }
-    return (data as PlayerStatsSummary[]) || [];
+    return sortPlayersByPositionAndDorsal((data as PlayerStatsSummary[]) || []);
   } catch (err) {
     console.error("Unexpected error in getPlayerStatsSummary:", err);
     return [];

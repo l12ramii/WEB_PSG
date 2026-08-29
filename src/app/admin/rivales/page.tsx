@@ -7,6 +7,7 @@ import { Rival } from "@/lib/supabase/types";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
+import { compressImageFile } from "@/lib/utils";
 
 export default function AdminRivalesPage() {
   const [rivals, setRivals] = useState<Rival[]>([]);
@@ -31,15 +32,12 @@ export default function AdminRivalesPage() {
     loadRivals();
   }, []);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (uploadEvent) => {
-        const result = uploadEvent.target?.result as string;
-        if (result) setShieldUrl(result);
-      };
-      reader.readAsDataURL(file);
+      const compressed = await compressImageFile(file, 600, 600, 0.9);
+      if (compressed) setShieldUrl(compressed);
+      if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
 
@@ -119,7 +117,7 @@ export default function AdminRivalesPage() {
         <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-surface py-20 text-center">
           <Loader2 className="h-10 w-10 animate-spin text-accent-cyan" />
           <p className="mt-4 font-display text-sm font-bold uppercase tracking-wider text-secondary">
-            Cargando rivales desde Supabase...
+            Cargando...
           </p>
         </div>
       ) : filteredRivals.length === 0 ? (

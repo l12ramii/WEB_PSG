@@ -74,6 +74,26 @@ export function getPositionShort(pos: PlayerPosition): string {
   }
 }
 
+export const POSITION_ORDER: Record<PlayerPosition, number> = {
+  portero: 1,
+  defensa: 2,
+  medio: 3,
+  delantero: 4,
+};
+
+export function sortPlayersByPositionAndDorsal<
+  T extends { position: PlayerPosition; dorsal: number }
+>(players: T[]): T[] {
+  return [...players].sort((a, b) => {
+    const posA = POSITION_ORDER[a.position] ?? 99;
+    const posB = POSITION_ORDER[b.position] ?? 99;
+    if (posA !== posB) {
+      return posA - posB;
+    }
+    return (a.dorsal || 0) - (b.dorsal || 0);
+  });
+}
+
 export function getPositionBadgeColor(pos: PlayerPosition): string {
   switch (pos) {
     case "portero":
@@ -107,12 +127,134 @@ export function parsePhotoUrls(
   photoUrls?: string[] | null
 ): string[] {
   if (Array.isArray(photoUrls) && photoUrls.length > 0) {
-    return photoUrls.filter(Boolean);
+    return photoUrls
+      .filter((u): u is string => typeof u === "string" && u.trim().length > 0)
+      .map((u) => u.trim());
   }
-  if (!photoUrl) return [];
-  return photoUrl
-    .split(/[\n,]+/)
-    .map((u) => u.trim())
-    .filter((u) => u.length > 0);
+  if (!photoUrl || typeof photoUrl !== "string") return [];
+
+  const raw = photoUrl.trim();
+  if (!raw) return [];
+
+  if (raw.startsWith("[") && raw.endsWith("]")) {
+    try {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        return parsed
+          .filter(
+            (item): item is string =>
+              typeof item === "string" && item.trim().length > 0
+          )
+          .map((item) => item.trim());
+      }
+    } catch {
+      // Not JSON, continue to string parsing
+    }
+  }
+
+  // Split by newlines first
+  const lines = raw.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+  const result: string[] = [];
+
+  for (const line of lines) {
+    if (line.includes("data:")) {
+      if (line.startsWith("data:") && !line.slice(5).includes("data:")) {
+        result.push(line);
+      } else {
+        const regex =
+          /(data:[^;]+;base64,[A-Za-z0-9+/=]+|https?:\/\/[^\s,]+|\/[^\s,]+|[^\s,]+)/g;
+        let match;
+        while ((match = regex.exec(line)) !== null) {
+          const item = match[0].trim();
+          if (item && item !== ",") result.push(item);
+        }
+      }
+    } else if (line.includes(",")) {
+      const parts = line.split(",").map((p) => p.trim()).filter(Boolean);
+      result.push(...parts);
+    } else {
+      result.push(line);
+    }
+  }
+
+  return result.filter((u) => u.length > 0);
 }
+
+/**
+ * Optimizes/compresses an image file before upload (creating a high-quality lightweight Data URL).
+ * Keeps dimensions within maxWidth/maxHeight and outputs JPEG data URI for fast performance.
+ */
+export async function compressImageFile(
+  file: File,
+  maxWidth = 1200,
+  maxHeight = 1200,
+  quality = 0.85
+): Promise<string> {
+  return new Promise((resolve) => {
+    if (typeof window === "undefined") {
+      resolve("");
+      return;
+    }
+
+    if (file.type === "image/svg+xml" || file.type === "image/gif") {
+      const reader = new FileReader();
+      reader.onload = () => resolve((reader.result as string) || "");
+      reader.onerror = () => resolve("");
+      reader.readAsDataURL(file);
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const src = e.target?.result as string;
+      if (!src) {
+        resolve("");
+        return;
+      }
+
+      const img = new Image();
+      img.onload = () => {
+        let width = img.naturalWidth || img.width;
+        let height = img.naturalHeight || img.height;
+
+        if (width > maxWidth || height > maxHeight) {
+          const ratio = Math.min(maxWidth / width, maxHeight / height);
+          width = Math.round(width * ratio);
+          height = Math.round(height * ratio);
+        }
+
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+
+        if (!ctx) {
+          resolve(src);
+          return;
+        }
+
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = "high";
+        ctx.drawImage(img, 0, 0, width, height);
+
+        try {
+          const compressedDataUrl = canvas.toDataURL("image/jpeg", quality);
+          resolve(compressedDataUrl);
+        } catch {
+          resolve(src);
+        }
+      };
+
+      img.onerror = () => {
+        resolve(src);
+      };
+
+      img.src = src;
+    };
+
+    reader.onerror = () => resolve("");
+    reader.readAsDataURL(file);
+  });
+}
+
 

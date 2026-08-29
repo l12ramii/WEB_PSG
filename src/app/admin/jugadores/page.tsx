@@ -22,7 +22,12 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
-import { getPositionName } from "@/lib/utils";
+import {
+  getPositionName,
+  parsePhotoUrls,
+  compressImageFile,
+  sortPlayersByPositionAndDorsal,
+} from "@/lib/utils";
 
 export default function AdminJugadoresPage() {
   const [players, setPlayers] = useState<Player[]>([]);
@@ -40,28 +45,40 @@ export default function AdminJugadoresPage() {
   const [photoUrl, setPhotoUrl] = useState("");
   const [isActive, setIsActive] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [isProcessingPhotos, setIsProcessingPhotos] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
-    Array.from(files).forEach((file) => {
-      const reader = new FileReader();
-      reader.onload = (uploadEvent) => {
-        const result = uploadEvent.target?.result as string;
-        if (result) {
-          setPhotoUrl((prev) => (prev.trim() ? `${prev.trim()}\n${result}` : result));
-        }
-      };
-      reader.readAsDataURL(file);
-    });
+    setIsProcessingPhotos(true);
+    try {
+      const fileList = Array.from(files);
+      const dataUrls = await Promise.all(
+        fileList.map((file) => compressImageFile(file))
+      );
+      const validUrls = dataUrls.filter((u) => Boolean(u && u.trim().length > 0));
+
+      if (validUrls.length > 0) {
+        const currentUrls = parsePhotoUrls(photoUrl);
+        const combined = [...currentUrls, ...validUrls];
+        setPhotoUrl(combined.join("\n"));
+      }
+    } catch (err) {
+      console.error("Error al procesar fotos:", err);
+    } finally {
+      setIsProcessingPhotos(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
   };
 
   const loadPlayers = async () => {
     try {
       const data = await getPlayers();
-      setPlayers(data);
+      setPlayers(sortPlayersByPositionAndDorsal(data));
     } finally {
       setLoading(false);
     }
@@ -103,8 +120,10 @@ export default function AdminJugadoresPage() {
     });
     if (updated) {
       setPlayers((prev) =>
-        prev.map((p) =>
-          p.id === player.id ? { ...p, is_active: !p.is_active } : p
+        sortPlayersByPositionAndDorsal(
+          prev.map((p) =>
+            p.id === player.id ? { ...p, is_active: !p.is_active } : p
+          )
         )
       );
     }
@@ -131,7 +150,9 @@ export default function AdminJugadoresPage() {
         });
         if (updated) {
           setPlayers((prev) =>
-            prev.map((p) => (p.id === editingPlayer.id ? updated : p))
+            sortPlayersByPositionAndDorsal(
+              prev.map((p) => (p.id === editingPlayer.id ? updated : p))
+            )
           );
         }
       } else {
@@ -144,7 +165,7 @@ export default function AdminJugadoresPage() {
           photo_url: photoUrl || null,
           is_active: isActive,
         });
-        setPlayers((prev) => [...prev, newP]);
+        setPlayers((prev) => sortPlayersByPositionAndDorsal([...prev, newP]));
       }
       setIsModalOpen(false);
     } catch (err: any) {
@@ -154,15 +175,17 @@ export default function AdminJugadoresPage() {
     }
   };
 
-  const filteredPlayers = players.filter((p) => {
-    if (!search.trim()) return true;
-    const q = search.toLowerCase();
-    return (
-      p.nickname?.toLowerCase().includes(q) ||
-      p.first_name?.toLowerCase().includes(q) ||
-      String(p.dorsal).includes(q)
-    );
-  });
+  const filteredPlayers = sortPlayersByPositionAndDorsal(
+    players.filter((p) => {
+      if (!search.trim()) return true;
+      const q = search.toLowerCase();
+      return (
+        p.nickname?.toLowerCase().includes(q) ||
+        p.first_name?.toLowerCase().includes(q) ||
+        String(p.dorsal).includes(q)
+      );
+    })
+  );
 
   return (
     <div className="space-y-8 pb-20">
@@ -207,7 +230,7 @@ export default function AdminJugadoresPage() {
         <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-surface py-20 text-center">
           <Loader2 className="h-10 w-10 animate-spin text-accent-cyan" />
           <p className="mt-4 font-display text-sm font-bold uppercase tracking-wider text-secondary">
-            Cargando jugadores desde Supabase...
+            Cargando...
           </p>
         </div>
       ) : (
@@ -225,9 +248,7 @@ export default function AdminJugadoresPage() {
           ) : (
             <div className="divide-y divide-white/10">
               {filteredPlayers.map((player) => {
-                const playerPhotos = player.photo_url
-                  ? player.photo_url.split(/[\n,]+/).map((u) => u.trim()).filter(Boolean)
-                  : [];
+                const playerPhotos = parsePhotoUrls(player.photo_url);
                 return (
                   <div
                     key={player.id}
@@ -380,11 +401,21 @@ export default function AdminJugadoresPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <button
                 type="button"
+                disabled={isProcessingPhotos}
                 onClick={() => fileInputRef.current?.click()}
-                className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-white/20 bg-surface-elevated/50 p-4 text-xs font-bold uppercase tracking-wider text-secondary hover:border-accent-cyan hover:text-accent-cyan transition-colors focus-ring"
+                className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-white/20 bg-surface-elevated/50 p-4 text-xs font-bold uppercase tracking-wider text-secondary hover:border-accent-cyan hover:text-accent-cyan transition-colors focus-ring disabled:opacity-50"
               >
-                <Upload className="h-4 w-4" />
-                <span>Subir fotos locales</span>
+                {isProcessingPhotos ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin text-accent-cyan" />
+                    <span>Optimizando fotos...</span>
+                  </>
+                ) : (
+                  <>
+                    <Upload className="h-4 w-4" />
+                    <span>Subir fotos locales</span>
+                  </>
+                )}
               </button>
 
               <textarea
@@ -398,27 +429,27 @@ export default function AdminJugadoresPage() {
           </div>
 
           {/* Live Photo Gallery Preview with Deletion */}
-          {photoUrl.trim() && (
-            <div className="space-y-2 rounded-xl border border-white/10 bg-surface-elevated/40 p-3">
-              <div className="flex items-center justify-between">
-                <span className="block font-display text-[10px] font-bold uppercase tracking-wider text-secondary">
-                  Fotos cargadas ({photoUrl.split(/[\n,]+/).map((u) => u.trim()).filter(Boolean).length}):
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setPhotoUrl("")}
-                  className="text-[10px] text-danger hover:underline font-bold uppercase"
-                >
-                  Limpiar todas
-                </button>
-              </div>
+          {(() => {
+            const activePhotos = parsePhotoUrls(photoUrl);
+            if (activePhotos.length === 0) return null;
 
-              <div className="flex items-center gap-2.5 overflow-x-auto py-1">
-                {photoUrl
-                  .split(/[\n,]+/)
-                  .map((u) => u.trim())
-                  .filter(Boolean)
-                  .map((url, idx, arr) => (
+            return (
+              <div className="space-y-2 rounded-xl border border-white/10 bg-surface-elevated/40 p-3">
+                <div className="flex items-center justify-between">
+                  <span className="block font-display text-[10px] font-bold uppercase tracking-wider text-secondary">
+                    Fotos cargadas ({activePhotos.length}):
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setPhotoUrl("")}
+                    className="text-[10px] text-danger hover:underline font-bold uppercase"
+                  >
+                    Limpiar todas
+                  </button>
+                </div>
+
+                <div className="flex items-center gap-2.5 overflow-x-auto py-1">
+                  {activePhotos.map((url, idx) => (
                     <div
                       key={idx}
                       className="group relative flex aspect-[3/4] w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-surface-elevated shadow-sm"
@@ -434,19 +465,22 @@ export default function AdminJugadoresPage() {
                       <button
                         type="button"
                         onClick={() => {
-                          const updated = arr.filter((_, i) => i !== idx).join("\n");
+                          const updated = activePhotos
+                            .filter((_, i) => i !== idx)
+                            .join("\n");
                           setPhotoUrl(updated);
                         }}
-                        className="absolute top-1 right-1 h-4 w-4 rounded-full bg-danger text-white flex items-center justify-center opacity-90 hover:opacity-100 shadow-sm"
+                        className="absolute top-1 right-1 h-4 w-4 rounded-full bg-danger text-white flex items-center justify-center opacity-90 hover:opacity-100 shadow-sm transition-opacity"
                         title="Eliminar foto"
                       >
                         <X className="h-3 w-3" />
                       </button>
                     </div>
                   ))}
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
 
           <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 border-t border-white/10 pt-4">
             <Button

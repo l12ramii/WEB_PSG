@@ -1,6 +1,7 @@
 import React from "react";
 import { Trophy, Target, Sparkles, ShieldCheck, User } from "lucide-react";
 import { PlayerStatsSummary } from "@/lib/supabase/types";
+import { parsePhotoUrls } from "@/lib/utils";
 
 interface StatLeadersProps {
   topScorer?: PlayerStatsSummary | null;
@@ -79,10 +80,10 @@ export function StatLeaders({
               {/* Player Portrait & Info */}
               <div className="my-4 flex items-center gap-4 min-w-0">
                 <div className="relative flex h-16 w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated shadow-md">
-                  {leader.player?.photo_url ? (
+                  {parsePhotoUrls(leader.player?.photo_url)[0] ? (
                     <img
-                      src={leader.player.photo_url.split(/[\n,]+/)[0].trim()}
-                      alt={leader.player.nickname}
+                      src={parsePhotoUrls(leader.player?.photo_url)[0]}
+                      alt={leader.player?.nickname || leader.title}
                       className="h-full w-full object-cover object-top transition-all duration-300 group-hover:scale-105"
                     />
                   ) : (
