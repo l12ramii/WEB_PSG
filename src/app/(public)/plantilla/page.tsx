@@ -1,20 +1,25 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Users, Search, Flame } from "lucide-react";
+import { Users, Search, Flame, Loader2 } from "lucide-react";
 import { getPlayerStatsSummary } from "@/lib/data";
 import { PlayerCard } from "@/components/public/PlayerCard";
 import { PlayerPosition, PlayerStatsSummary } from "@/lib/supabase/types";
-import { initialStatsSummary } from "@/lib/mock-data";
 
 export default function PlantillaPage() {
-  const [players, setPlayers] =
-    useState<PlayerStatsSummary[]>(initialStatsSummary);
+  const [players, setPlayers] = useState<PlayerStatsSummary[]>([]);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"todos" | PlayerPosition>("todos");
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    getPlayerStatsSummary().then(setPlayers);
+    getPlayerStatsSummary()
+      .then((data) => {
+        setPlayers(data);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const positions: { key: "todos" | PlayerPosition; label: string }[] = [
@@ -35,8 +40,8 @@ export default function PlantillaPage() {
 
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
-      const matchNickname = player.nickname.toLowerCase().includes(q);
-      const matchFirstName = player.first_name.toLowerCase().includes(q);
+      const matchNickname = player.nickname?.toLowerCase().includes(q);
+      const matchFirstName = player.first_name?.toLowerCase().includes(q);
       const matchDorsal = String(player.dorsal).includes(q);
       return matchNickname || matchFirstName || matchDorsal;
     }
@@ -63,8 +68,6 @@ export default function PlantillaPage() {
 
       {/* Control Panel: Segmented Tabs & Search Bar */}
       <div className="flex flex-col items-center justify-between gap-4 rounded-xl border border-white/10 bg-surface p-4 inner-light backdrop-blur-md md:flex-row">
-        {/* Segmented Position Tabs */}
-        <div className="flex w-full items-center gap-1.5 overflow-x-auto rounded-lg border border-white/10 bg-surface-elevated/60 p-1.5 md:w-auto">
         {/* Segmented Position Tabs (Mobile Responsive Wrap & Desktop Single Line) */}
         <div className="flex w-full flex-wrap sm:flex-nowrap items-center gap-1.5 rounded-lg border border-white/10 bg-surface-elevated/60 p-1.5 md:w-auto max-w-full">
           {positions.map((pos) => {
@@ -80,7 +83,6 @@ export default function PlantillaPage() {
               <button
                 key={pos.key}
                 onClick={() => setActiveTab(pos.key)}
-                className={`flex items-center gap-2 whitespace-nowrap rounded-md px-3.5 py-2 font-display text-xs font-bold uppercase tracking-wider transition-all duration-200 focus-ring ${
                 className={`flex flex-1 sm:flex-initial items-center justify-center gap-2 whitespace-nowrap rounded-md px-3 py-2 font-display text-xs font-bold uppercase tracking-wider transition-all duration-200 focus-ring ${
                   isActive
                     ? "border border-accent-cyan/40 bg-surface-elevated text-primary shadow-glow-subtle"
@@ -115,22 +117,31 @@ export default function PlantillaPage() {
         </div>
       </div>
 
-      {/* Squad Grid */}
-      {filteredPlayers.length > 0 ? (
+      {/* Squad Grid or Loading / Empty States */}
+      {loading ? (
+        <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-surface py-20 text-center">
+          <Loader2 className="h-10 w-10 animate-spin text-accent-cyan" />
+          <p className="mt-4 font-display text-sm font-bold uppercase tracking-wider text-secondary">
+            Cargando plantilla desde Supabase...
+          </p>
+        </div>
+      ) : filteredPlayers.length > 0 ? (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filteredPlayers.map((player) => (
             <PlayerCard key={player.player_id} player={player} />
           ))}
         </div>
       ) : (
-        /* Empty State (DESIGN_SYSTEM Section 3.2) */
+        /* Empty State */
         <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-surface py-16 text-center">
           <Users className="h-12 w-12 text-muted" />
           <h4 className="mt-3 text-lg font-bold text-primary font-display">
             No se encontraron jugadores
           </h4>
           <p className="mt-1 text-sm text-secondary">
-            Prueba con otro término de búsqueda o selecciona otra posición.
+            {players.length === 0
+              ? "Aún no hay jugadores registrados en la base de datos de Supabase."
+              : "Prueba con otro término de búsqueda o selecciona otra posición."}
           </p>
         </div>
       )}

@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import { PsgShield } from "@/components/ui/PsgShield";
 
 export function AdminNav() {
   const pathname = usePathname();
@@ -46,8 +47,8 @@ export function AdminNav() {
         {/* Brand & CM Badge */}
         <div className="flex items-center gap-3.5 min-w-0">
           <Link href="/admin" className="flex items-center gap-3 focus-ring rounded-xl p-1">
-            <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-accent-cyan to-accent-blue font-bold text-background shadow-glow-subtle">
-              <Flame className="h-6 w-6 text-background" />
+            <div className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated p-1 shadow-glow-subtle">
+              <PsgShield size="sm" />
             </div>
             <div className="flex flex-col min-w-0">
               <div className="flex items-baseline gap-1.5">

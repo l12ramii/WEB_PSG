@@ -1,11 +1,5 @@
 import { createClient } from "./supabase/client";
 import {
-  initialPlayers,
-  initialRivals,
-  initialMatches,
-  initialStatsSummary,
-} from "./mock-data";
-import {
   Player,
   Rival,
   MatchWithRival,
@@ -13,396 +7,259 @@ import {
   MatchDetail,
 } from "./supabase/types";
 
-// In-memory runtime cache for seamless local state mutations
-let localPlayers: Player[] = [...initialPlayers];
-let localRivals: Rival[] = [...initialRivals];
-let localMatches: MatchWithRival[] = [...initialMatches];
-let localMatchStats: Record<string, any[]> = {
-  "match-1": [
-    {
-      id: "s1",
-      match_id: "match-1",
-      player_id: "player-1",
-      played: true,
-      goals: 0,
-      assists: 0,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[0],
-    },
-    {
-      id: "s2",
-      match_id: "match-1",
-      player_id: "player-3",
-      played: true,
-      goals: 0,
-      assists: 0,
-      yellow_cards: 1,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[2],
-    },
-    {
-      id: "s3",
-      match_id: "match-1",
-      player_id: "player-4",
-      played: true,
-      goals: 0,
-      assists: 1,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[3],
-    },
-    {
-      id: "s4",
-      match_id: "match-1",
-      player_id: "player-6",
-      played: true,
-      goals: 1,
-      assists: 2,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[5],
-    },
-    {
-      id: "s5",
-      match_id: "match-1",
-      player_id: "player-7",
-      played: true,
-      goals: 0,
-      assists: 0,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[6],
-    },
-    {
-      id: "s6",
-      match_id: "match-1",
-      player_id: "player-9",
-      played: true,
-      goals: 2,
-      assists: 0,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[8],
-    },
-    {
-      id: "s7",
-      match_id: "match-1",
-      player_id: "player-10",
-      played: true,
-      goals: 1,
-      assists: 1,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[9],
-    },
-  ],
-  "match-2": [
-    {
-      id: "s8",
-      match_id: "match-2",
-      player_id: "player-1",
-      played: true,
-      goals: 0,
-      assists: 0,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: true,
-      player: initialPlayers[0],
-    },
-    {
-      id: "s9",
-      match_id: "match-2",
-      player_id: "player-3",
-      played: true,
-      goals: 0,
-      assists: 0,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[2],
-    },
-    {
-      id: "s10",
-      match_id: "match-2",
-      player_id: "player-5",
-      played: true,
-      goals: 1,
-      assists: 0,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[4],
-    },
-    {
-      id: "s11",
-      match_id: "match-2",
-      player_id: "player-6",
-      played: true,
-      goals: 0,
-      assists: 1,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[5],
-    },
-    {
-      id: "s12",
-      match_id: "match-2",
-      player_id: "player-8",
-      played: true,
-      goals: 0,
-      assists: 1,
-      yellow_cards: 1,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[7],
-    },
-    {
-      id: "s13",
-      match_id: "match-2",
-      player_id: "player-9",
-      played: true,
-      goals: 2,
-      assists: 0,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[8],
-    },
-    {
-      id: "s14",
-      match_id: "match-2",
-      player_id: "player-11",
-      played: true,
-      goals: 0,
-      assists: 1,
-      yellow_cards: 0,
-      red_cards: 0,
-      clean_sheet: false,
-      player: initialPlayers[10],
-    },
-  ],
-};
-
-function hasSupabaseConfig() {
-  return Boolean(
-    process.env.NEXT_PUBLIC_SUPABASE_URL &&
-    process.env.NEXT_PUBLIC_SUPABASE_URL.startsWith("http") &&
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY !== "your-anon-key-here"
-  );
-}
+// ==========================================
+// QUERIES (Lecturas desde Supabase)
+// ==========================================
 
 export async function getRivals(): Promise<Rival[]> {
-  if (hasSupabaseConfig()) {
-    try {
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from("rivals")
-        .select("*")
-        .order("name");
-      if (!error && data && data.length > 0) return data as Rival[];
-    } catch {
-      // Fallback
+  try {
+    const supabase = createClient();
+    const { data, error } = await (supabase.from("rivals") as any)
+      .select("*")
+      .order("name", { ascending: true });
+
+    if (error) {
+      console.error("Error fetching rivals from Supabase:", error.message);
+      return [];
     }
+    return (data as Rival[]) || [];
+  } catch (err) {
+    console.error("Unexpected error in getRivals:", err);
+    return [];
   }
-  return localRivals;
 }
 
 export async function getPlayers(): Promise<Player[]> {
-  if (hasSupabaseConfig()) {
-    try {
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from("players")
-        .select("*")
-        .order("dorsal");
-      if (!error && data && data.length > 0) return data as Player[];
-    } catch {
-      // Fallback
+  try {
+    const supabase = createClient();
+    const { data, error } = await (supabase.from("players") as any)
+      .select("*")
+      .order("dorsal", { ascending: true });
+
+    if (error) {
+      console.error("Error fetching players from Supabase:", error.message);
+      return [];
     }
+    return (data as Player[]) || [];
+  } catch (err) {
+    console.error("Unexpected error in getPlayers:", err);
+    return [];
   }
-  return localPlayers;
 }
 
 export async function getPlayerStatsSummary(): Promise<PlayerStatsSummary[]> {
-  if (hasSupabaseConfig()) {
-    try {
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from("player_stats_summary")
-        .select("*")
-        .order("dorsal");
-      if (!error && data && data.length > 0)
-        return data as PlayerStatsSummary[];
-    } catch {
-      // Fallback
+  try {
+    const supabase = createClient();
+    const { data, error } = await (supabase.from("player_stats_summary") as any)
+      .select("*")
+      .order("dorsal", { ascending: true });
+
+    if (error) {
+      console.error("Error fetching player_stats_summary from Supabase:", error.message);
+      // Fallback: si la vista no se ha creado aún, consultar players directamente
+      const players = await getPlayers();
+      return players.map((p) => ({
+        player_id: p.id,
+        first_name: p.first_name,
+        last_name: p.last_name,
+        nickname: p.nickname,
+        dorsal: p.dorsal,
+        position: p.position,
+        photo_url: p.photo_url,
+        is_active: p.is_active,
+        matches_played: 0,
+        total_goals: 0,
+        total_assists: 0,
+        total_yellow_cards: 0,
+        total_red_cards: 0,
+        total_clean_sheets: 0,
+      }));
     }
+    return (data as PlayerStatsSummary[]) || [];
+  } catch (err) {
+    console.error("Unexpected error in getPlayerStatsSummary:", err);
+    return [];
   }
-
-  return localPlayers.map((player) => {
-    let matchesPlayed = 0;
-    let goals = 0;
-    let assists = 0;
-    let yellowCards = 0;
-    let redCards = 0;
-    let cleanSheets = 0;
-
-    for (const matchId in localMatchStats) {
-      const statsList = localMatchStats[matchId] || [];
-      const pStat = statsList.find((s) => s.player_id === player.id);
-      if (pStat && pStat.played) {
-        matchesPlayed += 1;
-        goals += pStat.goals || 0;
-        assists += pStat.assists || 0;
-        yellowCards += pStat.yellow_cards || 0;
-        redCards += pStat.red_cards || 0;
-        if (pStat.clean_sheet && player.position === "portero") {
-          cleanSheets += 1;
-        }
-      }
-    }
-
-    return {
-      player_id: player.id,
-      first_name: player.first_name,
-      last_name: player.last_name,
-      nickname: player.nickname,
-      dorsal: player.dorsal,
-      position: player.position,
-      photo_url: player.photo_url,
-      is_active: player.is_active,
-      matches_played: matchesPlayed,
-      total_goals: goals,
-      total_assists: assists,
-      total_yellow_cards: yellowCards,
-      total_red_cards: redCards,
-      total_clean_sheets: cleanSheets,
-    };
-  });
 }
 
 export async function getMatches(): Promise<MatchWithRival[]> {
-  if (hasSupabaseConfig()) {
-    try {
-      const supabase = createClient();
-      const { data, error } = await supabase
-        .from("matches")
-        .select("*, rival:rivals(*)")
-        .order("match_date", { ascending: true });
-      if (!error && data && data.length > 0) return data as MatchWithRival[];
-    } catch {
-      // Fallback
+  try {
+    const supabase = createClient();
+    const { data, error } = await (supabase.from("matches") as any)
+      .select("*, rival:rivals(*)")
+      .order("match_date", { ascending: true });
+
+    if (error) {
+      console.error("Error fetching matches from Supabase:", error.message);
+      return [];
     }
+    return (data as MatchWithRival[]) || [];
+  } catch (err) {
+    console.error("Unexpected error in getMatches:", err);
+    return [];
   }
-  return localMatches.sort(
-    (a, b) =>
-      new Date(a.match_date).getTime() - new Date(b.match_date).getTime()
-  );
 }
 
 export async function getNextMatch(): Promise<MatchWithRival | null> {
-  const matches = await getMatches();
-  const now = new Date().getTime();
-  const upcoming = matches
-    .filter(
-      (m) => !m.is_finished && new Date(m.match_date).getTime() >= now - 7200000
-    )
-    .sort(
-      (a, b) =>
-        new Date(a.match_date).getTime() - new Date(b.match_date).getTime()
-    );
-  return upcoming[0] || null;
+  try {
+    const matches = await getMatches();
+    const now = new Date().getTime();
+    const upcoming = matches
+      .filter(
+        (m) => !m.is_finished && new Date(m.match_date).getTime() >= now - 7200000
+      )
+      .sort(
+        (a, b) =>
+          new Date(a.match_date).getTime() - new Date(b.match_date).getTime()
+      );
+    return upcoming[0] || null;
+  } catch (err) {
+    console.error("Error in getNextMatch:", err);
+    return null;
+  }
 }
 
 export async function getLastResult(): Promise<MatchWithRival | null> {
-  const matches = await getMatches();
-  const finished = matches
-    .filter((m) => m.is_finished)
-    .sort(
-      (a, b) =>
-        new Date(b.match_date).getTime() - new Date(a.match_date).getTime()
-    );
-  return finished[0] || null;
+  try {
+    const matches = await getMatches();
+    const finished = matches
+      .filter((m) => m.is_finished)
+      .sort(
+        (a, b) =>
+          new Date(b.match_date).getTime() - new Date(a.match_date).getTime()
+      );
+    return finished[0] || null;
+  } catch (err) {
+    console.error("Error in getLastResult:", err);
+    return null;
+  }
 }
 
 export async function getMatchById(id: string): Promise<MatchDetail | null> {
-  const matches = await getMatches();
-  const match = matches.find((m) => m.id === id);
-  if (!match) return null;
+  try {
+    const supabase = createClient();
+    const { data: matchData, error: matchError } = await (supabase.from("matches") as any)
+      .select("*, rival:rivals(*)")
+      .eq("id", id)
+      .single();
 
-  const stats = (localMatchStats[id] || []).map((s) => ({
-    ...s,
-    player: localPlayers.find((p) => p.id === s.player_id) || {
-      id: s.player_id,
-      first_name: "Jugador",
-      last_name: "",
-      nickname: "Desconocido",
-      dorsal: 0,
-      position: "medio",
-      photo_url: null,
-      is_active: true,
-      created_at: new Date().toISOString(),
-    },
-  }));
+    if (matchError || !matchData) {
+      console.error("Error fetching match by id from Supabase:", matchError?.message);
+      return null;
+    }
 
-  return {
-    ...match,
-    stats,
-  };
+    const { data: statsData, error: statsError } = await (supabase.from("match_player_stats") as any)
+      .select("*, player:players(*)")
+      .eq("match_id", id);
+
+    if (statsError) {
+      console.error("Error fetching match stats from Supabase:", statsError.message);
+    }
+
+    return {
+      ...(matchData as MatchWithRival),
+      stats: (statsData as any[]) || [],
+    };
+  } catch (err) {
+    console.error("Unexpected error in getMatchById:", err);
+    return null;
+  }
 }
 
 export async function getStatLeaders() {
   const stats = await getPlayerStatsSummary();
 
-  const topScorer = [...stats].sort((a, b) => b.total_goals - a.total_goals)[0];
-  const topAssistant = [...stats].sort(
-    (a, b) => b.total_assists - a.total_assists
+  if (!stats || stats.length === 0) {
+    return {
+      topScorer: null,
+      topAssistant: null,
+      topKeeper: null,
+    };
+  }
+
+  const topScorer = [...stats].sort(
+    (a, b) => (b.total_goals || 0) - (a.total_goals || 0)
   )[0];
+
+  const topAssistant = [...stats].sort(
+    (a, b) => (b.total_assists || 0) - (a.total_assists || 0)
+  )[0];
+
   const topKeeper = [...stats]
     .filter((p) => p.position === "portero")
-    .sort((a, b) => b.total_clean_sheets - a.total_clean_sheets)[0];
+    .sort((a, b) => (b.total_clean_sheets || 0) - (a.total_clean_sheets || 0))[0];
 
   return {
-    topScorer: topScorer?.total_goals > 0 ? topScorer : stats[0],
-    topAssistant: topAssistant?.total_assists > 0 ? topAssistant : stats[0],
-    topKeeper: topKeeper || stats[0],
+    topScorer: topScorer?.total_goals > 0 ? topScorer : stats[0] || null,
+    topAssistant: topAssistant?.total_assists > 0 ? topAssistant : stats[0] || null,
+    topKeeper: topKeeper || stats.find((p) => p.position === "portero") || stats[0] || null,
   };
 }
 
-// Data Mutations (Admin Actions)
-export async function addRival(name: string, shield_url?: string | null) {
-  const newRival: Rival = {
-    id: "rival-" + Date.now(),
-    name,
-    shield_url: shield_url || null,
-    created_at: new Date().toISOString(),
-  };
-  localRivals.push(newRival);
-  return newRival;
+// ==========================================
+// MUTATIONS (Escrituras / Inserciones en Supabase)
+// ==========================================
+
+export async function addRival(
+  name: string,
+  shield_url?: string | null
+): Promise<Rival> {
+  const supabase = createClient();
+  const { data, error } = await (supabase.from("rivals") as any)
+    .insert({
+      name,
+      shield_url: shield_url || null,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error adding rival to Supabase:", error.message);
+    throw error;
+  }
+  return data as Rival;
 }
 
-export async function addPlayer(data: Omit<Player, "id" | "created_at">) {
-  const newPlayer: Player = {
-    ...data,
-    id: "player-" + Date.now(),
-    created_at: new Date().toISOString(),
-  };
-  localPlayers.push(newPlayer);
-  return newPlayer;
+export async function addPlayer(
+  data: Omit<Player, "id" | "created_at">
+): Promise<Player> {
+  const supabase = createClient();
+  const { data: newPlayer, error } = await (supabase.from("players") as any)
+    .insert({
+      first_name: data.first_name,
+      last_name: data.last_name || null,
+      nickname: data.nickname,
+      dorsal: data.dorsal,
+      position: data.position,
+      photo_url: data.photo_url || null,
+      is_active: data.is_active ?? true,
+    })
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error adding player to Supabase:", error.message);
+    throw error;
+  }
+  return newPlayer as Player;
 }
 
-export async function updatePlayer(id: string, data: Partial<Player>) {
-  localPlayers = localPlayers.map((p) => (p.id === id ? { ...p, ...data } : p));
-  return localPlayers.find((p) => p.id === id);
+export async function updatePlayer(
+  id: string,
+  data: Partial<Player>
+): Promise<Player | null> {
+  const supabase = createClient();
+  const { data: updatedPlayer, error } = await (supabase.from("players") as any)
+    .update(data)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error updating player in Supabase:", error.message);
+    throw error;
+  }
+  return updatedPlayer as Player;
 }
 
 export async function addMatch(data: {
@@ -410,28 +267,23 @@ export async function addMatch(data: {
   is_home: boolean;
   match_date: string;
   competition: "liga" | "copa" | "amistoso";
-}) {
-  const rival = localRivals.find((r) => r.id === data.rival_id);
-  const newMatch: MatchWithRival = {
-    id: "match-" + Date.now(),
-    rival_id: data.rival_id,
-    is_home: data.is_home,
-    match_date: data.match_date,
-    competition: data.competition,
-    psg_score: null,
-    rival_score: null,
-    is_finished: false,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
-    rival: rival || {
-      id: data.rival_id,
-      name: "Rival",
-      shield_url: null,
-      created_at: new Date().toISOString(),
-    },
-  };
-  localMatches.push(newMatch);
-  return newMatch;
+}): Promise<MatchWithRival> {
+  const supabase = createClient();
+  const { data: newMatch, error } = await (supabase.from("matches") as any)
+    .insert({
+      rival_id: data.rival_id,
+      is_home: data.is_home,
+      match_date: data.match_date,
+      competition: data.competition,
+    })
+    .select("*, rival:rivals(*)")
+    .single();
+
+  if (error) {
+    console.error("Error adding match to Supabase:", error.message);
+    throw error;
+  }
+  return newMatch as MatchWithRival;
 }
 
 export async function saveMatchSheet(
@@ -448,25 +300,45 @@ export async function saveMatchSheet(
     clean_sheet: boolean;
   }[]
 ) {
-  localMatches = localMatches.map((m) => {
-    if (m.id === matchId) {
-      return {
-        ...m,
-        psg_score: psgScore,
-        rival_score: rivalScore,
-        is_finished: true,
-        updated_at: new Date().toISOString(),
-      };
-    }
-    return m;
-  });
+  const supabase = createClient();
 
-  localMatchStats[matchId] = playerStats.map((stat, idx) => ({
-    id: `stat-${matchId}-${idx}`,
-    match_id: matchId,
-    ...stat,
-    player: localPlayers.find((p) => p.id === stat.player_id),
-  }));
+  // 1. Actualizar el marcador del partido
+  const { error: matchError } = await (supabase.from("matches") as any)
+    .update({
+      psg_score: psgScore,
+      rival_score: rivalScore,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", matchId);
+
+  if (matchError) {
+    console.error("Error updating match score in Supabase:", matchError.message);
+    throw matchError;
+  }
+
+  // 2. Insertar o actualizar (upsert) las estadísticas de los jugadores en el acta
+  if (playerStats.length > 0) {
+    const statsToUpsert = playerStats.map((stat) => ({
+      match_id: matchId,
+      player_id: stat.player_id,
+      played: stat.played,
+      goals: stat.goals,
+      assists: stat.assists,
+      yellow_cards: stat.yellow_cards,
+      red_cards: stat.red_cards,
+      clean_sheet: stat.clean_sheet,
+    }));
+
+    const { error: statsError } = await (supabase.from("match_player_stats") as any)
+      .upsert(statsToUpsert, {
+        onConflict: "match_id,player_id",
+      });
+
+    if (statsError) {
+      console.error("Error saving match player stats in Supabase:", statsError.message);
+      throw statsError;
+    }
+  }
 
   return { success: true };
 }

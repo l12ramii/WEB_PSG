@@ -1,18 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { Plus, Shield, Check, Trophy, Search } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
-import { Plus, Shield, Check, Trophy, Search, Upload, ImagePlus, X, Link as LinkIcon } from "lucide-react";
+import { Plus, Shield, Check, Trophy, Search, Upload, X, Loader2 } from "lucide-react";
 import { getRivals, addRival } from "@/lib/data";
 import { Rival } from "@/lib/supabase/types";
-import { initialRivals } from "@/lib/mock-data";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 
 export default function AdminRivalesPage() {
-  const [rivals, setRivals] = useState<Rival[]>(initialRivals);
+  const [rivals, setRivals] = useState<Rival[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
@@ -20,8 +18,17 @@ export default function AdminRivalesPage() {
   const [saving, setSaving] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const loadRivals = async () => {
+    try {
+      const data = await getRivals();
+      setRivals(data);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    getRivals().then(setRivals);
+    loadRivals();
   }, []);
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,15 +57,15 @@ export default function AdminRivalesPage() {
       setName("");
       setShieldUrl("");
       setIsModalOpen(false);
-    } catch (err) {
-      alert("Error al guardar el rival");
+    } catch (err: any) {
+      alert("Error al guardar el rival en Supabase: " + (err?.message || ""));
     } finally {
       setSaving(false);
     }
   };
 
   const filteredRivals = rivals.filter((r) =>
-    r.name.toLowerCase().includes(search.toLowerCase())
+    r.name?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
@@ -71,20 +78,18 @@ export default function AdminRivalesPage() {
             <span className="text-glow-subtle text-accent-cyan">Rivales</span>
           </h1>
           <p className="text-xs font-medium text-secondary sm:text-sm">
-            Base de datos reutilizable de equipos rivales y sus escudos para
-            vincularlos a los partidos.
+            Base de datos reutilizable de equipos rivales y sus escudos en Supabase
+            para vincularlos a los partidos.
           </p>
         </div>
 
         <Button
-          onClick={() => setIsModalOpen(true)}
           onClick={() => {
             setName("");
             setShieldUrl("");
             setIsModalOpen(true);
           }}
           size="lg"
-          className="shadow-glow-subtle"
           className="shadow-glow-subtle px-5 py-3"
         >
           <Plus className="h-4 w-4" /> Añadir Nuevo Rival
@@ -109,39 +114,58 @@ export default function AdminRivalesPage() {
         </span>
       </div>
 
-      {/* Rivals Grid */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {filteredRivals.map((rival) => (
-          <div
-            key={rival.id}
-            className="group flex select-none items-center gap-4 rounded-xl border border-white/10 bg-surface p-6 inner-light transition-all duration-200 ease-out hover:-translate-y-1 hover:border-accent-cyan/50 hover:shadow-glow-subtle min-w-0"
-          >
-            <div className="h-16 w-16 flex flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated p-2 shadow-inner transition-transform duration-200 group-hover:scale-105 sm:h-18 sm:w-18">
-              {rival.shield_url ? (
-                <img
-                  src={rival.shield_url}
-                  alt={rival.name}
-                  className="h-full w-full object-contain"
-                />
-              ) : (
-                <Shield className="h-8 w-8 text-muted" />
-              )}
-            </div>
+      {/* Rivals Grid or Loading / Empty */}
+      {loading ? (
+        <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-surface py-20 text-center">
+          <Loader2 className="h-10 w-10 animate-spin text-accent-cyan" />
+          <p className="mt-4 font-display text-sm font-bold uppercase tracking-wider text-secondary">
+            Cargando rivales desde Supabase...
+          </p>
+        </div>
+      ) : filteredRivals.length === 0 ? (
+        <div className="rounded-xl border border-white/10 bg-surface py-16 text-center">
+          <Shield className="mx-auto h-12 w-12 text-muted" />
+          <h4 className="mt-3 font-display text-lg font-bold text-primary">
+            No hay rivales registrados
+          </h4>
+          <p className="mt-1 text-sm text-secondary">
+            Añade rivales para poder programar partidos contra ellos.
+          </p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {filteredRivals.map((rival) => (
+            <div
+              key={rival.id}
+              className="group flex select-none items-center gap-4 rounded-xl border border-white/10 bg-surface p-6 inner-light transition-all duration-200 ease-out hover:-translate-y-1 hover:border-accent-cyan/50 hover:shadow-glow-subtle min-w-0"
+            >
+              <div className="h-16 w-16 flex flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated p-2 shadow-inner transition-transform duration-200 group-hover:scale-105 sm:h-18 sm:w-18">
+                {rival.shield_url ? (
+                  <img
+                    src={rival.shield_url}
+                    alt={rival.name}
+                    className="h-full w-full object-contain"
+                  />
+                ) : (
+                  <Shield className="h-8 w-8 text-muted" />
+                )}
+              </div>
 
-            <div className="min-w-0 flex-1">
-              <h3
-                title={rival.name}
-                className="truncate font-display text-xl font-bold uppercase tracking-wide text-primary transition-colors group-hover:text-accent-cyan"
-              >
-                {rival.name}
-              </h3>
-              <span className="mt-1 flex items-center gap-1 font-display text-xs font-bold uppercase tracking-wider text-success">
-                <Check className="h-3.5 w-3.5" /> Disponible en Partidos
-              </span>
+              <div className="min-w-0 flex-1">
+                <h3
+                  title={rival.name}
+                  className="truncate font-display text-xl font-bold uppercase tracking-wide text-primary transition-colors group-hover:text-accent-cyan"
+                >
+                  {rival.name}
+                </h3>
+                <span className="mt-1 flex items-center gap-1 font-display text-xs font-bold uppercase tracking-wider text-success">
+                  <Check className="h-3.5 w-3.5" /> Disponible en Partidos
+                </span>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {/* Modal Add Rival */}
       <Modal
@@ -149,7 +173,6 @@ export default function AdminRivalesPage() {
         onClose={() => setIsModalOpen(false)}
         title="Añadir Equipo Rival"
       >
-        <form onSubmit={handleSave} className="space-y-4">
         <form onSubmit={handleSave} className="space-y-5">
           <Input
             label="Nombre del Equipo Rival *"
@@ -159,28 +182,12 @@ export default function AdminRivalesPage() {
             required
           />
 
-          <Input
-            label="URL del Escudo (o enlace de imagen de Supabase Storage)"
-            placeholder="https://images.unsplash.com/..."
-            value={shieldUrl}
-            onChange={(e) => setShieldUrl(e.target.value)}
-          />
           {/* Shield Upload / URL Section */}
           <div className="space-y-2">
             <label className="block font-display text-xs font-bold uppercase tracking-wider text-secondary">
               Escudo del Equipo (Subir archivo o pegar enlace)
             </label>
 
-          {shieldUrl && (
-            <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-surface-elevated p-3">
-              <img
-                src={shieldUrl}
-                alt="Vista previa del escudo"
-                className="h-12 w-12 rounded-lg object-contain"
-              />
-              <span className="text-xs font-medium text-secondary">
-                Vista previa del escudo del equipo
-              </span>
             {/* Direct File Upload Dropzone */}
             <input
               type="file"
@@ -210,9 +217,7 @@ export default function AdminRivalesPage() {
                 />
               </div>
             </div>
-          )}
 
-          <div className="flex justify-end gap-3 border-t border-white/10 pt-4">
             {/* Live Shield Preview */}
             {shieldUrl && (
               <div className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-surface-elevated p-3">
@@ -255,7 +260,6 @@ export default function AdminRivalesPage() {
             >
               Cancelar
             </Button>
-            <Button type="submit" isLoading={saving}>
             <Button
               type="submit"
               size="md"

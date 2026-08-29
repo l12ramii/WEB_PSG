@@ -22,6 +22,7 @@ import { StatLeaders } from "@/components/public/StatLeaders";
 import { MatchCard } from "@/components/public/MatchCard";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { PsgShield } from "@/components/ui/PsgShield";
 import { formatMatchDate, getCompetitionLabel } from "@/lib/utils";
 
 export const revalidate = 0;
@@ -63,9 +64,14 @@ export default async function HomePage() {
 
         <div className="container relative z-10 mx-auto max-w-5xl space-y-6 px-4 text-center">
           {/* Emblem Badge Pill */}
-          <div className="inline-flex items-center gap-2 rounded-full border border-accent-cyan/40 bg-surface-elevated/90 px-4 py-1.5 font-display text-xs font-bold uppercase tracking-[0.2em] text-accent-cyan shadow-glow-subtle backdrop-blur-md">
-            <Flame className="h-4 w-4 animate-pulse text-accent-cyan" />
-            <span>Fuerza · Resurgimiento · Garra</span>
+          <div className="flex flex-col items-center justify-center gap-3">
+            <div className="relative flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-2xl border border-accent-cyan/40 bg-surface-elevated/80 p-2 shadow-glow backdrop-blur-md transition-transform duration-300 hover:scale-105">
+              <PsgShield size="xl" priority />
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-full border border-accent-cyan/40 bg-surface-elevated/90 px-4 py-1.5 font-display text-xs font-bold uppercase tracking-[0.2em] text-accent-cyan shadow-glow-subtle backdrop-blur-md">
+              <Flame className="h-4 w-4 animate-pulse text-accent-cyan" />
+              <span>Fuerza · Resurgimiento · Garra</span>
+            </div>
           </div>
 
           {/* Monumental Headline */}
@@ -162,8 +168,8 @@ export default async function HomePage() {
                   <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 py-2 w-full">
                     {/* PSG Side */}
                     <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3.5 min-w-0 text-center sm:text-left">
-                      <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated shadow-glow-subtle flex-shrink-0">
-                        <Flame className="h-7 w-7 sm:h-8 sm:w-8 text-accent-cyan" />
+                      <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated p-1 shadow-glow-subtle flex-shrink-0">
+                        <PsgShield size="md" />
                       </div>
                       <div className="min-w-0 flex-1">
                         <span className="block truncate font-display text-lg sm:text-2xl font-bold text-primary">
@@ -345,8 +351,8 @@ export default async function HomePage() {
             <path d="M80 12 C 92 40, 96 72, 74 96 C 86 75, 100 45, 88 12 Z" />
           </svg>
 
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated shadow-glow-subtle">
-            <Flame className="h-8 w-8 text-accent-cyan" />
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border border-accent-cyan/40 bg-surface-elevated p-1.5 shadow-glow-subtle">
+            <PsgShield size="md" />
           </div>
 
           <h3 className="font-display text-3xl font-bold uppercase leading-tight tracking-tight text-primary sm:text-5xl">

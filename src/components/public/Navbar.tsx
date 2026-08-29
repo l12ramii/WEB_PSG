@@ -13,6 +13,7 @@ import {
   Flame,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PsgShield } from "@/components/ui";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -44,8 +45,8 @@ export function Navbar() {
       <div className="container mx-auto flex h-20 items-center justify-between px-4">
         {/* Brand / Logo */}
         <Link href="/" className="group flex items-center gap-3.5 focus-ring rounded-xl">
-          <div className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated shadow-glow-subtle transition-all duration-200 group-hover:scale-105 group-hover:border-accent-cyan">
-            <Flame className="h-6 w-6 text-accent-cyan transition-transform group-hover:rotate-6" />
+          <div className="relative flex h-11 w-11 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated p-1 shadow-glow-subtle transition-all duration-200 group-hover:scale-105 group-hover:border-accent-cyan">
+            <PsgShield size="sm" priority />
           </div>
           <div className="flex flex-col">
             <div className="flex items-baseline gap-1.5">

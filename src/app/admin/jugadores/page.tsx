@@ -1,6 +1,5 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
 import React, { useState, useEffect, useRef } from "react";
 import {
   UserPlus,
@@ -15,18 +14,19 @@ import {
   Upload,
   ImagePlus,
   Trash2,
+  Loader2,
 } from "lucide-react";
 import { getPlayers, addPlayer, updatePlayer } from "@/lib/data";
 import { Player, PlayerPosition } from "@/lib/supabase/types";
-import { initialPlayers } from "@/lib/mock-data";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
-import { getPositionName, getPositionBadgeColor } from "@/lib/utils";
+import { getPositionName } from "@/lib/utils";
 
 export default function AdminJugadoresPage() {
-  const [players, setPlayers] = useState<Player[]>(initialPlayers);
+  const [players, setPlayers] = useState<Player[]>([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPlayer, setEditingPlayer] = useState<Player | null>(null);
@@ -58,8 +58,17 @@ export default function AdminJugadoresPage() {
     });
   };
 
+  const loadPlayers = async () => {
+    try {
+      const data = await getPlayers();
+      setPlayers(data);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    getPlayers().then(setPlayers);
+    loadPlayers();
   }, []);
 
   const openNewPlayerModal = () => {
@@ -111,7 +120,7 @@ export default function AdminJugadoresPage() {
     setSaving(true);
     try {
       if (editingPlayer) {
-        await updatePlayer(editingPlayer.id, {
+        const updated = await updatePlayer(editingPlayer.id, {
           first_name: firstName,
           last_name: lastName || null,
           nickname,
@@ -120,22 +129,11 @@ export default function AdminJugadoresPage() {
           photo_url: photoUrl || null,
           is_active: isActive,
         });
-        setPlayers((prev) =>
-          prev.map((p) =>
-            p.id === editingPlayer.id
-              ? {
-                  ...p,
-                  first_name: firstName,
-                  last_name: lastName || null,
-                  nickname,
-                  dorsal: Number(dorsal),
-                  position,
-                  photo_url: photoUrl || null,
-                  is_active: isActive,
-                }
-              : p
-          )
-        );
+        if (updated) {
+          setPlayers((prev) =>
+            prev.map((p) => (p.id === editingPlayer.id ? updated : p))
+          );
+        }
       } else {
         const newP = await addPlayer({
           first_name: firstName,
@@ -149,8 +147,8 @@ export default function AdminJugadoresPage() {
         setPlayers((prev) => [...prev, newP]);
       }
       setIsModalOpen(false);
-    } catch (err) {
-      alert("Error al guardar el jugador");
+    } catch (err: any) {
+      alert("Error al guardar el jugador en Supabase: " + (err?.message || ""));
     } finally {
       setSaving(false);
     }
@@ -160,8 +158,8 @@ export default function AdminJugadoresPage() {
     if (!search.trim()) return true;
     const q = search.toLowerCase();
     return (
-      p.nickname.toLowerCase().includes(q) ||
-      p.first_name.toLowerCase().includes(q) ||
+      p.nickname?.toLowerCase().includes(q) ||
+      p.first_name?.toLowerCase().includes(q) ||
       String(p.dorsal).includes(q)
     );
   });
@@ -176,8 +174,8 @@ export default function AdminJugadoresPage() {
             <span className="text-glow-subtle text-accent-cyan">Plantilla</span>
           </h1>
           <p className="text-xs font-medium text-secondary sm:text-sm">
-            Alta de fichajes, edición de dorsales, posiciones y galería de fotos oficiales
-            de los jugadores.
+            Alta de fichajes, edición de dorsales, posiciones y fotos oficiales
+            en la base de datos de Supabase.
           </p>
         </div>
 
@@ -204,83 +202,104 @@ export default function AdminJugadoresPage() {
         </span>
       </div>
 
-      {/* Players Table / Grid */}
-      <div className="space-y-4 rounded-xl border border-white/10 bg-surface p-4 sm:p-6 inner-light">
-        <div className="divide-y divide-white/10">
-          {filteredPlayers.map((player) => {
-            const playerPhotos = player.photo_url
-              ? player.photo_url.split(/[\n,]+/).map((u) => u.trim()).filter(Boolean)
-              : [];
-            return (
-              <div
-                key={player.id}
-                className="py-4 flex flex-col justify-between gap-4 sm:flex-row sm:items-center min-w-0"
-              >
-                <div className="flex items-center gap-4 min-w-0">
-                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated shadow-md">
-                    {playerPhotos.length > 0 ? (
-                      <img
-                        src={playerPhotos[0]}
-                        alt={player.nickname}
-                        className="h-full w-full object-cover object-top"
-                      />
-                    ) : (
-                      <User className="h-7 w-7 text-muted" />
-                    )}
-                  </div>
-
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-display text-lg font-black text-accent-cyan">
-                        #{player.dorsal}
-                      </span>
-                      <h3 className="truncate font-display text-xl font-bold uppercase text-primary">
-                        {player.nickname}
-                      </h3>
-                      <Badge variant={player.position} dot>
-                        {getPositionName(player.position)}
-                      </Badge>
-                      {playerPhotos.length > 1 && (
-                        <span className="rounded bg-accent-cyan/15 px-1.5 py-0.5 font-display text-[10px] font-bold text-accent-cyan">
-                          {playerPhotos.length} fotos
-                        </span>
-                      )}
-                    </div>
-                    <p className="truncate text-xs font-medium text-secondary">
-                      {player.first_name} {player.last_name || ""}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-2.5 self-end sm:self-center flex-shrink-0">
-                  <button
-                    onClick={() => handleToggleStatus(player)}
-                    title={
-                      player.is_active ? "Desactivar jugador" : "Activar jugador"
-                    }
-                    className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 font-display text-xs font-bold uppercase tracking-wider transition-all focus-ring ${
-                      player.is_active
-                        ? "border-success/30 bg-success/15 text-success shadow-sm hover:bg-success/25"
-                        : "border-white/10 bg-surface-elevated text-muted hover:text-primary"
-                    }`}
-                  >
-                    <Power className="h-3.5 w-3.5" />
-                    <span>{player.is_active ? "Activo" : "Baja Temporal"}</span>
-                  </button>
-
-                  <Button
-                    onClick={() => openEditModal(player)}
-                    variant="secondary"
-                    size="sm"
-                  >
-                    <Edit className="h-3.5 w-3.5" /> Editar Ficha
-                  </Button>
-                </div>
-              </div>
-            );
-          })}
+      {/* Players Table / Grid or Loading / Empty */}
+      {loading ? (
+        <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-surface py-20 text-center">
+          <Loader2 className="h-10 w-10 animate-spin text-accent-cyan" />
+          <p className="mt-4 font-display text-sm font-bold uppercase tracking-wider text-secondary">
+            Cargando jugadores desde Supabase...
+          </p>
         </div>
-      </div>
+      ) : (
+        <div className="space-y-4 rounded-xl border border-white/10 bg-surface p-4 sm:p-6 inner-light">
+          {filteredPlayers.length === 0 ? (
+            <div className="py-12 text-center">
+              <User className="mx-auto h-12 w-12 text-muted" />
+              <h4 className="mt-3 font-display text-lg font-bold text-primary">
+                No hay jugadores registrados
+              </h4>
+              <p className="mt-1 text-sm text-secondary">
+                Haz clic en &quot;Añadir Jugador&quot; para registrar el primer jugador en Supabase.
+              </p>
+            </div>
+          ) : (
+            <div className="divide-y divide-white/10">
+              {filteredPlayers.map((player) => {
+                const playerPhotos = player.photo_url
+                  ? player.photo_url.split(/[\n,]+/).map((u) => u.trim()).filter(Boolean)
+                  : [];
+                return (
+                  <div
+                    key={player.id}
+                    className="py-4 flex flex-col justify-between gap-4 sm:flex-row sm:items-center min-w-0"
+                  >
+                    <div className="flex items-center gap-4 min-w-0">
+                      <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated shadow-md">
+                        {playerPhotos.length > 0 ? (
+                          <img
+                            src={playerPhotos[0]}
+                            alt={player.nickname}
+                            className="h-full w-full object-cover object-top"
+                          />
+                        ) : (
+                          <User className="h-7 w-7 text-muted" />
+                        )}
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-display text-lg font-black text-accent-cyan">
+                            #{player.dorsal}
+                          </span>
+                          <h3 className="truncate font-display text-xl font-bold uppercase text-primary">
+                            {player.nickname}
+                          </h3>
+                          <Badge variant={player.position} dot>
+                            {getPositionName(player.position)}
+                          </Badge>
+                          {playerPhotos.length > 1 && (
+                            <span className="rounded bg-accent-cyan/15 px-1.5 py-0.5 font-display text-[10px] font-bold text-accent-cyan">
+                              {playerPhotos.length} fotos
+                            </span>
+                          )}
+                        </div>
+                        <p className="truncate text-xs font-medium text-secondary">
+                          {player.first_name} {player.last_name || ""}
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2.5 self-end sm:self-center flex-shrink-0">
+                      <button
+                        onClick={() => handleToggleStatus(player)}
+                        title={
+                          player.is_active ? "Desactivar jugador" : "Activar jugador"
+                        }
+                        className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 font-display text-xs font-bold uppercase tracking-wider transition-all focus-ring ${
+                          player.is_active
+                            ? "border-success/30 bg-success/15 text-success shadow-sm hover:bg-success/25"
+                            : "border-white/10 bg-surface-elevated text-muted hover:text-primary"
+                        }`}
+                      >
+                        <Power className="h-3.5 w-3.5" />
+                        <span>{player.is_active ? "Activo" : "Baja Temporal"}</span>
+                      </button>
+
+                      <Button
+                        onClick={() => openEditModal(player)}
+                        variant="secondary"
+                        size="sm"
+                      >
+                        <Edit className="h-3.5 w-3.5" /> Editar Ficha
+                      </Button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Modal Form */}
       <Modal
@@ -342,19 +361,11 @@ export default function AdminJugadoresPage() {
             </select>
           </div>
 
-          <div className="space-y-1.5">
           {/* Photo Upload & URL Section */}
           <div className="space-y-2">
             <label className="block font-display text-xs font-bold uppercase tracking-wider text-secondary">
-              URLs de Fotos Oficiales (Separa con comas o saltos de línea para el carrusel)
               Fotos Oficiales (Subir archivos o pegar enlaces)
             </label>
-            <textarea
-              rows={3}
-              placeholder="https://images.unsplash.com/foto1...&#10;https://images.unsplash.com/foto2..."
-              value={photoUrl}
-              onChange={(e) => setPhotoUrl(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-surface-elevated p-3 text-xs font-medium text-primary placeholder-muted focus-ring focus:border-accent-cyan focus:outline-none"
 
             {/* Direct File Upload Input */}
             <input
@@ -378,7 +389,7 @@ export default function AdminJugadoresPage() {
 
               <textarea
                 rows={2}
-                placeholder="O pega URLs separadas por comas..."
+                placeholder="O pega URLs separadas por saltos de línea o comas..."
                 value={photoUrl}
                 onChange={(e) => setPhotoUrl(e.target.value)}
                 className="w-full rounded-xl border border-white/10 bg-surface-elevated p-2.5 text-xs text-primary placeholder-muted focus-ring focus:border-accent-cyan focus:outline-none resize-none"
@@ -386,14 +397,9 @@ export default function AdminJugadoresPage() {
             </div>
           </div>
 
-          {/* Live Photo Gallery Preview */}
           {/* Live Photo Gallery Preview with Deletion */}
           {photoUrl.trim() && (
             <div className="space-y-2 rounded-xl border border-white/10 bg-surface-elevated/40 p-3">
-              <span className="block font-display text-[10px] font-bold uppercase tracking-wider text-secondary">
-                Vista previa del carrusel ({photoUrl.split(/[\n,]+/).map((u) => u.trim()).filter(Boolean).length} fotos):
-              </span>
-              <div className="flex items-center gap-2 overflow-x-auto py-1">
               <div className="flex items-center justify-between">
                 <span className="block font-display text-[10px] font-bold uppercase tracking-wider text-secondary">
                   Fotos cargadas ({photoUrl.split(/[\n,]+/).map((u) => u.trim()).filter(Boolean).length}):
@@ -412,11 +418,9 @@ export default function AdminJugadoresPage() {
                   .split(/[\n,]+/)
                   .map((u) => u.trim())
                   .filter(Boolean)
-                  .map((url, idx) => (
                   .map((url, idx, arr) => (
                     <div
                       key={idx}
-                      className="relative flex aspect-[3/4] w-14 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-surface-elevated shadow-sm"
                       className="group relative flex aspect-[3/4] w-16 flex-shrink-0 items-center justify-center overflow-hidden rounded-lg border border-white/10 bg-surface-elevated shadow-sm"
                     >
                       <img
@@ -444,7 +448,6 @@ export default function AdminJugadoresPage() {
             </div>
           )}
 
-          <div className="flex justify-end gap-3 border-t border-white/10 pt-4">
           <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 border-t border-white/10 pt-4">
             <Button
               type="button"
@@ -455,7 +458,6 @@ export default function AdminJugadoresPage() {
             >
               Cancelar
             </Button>
-            <Button type="submit" isLoading={saving}>
             <Button
               type="submit"
               size="md"

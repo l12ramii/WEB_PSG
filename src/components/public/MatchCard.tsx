@@ -26,6 +26,7 @@ import {
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { Button } from "@/components/ui/Button";
+import { PsgShield } from "@/components/ui/PsgShield";
 import { getMatchById } from "@/lib/data";
 
 interface MatchCardProps {
@@ -136,7 +137,7 @@ export function MatchCard({ match, showActaButton = true }: MatchCardProps) {
           <div className="flex flex-col items-center justify-center text-center min-w-0 px-1">
             <div className="relative mb-2 flex h-14 w-14 items-center justify-center rounded-xl border border-white/10 bg-surface-elevated p-2 shadow-inner transition-transform duration-200 group-hover:scale-105 sm:h-16 sm:w-16">
               {match.is_home ? (
-                <Flame className="h-8 w-8 text-accent-cyan" />
+                <PsgShield size="md" />
               ) : match.rival?.shield_url ? (
                 <img
                   src={match.rival.shield_url}
@@ -190,7 +191,7 @@ export function MatchCard({ match, showActaButton = true }: MatchCardProps) {
           <div className="flex flex-col items-center justify-center text-center min-w-0 px-1">
             <div className="relative mb-2 flex h-14 w-14 items-center justify-center rounded-xl border border-white/10 bg-surface-elevated p-2 shadow-inner transition-transform duration-200 group-hover:scale-105 sm:h-16 sm:w-16">
               {!match.is_home ? (
-                <Flame className="h-8 w-8 text-accent-cyan" />
+                <PsgShield size="md" />
               ) : match.rival?.shield_url ? (
                 <img
                   src={match.rival.shield_url}
@@ -251,8 +252,8 @@ export function MatchCard({ match, showActaButton = true }: MatchCardProps) {
             <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 py-3">
               {/* Left Side: PSG */}
               <div className="flex flex-col items-center justify-center text-center min-w-0 px-1">
-                <div className="mb-1.5 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated shadow-glow-subtle">
-                  <Flame className="h-7 w-7 sm:h-8 sm:w-8 text-accent-cyan" />
+                <div className="mb-1.5 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated p-1 shadow-glow-subtle">
+                  <PsgShield size="md" />
                 </div>
                 <span className="w-full truncate font-display text-sm sm:text-lg font-bold text-primary">
                   PSG F7

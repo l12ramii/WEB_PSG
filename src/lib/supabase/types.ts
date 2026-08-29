@@ -46,6 +46,7 @@ export interface Database {
           is_active?: boolean;
           created_at?: string;
         };
+        Relationships: [];
       };
       rivals: {
         Row: {
@@ -66,6 +67,7 @@ export interface Database {
           shield_url?: string | null;
           created_at?: string;
         };
+        Relationships: [];
       };
       matches: {
         Row: {
@@ -102,6 +104,15 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [
+          {
+            foreignKeyName: "matches_rival_id_fkey";
+            columns: ["rival_id"];
+            isOneToOne: false;
+            referencedRelation: "rivals";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       match_player_stats: {
         Row: {
@@ -137,6 +148,22 @@ export interface Database {
           red_cards?: number;
           clean_sheet?: boolean;
         };
+        Relationships: [
+          {
+            foreignKeyName: "match_player_stats_match_id_fkey";
+            columns: ["match_id"];
+            isOneToOne: false;
+            referencedRelation: "matches";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "match_player_stats_player_id_fkey";
+            columns: ["player_id"];
+            isOneToOne: false;
+            referencedRelation: "players";
+            referencedColumns: ["id"];
+          }
+        ];
       };
     };
     Views: {
@@ -157,7 +184,18 @@ export interface Database {
           total_red_cards: number;
           total_clean_sheets: number;
         };
+        Relationships: [];
       };
+    };
+    Functions: {
+      [_ in never]: never;
+    };
+    Enums: {
+      player_position: PlayerPosition;
+      competition_type: CompetitionType;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
     };
   };
 }

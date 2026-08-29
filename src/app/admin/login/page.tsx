@@ -6,6 +6,7 @@ import { Flame, Lock, Sparkles, ArrowLeft } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
+import { PsgShield } from "@/components/ui/PsgShield";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -62,8 +63,8 @@ export default function AdminLoginPage() {
 
           {/* Logo Header */}
           <div className="space-y-3 text-center">
-            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-3xl border-2 border-accent-cyan/50 bg-gradient-to-br from-psg-600 via-psg-700 to-accent-electric shadow-glow">
-              <Flame className="phoenix-glow h-9 w-9 text-white" />
+            <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-3xl border-2 border-accent-cyan/50 bg-surface-elevated p-2 shadow-glow">
+              <PsgShield size="lg" priority />
             </div>
             <h1 className="font-display text-3xl font-black uppercase tracking-wider text-white">
               PSG <span className="text-glow text-accent-cyan">BACKOFFICE</span>

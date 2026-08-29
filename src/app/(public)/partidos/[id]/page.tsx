@@ -15,6 +15,7 @@ import {
 import { getMatchById } from "@/lib/data";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
+import { PsgShield } from "@/components/ui/PsgShield";
 import { formatMatchDate, getCompetitionLabel, cn, getPositionName } from "@/lib/utils";
 
 export const revalidate = 0;
@@ -91,8 +92,8 @@ export default async function MatchDetailPage({ params }: MatchDetailPageProps) 
         <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 py-6 w-full">
           {/* PSG Side */}
           <div className="flex flex-col items-center justify-center text-center min-w-0 px-1">
-            <div className="mb-2 flex h-16 w-16 sm:h-24 sm:w-24 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated shadow-glow-subtle">
-              <Flame className="h-9 w-9 sm:h-12 sm:w-12 text-accent-cyan" />
+            <div className="mb-2 flex h-16 w-16 sm:h-24 sm:w-24 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated p-2 shadow-glow-subtle">
+              <PsgShield size="xl" />
             </div>
             <span className="w-full truncate font-display text-lg sm:text-3xl font-black uppercase text-primary">
               PSG F7

@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { Flame, Trophy, Shield, Heart, Zap, Lock } from "lucide-react";
+import { Trophy, Shield, Heart, Zap, Lock } from "lucide-react";
+import { PsgShield } from "@/components/ui";
 
 export function Footer() {
   return (
@@ -13,8 +14,8 @@ export function Footer() {
           {/* Brand & Identity */}
           <div className="space-y-4 md:col-span-2">
             <div className="flex items-center gap-3.5">
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated shadow-glow-subtle">
-                <Flame className="h-6 w-6 text-accent-cyan" />
+              <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent-cyan/40 bg-surface-elevated p-1 shadow-glow-subtle">
+                <PsgShield size="sm" />
               </div>
               <div>
                 <span className="font-display text-3xl font-black tracking-wider text-primary">

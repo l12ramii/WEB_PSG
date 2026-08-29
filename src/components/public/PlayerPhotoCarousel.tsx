@@ -87,9 +87,6 @@ export function PlayerPhotoCarousel({
           className
         )}
       >
-        {/* Radial background glow */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-surface-elevated via-surface-elevated/40 to-transparent" />
-
         {/* Current Photo - Always in 100% full color */}
         <img
           src={photos[currentIndex]}

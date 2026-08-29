@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { CalendarPlus, ArrowLeft, Shield, Plus, Calendar } from "lucide-react";
 import {
   CalendarPlus,
   ArrowLeft,
@@ -12,16 +11,16 @@ import {
   Calendar,
   ChevronDown,
   Check,
+  Loader2,
 } from "lucide-react";
 import { getRivals, addMatch } from "@/lib/data";
 import { Rival } from "@/lib/supabase/types";
 import { Button } from "@/components/ui/Button";
-import { initialRivals } from "@/lib/mock-data";
 
 export default function NuevoPartidoPage() {
   const router = useRouter();
-  const [rivals, setRivals] = useState<Rival[]>(initialRivals);
-  const [rivalId, setRivalId] = useState<string>(initialRivals[0]?.id || "");
+  const [rivals, setRivals] = useState<Rival[]>([]);
+  const [rivalId, setRivalId] = useState<string>("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isHome, setIsHome] = useState<boolean>(true);
   const [matchDate, setMatchDate] = useState<string>("");
@@ -29,6 +28,7 @@ export default function NuevoPartidoPage() {
     "liga"
   );
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [loadingRivals, setLoadingRivals] = useState<boolean>(true);
 
   useEffect(() => {
     const d = new Date();
@@ -36,18 +36,22 @@ export default function NuevoPartidoPage() {
     d.setHours(18, 0, 0, 0);
     setMatchDate(d.toISOString().slice(0, 16));
 
-    getRivals().then((data) => {
-      setRivals(data);
-      if (data.length > 0) setRivalId(data[0].id);
-    });
+    getRivals()
+      .then((data) => {
+        setRivals(data);
+        if (data.length > 0) setRivalId(data[0].id);
+      })
+      .finally(() => {
+        setLoadingRivals(false);
+      });
   }, []);
 
-  const selectedRival = rivals.find((r) => r.id === rivalId) || rivals[0];
+  const selectedRival = rivals.find((r) => r.id === rivalId);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!rivalId || !matchDate) {
-      alert("Por favor completa todos los campos.");
+      alert("Por favor completa todos los campos (selecciona un rival y una fecha).");
       return;
     }
 
@@ -62,8 +66,8 @@ export default function NuevoPartidoPage() {
 
       router.push("/admin/partidos");
       router.refresh();
-    } catch (err) {
-      alert("Error al programar el partido");
+    } catch (err: any) {
+      alert("Error al programar el partido en Supabase: " + (err?.message || ""));
     } finally {
       setIsLoading(false);
     }
@@ -92,8 +96,6 @@ export default function NuevoPartidoPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Rival Selector */}
-          <div className="space-y-2">
           {/* Rich Visual Rival Selector with Crest / Shield */}
           <div className="space-y-2 relative">
             <div className="flex items-center justify-between">
@@ -108,91 +110,99 @@ export default function NuevoPartidoPage() {
               </Link>
             </div>
 
-            <select
-              value={rivalId}
-              onChange={(e) => setRivalId(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-surface-elevated px-4 py-3 text-sm font-medium text-primary focus-ring focus:border-accent-cyan focus:outline-none"
-              required
-            {/* Custom Dropdown Trigger */}
-            <button
-              type="button"
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="w-full flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-surface-elevated px-4 py-3 text-left transition-all hover:border-accent-cyan/50 focus-ring"
-            >
-              {rivals.map((rival) => (
-                <option key={rival.id} value={rival.id}>
-                  {rival.name}
-                </option>
-              ))}
-            </select>
-              <div className="flex items-center gap-3 min-w-0">
-                <div className="h-8 w-8 flex-shrink-0 rounded-lg border border-white/10 bg-background/50 p-1 flex items-center justify-center overflow-hidden">
-                  {selectedRival?.shield_url ? (
-                    <img
-                      src={selectedRival.shield_url}
-                      alt={selectedRival.name}
-                      className="h-full w-full object-contain"
-                    />
-                  ) : (
-                    <Shield className="h-4 w-4 text-muted" />
-                  )}
-                </div>
-                <span className="truncate font-display text-sm font-bold uppercase tracking-wide text-primary">
-                  {selectedRival?.name || "Seleccionar equipo rival..."}
-                </span>
+            {loadingRivals ? (
+              <div className="flex items-center gap-2 p-3 text-xs text-secondary">
+                <Loader2 className="h-4 w-4 animate-spin text-accent-cyan" />
+                <span>Cargando rivales desde Supabase...</span>
               </div>
-              <ChevronDown
-                className={`h-4 w-4 text-secondary transition-transform duration-200 ${
-                  isDropdownOpen ? "rotate-180 text-accent-cyan" : ""
-                }`}
-              />
-            </button>
-
-            {/* Dropdown Options List */}
-            {isDropdownOpen && (
+            ) : rivals.length === 0 ? (
+              <div className="rounded-xl border border-warning/30 bg-warning/15 p-4 text-xs text-warning">
+                <p>No hay rivales registrados en Supabase aún.</p>
+                <Link
+                  href="/admin/rivales"
+                  className="mt-2 inline-flex items-center gap-1 font-bold underline"
+                >
+                  <Plus className="h-3 w-3" /> Registrar un rival primero
+                </Link>
+              </div>
+            ) : (
               <>
-                <div
-                  className="fixed inset-0 z-20"
-                  onClick={() => setIsDropdownOpen(false)}
-                />
-                <div className="absolute left-0 right-0 top-full mt-2 z-30 max-h-60 overflow-y-auto rounded-xl border border-white/10 bg-surface-elevated p-1.5 shadow-2xl backdrop-blur-xl">
-                  {rivals.map((rival) => {
-                    const isSelected = rival.id === rivalId;
-                    return (
-                      <button
-                        key={rival.id}
-                        type="button"
-                        onClick={() => {
-                          setRivalId(rival.id);
-                          setIsDropdownOpen(false);
-                        }}
-                        className={`w-full flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left transition-colors ${
-                          isSelected
-                            ? "bg-accent-cyan/15 text-accent-cyan border border-accent-cyan/30"
-                            : "text-primary hover:bg-white/5"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3 min-w-0">
-                          <div className="h-7 w-7 flex-shrink-0 rounded-md border border-white/10 bg-background/40 p-0.5 flex items-center justify-center overflow-hidden">
-                            {rival.shield_url ? (
-                              <img
-                                src={rival.shield_url}
-                                alt={rival.name}
-                                className="h-full w-full object-contain"
-                              />
-                            ) : (
-                              <Shield className="h-3.5 w-3.5 text-muted" />
-                            )}
-                          </div>
-                          <span className="truncate font-display text-xs font-bold uppercase">
-                            {rival.name}
-                          </span>
-                        </div>
-                        {isSelected && <Check className="h-4 w-4 flex-shrink-0 text-accent-cyan" />}
-                      </button>
-                    );
-                  })}
-                </div>
+                {/* Custom Dropdown Trigger */}
+                <button
+                  type="button"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="w-full flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-surface-elevated px-4 py-3 text-left transition-all hover:border-accent-cyan/50 focus-ring"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="h-8 w-8 flex-shrink-0 rounded-lg border border-white/10 bg-background/50 p-1 flex items-center justify-center overflow-hidden">
+                      {selectedRival?.shield_url ? (
+                        <img
+                          src={selectedRival.shield_url}
+                          alt={selectedRival.name}
+                          className="h-full w-full object-contain"
+                        />
+                      ) : (
+                        <Shield className="h-4 w-4 text-muted" />
+                      )}
+                    </div>
+                    <span className="truncate font-display text-sm font-bold uppercase tracking-wide text-primary">
+                      {selectedRival?.name || "Seleccionar equipo rival..."}
+                    </span>
+                  </div>
+                  <ChevronDown
+                    className={`h-4 w-4 text-secondary transition-transform duration-200 ${
+                      isDropdownOpen ? "rotate-180 text-accent-cyan" : ""
+                    }`}
+                  />
+                </button>
+
+                {/* Dropdown Options List */}
+                {isDropdownOpen && (
+                  <>
+                    <div
+                      className="fixed inset-0 z-20"
+                      onClick={() => setIsDropdownOpen(false)}
+                    />
+                    <div className="absolute left-0 right-0 top-full mt-2 z-30 max-h-60 overflow-y-auto rounded-xl border border-white/10 bg-surface-elevated p-1.5 shadow-2xl backdrop-blur-xl">
+                      {rivals.map((rival) => {
+                        const isSelected = rival.id === rivalId;
+                        return (
+                          <button
+                            key={rival.id}
+                            type="button"
+                            onClick={() => {
+                              setRivalId(rival.id);
+                              setIsDropdownOpen(false);
+                            }}
+                            className={`w-full flex items-center justify-between gap-3 rounded-lg px-3 py-2.5 text-left transition-colors ${
+                              isSelected
+                                ? "bg-accent-cyan/15 text-accent-cyan border border-accent-cyan/30"
+                                : "text-primary hover:bg-white/5"
+                            }`}
+                          >
+                            <div className="flex items-center gap-3 min-w-0">
+                              <div className="h-7 w-7 flex-shrink-0 rounded-md border border-white/10 bg-background/40 p-0.5 flex items-center justify-center overflow-hidden">
+                                {rival.shield_url ? (
+                                  <img
+                                    src={rival.shield_url}
+                                    alt={rival.name}
+                                    className="h-full w-full object-contain"
+                                  />
+                                ) : (
+                                  <Shield className="h-3.5 w-3.5 text-muted" />
+                                )}
+                              </div>
+                              <span className="truncate font-display text-xs font-bold uppercase">
+                                {rival.name}
+                              </span>
+                            </div>
+                            {isSelected && <Check className="h-4 w-4 flex-shrink-0 text-accent-cyan" />}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
               </>
             )}
           </div>
@@ -259,10 +269,6 @@ export default function NuevoPartidoPage() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex justify-end gap-3 border-t border-white/10 pt-4">
-            <Link href="/admin/partidos">
-              <Button type="button" variant="secondary">
-          {/* Action Buttons: Generous Cancelar and Submit Button Sizing */}
           <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 border-t border-white/10 pt-4">
             <Link href="/admin/partidos" className="w-full sm:w-auto">
               <Button
@@ -277,8 +283,8 @@ export default function NuevoPartidoPage() {
             <Button
               type="submit"
               isLoading={isLoading}
+              disabled={rivals.length === 0}
               size="lg"
-              className="shadow-glow-subtle"
               className="w-full sm:w-auto px-6 py-3 min-h-[44px] shadow-glow-subtle"
             >
               <CalendarPlus className="h-4 w-4" /> Guardar Partido
@@ -289,4 +295,3 @@ export default function NuevoPartidoPage() {
     </div>
   );
 }
-

@@ -3,9 +3,9 @@ import { Trophy, Target, Sparkles, ShieldCheck, User } from "lucide-react";
 import { PlayerStatsSummary } from "@/lib/supabase/types";
 
 interface StatLeadersProps {
-  topScorer: PlayerStatsSummary;
-  topAssistant: PlayerStatsSummary;
-  topKeeper: PlayerStatsSummary;
+  topScorer?: PlayerStatsSummary | null;
+  topAssistant?: PlayerStatsSummary | null;
+  topKeeper?: PlayerStatsSummary | null;
 }
 
 export function StatLeaders({
@@ -18,7 +18,7 @@ export function StatLeaders({
       title: "Máximo Goleador",
       icon: Target,
       statLabel: "Goles Totales",
-      statValue: topScorer?.total_goals || 0,
+      statValue: topScorer?.total_goals ?? 0,
       player: topScorer,
       borderHover: "hover:border-accent-cyan/50 hover:shadow-glow-subtle",
       textColor: "text-accent-cyan",
@@ -29,7 +29,7 @@ export function StatLeaders({
       title: "Máximo Asistente",
       icon: Sparkles,
       statLabel: "Asistencias Clave",
-      statValue: topAssistant?.total_assists || 0,
+      statValue: topAssistant?.total_assists ?? 0,
       player: topAssistant,
       borderHover: "hover:border-success/50 hover:shadow-glow-emerald",
       textColor: "text-success",
@@ -40,7 +40,7 @@ export function StatLeaders({
       title: "Guante Imbatible",
       icon: ShieldCheck,
       statLabel: "Porterías a Cero",
-      statValue: topKeeper?.total_clean_sheets || 0,
+      statValue: topKeeper?.total_clean_sheets ?? 0,
       player: topKeeper,
       borderHover: "hover:border-warning/50 hover:shadow-glow-gold",
       textColor: "text-warning",
@@ -92,13 +92,13 @@ export function StatLeaders({
 
                 <div className="min-w-0 flex-1 space-y-0.5">
                   <span className="font-display text-xs font-bold uppercase tracking-wider text-accent-cyan">
-                    Dorsal #{leader.player?.dorsal}
+                    {leader.player ? `Dorsal #${leader.player.dorsal}` : "Dorsal #--"}
                   </span>
                   <h5 className="truncate font-display text-xl font-bold uppercase tracking-wide text-primary transition-colors group-hover:text-accent-cyan">
-                    {leader.player?.nickname || "Sin datos"}
+                    {leader.player?.nickname || "Por definir"}
                   </h5>
                   <p className="truncate text-xs text-secondary">
-                    {leader.player?.first_name} {leader.player?.last_name || ""}
+                    {leader.player ? `${leader.player.first_name} ${leader.player.last_name || ""}` : "Sin datos de plantilla"}
                   </p>
                 </div>
               </div>

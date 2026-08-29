@@ -53,28 +53,6 @@ export function PlayerCard({ player }: PlayerCardProps) {
         {/* Player Official Photo Carousel (Always Full Color, Never Grayscale) */}
         <div className="relative my-3 w-full">
           <PlayerPhotoCarousel photos={photos} alt={player.nickname} />
-        {/* Player Official Photo (Clean, 100% full color, subtle hover zoom) */}
-        <div className="relative my-3 aspect-[3/4] w-full overflow-hidden rounded-xl border border-white/10 bg-surface-elevated/40">
-          {photos.length > 0 ? (
-            <img
-              src={photos[0]}
-              alt={player.nickname}
-              className="h-full w-full object-cover object-top transition-transform duration-300 ease-out group-hover:scale-105"
-            />
-          ) : (
-            <div className="flex h-full w-full flex-col items-center justify-center text-muted">
-              <Shield className="h-12 w-12 text-muted transition-transform duration-300 group-hover:scale-105" />
-              <span className="mt-2 font-display text-xs font-bold uppercase tracking-wider text-secondary">
-                PSG F7
-              </span>
-            </div>
-          )}
-          {photos.length > 1 && (
-            <div className="absolute right-2 top-2 z-10 flex items-center gap-1 rounded-full border border-white/10 bg-surface-elevated/90 px-2 py-0.5 font-display text-[10px] font-bold text-accent-cyan shadow-sm backdrop-blur-md">
-              <Sparkles className="h-3 w-3" />
-              <span>{photos.length} fotos</span>
-            </div>
-          )}
         </div>
 
         {/* Player Name and Info */}
