@@ -58,7 +58,7 @@ Este documento detalla las tareas paso a paso para completar el desarrollo de la
   - [x] Widget dinámico: Último resultado.
 - [x] **Página de Plantilla**
   - [x] Obtener datos de la vista `player_stats_summary`.
-  - [x] Agrupar y renderizar jugadores por posición (Porteros, Defensas, Medios, Delanteros).
+  - [x] Agrupar y renderizar plantilla por posición (Porteros, Defensas, Medios, Delanteros, Cuerpo Técnico).
   - [x] Crear la tarjeta individual de jugador (PlayerCard).
 - [x] **Página de Calendario y Resultados**
   - [x] Obtener listado de partidos.

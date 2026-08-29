@@ -30,11 +30,12 @@ Desarrollo de una plataforma web moderna, rápida e intuitiva para el equipo de 
    - Widget de **Último Resultado** (marcador final contra el último rival).
    - Destacados rápidos (máximo goleador, máximo asistente, racha).
 2. **Plantilla de Jugadores (Fútbol 7):**
-   - Agrupación por 4 posiciones:
+   - Agrupación por posiciones y staff:
      - **Porteros** (Estadísticas: Partidos, Porterías a Cero, Goles encajados, Tarjetas).
      - **Defensas** (Estadísticas: Partidos, Goles, Asistencias, Tarjetas Amarillas/Rojas).
      - **Centrocampistas / Medios** (Estadísticas: Partidos, Goles, Asistencias, Tarjetas).
      - **Delanteros** (Estadísticas: Partidos, Goles, Asistencias, Tarjetas).
+     - **Cuerpo Técnico** (Entrenador, Utillero).
    - Ficha individual de jugador (modal o vista dedicada):
      - Foto oficial, dorsal, apodo/nombre, posición.
      - Desglose estadístico acumulado de la temporada.
@@ -71,7 +72,7 @@ Desarrollo de una plataforma web moderna, rápida e intuitiva para el equipo de 
        - Para porteros: Cálculo/Marcado de portería a cero si no se encajaron goles.
      - **Edición a posteriori:** El CM puede modificar cualquier acta en cualquier momento si hubo una corrección.
 4. **Gestión de Jugadores:**
-   - Alta/Edición de jugador: Nombre, Apodo, Dorsal, Posición (Portero, Defensa, Medio, Delantero) y subida de foto.
+   - Alta/Edición de jugador: Nombre, Apodo, Dorsal, Posición (Portero, Defensa, Medio, Delantero, Entrenador, Utillero) y subida de foto.
    - Activar / Desactivar jugador (en caso de baja temporal).
 
 ---
@@ -125,7 +126,7 @@ Desarrollo de una plataforma web moderna, rápida e intuitiva para el equipo de 
 
 ```sql
 -- 1. Enum de Posiciones de Fútbol 7
-CREATE TYPE player_position AS ENUM ('portero', 'defensa', 'medio', 'delantero');
+CREATE TYPE player_position AS ENUM ('portero', 'defensa', 'medio', 'delantero', 'entrenador', 'utillero');
 
 -- 2. Enum de Competiciones
 CREATE TYPE competition_type AS ENUM ('liga', 'copa', 'amistoso');
@@ -213,7 +214,7 @@ src/
 │   ├── (public)/                 # Layout y páginas públicas
 │   │   ├── page.tsx              # Home (Hero, próximo partido, último resultado, destacados)
 │   │   ├── plantilla/
-│   │   │   ├── page.tsx          # Plantilla F7 (agrupada por Porteros, Defensas, Medios, Delanteros)
+│   │   │   ├── page.tsx          # Plantilla F7 y Cuerpo Técnico (agrupada por posiciones)
 │   │   │   └── [id]/page.tsx     # Ficha detallada del jugador
 │   │   └── partidos/
 │   │       └── page.tsx          # Calendario y Resultados con filtros
