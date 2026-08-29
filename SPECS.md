@@ -30,12 +30,16 @@ Desarrollo de una plataforma web moderna, rápida e intuitiva para el equipo de 
    - Widget de **Último Resultado** (marcador final contra el último rival).
    - Destacados rápidos (máximo goleador, máximo asistente, racha).
 2. **Plantilla de Jugadores (Fútbol 7):**
-   - Agrupación por posiciones y staff:
-     - **Porteros** (Estadísticas: Partidos, Porterías a Cero, Goles encajados, Tarjetas).
-     - **Defensas** (Estadísticas: Partidos, Goles, Asistencias, Tarjetas Amarillas/Rojas).
-     - **Centrocampistas / Medios** (Estadísticas: Partidos, Goles, Asistencias, Tarjetas).
-     - **Delanteros** (Estadísticas: Partidos, Goles, Asistencias, Tarjetas).
+   - Agrupación por posiciones y staff, visualmente separadas por líneas divisorias. El orden de aparición será:
      - **Cuerpo Técnico** (Entrenador, Utillero).
+     - *(Línea separadora)*
+     - **Porteros** (Estadísticas: Partidos, Porterías a Cero, Goles encajados, Tarjetas).
+     - *(Línea separadora)*
+     - **Defensas** (Estadísticas: Partidos, Goles, Asistencias, Tarjetas Amarillas/Rojas).
+     - *(Línea separadora)*
+     - **Centrocampistas / Medios** (Estadísticas: Partidos, Goles, Asistencias, Tarjetas).
+     - *(Línea separadora)*
+     - **Delanteros** (Estadísticas: Partidos, Goles, Asistencias, Tarjetas).
    - Ficha individual de jugador (modal o vista dedicada):
      - Foto oficial, dorsal, apodo/nombre, posición.
      - Desglose estadístico acumulado de la temporada.

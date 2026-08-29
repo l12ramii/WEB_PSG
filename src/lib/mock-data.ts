@@ -277,6 +277,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     total_yellow_cards: 0,
     total_red_cards: 0,
     total_clean_sheets: 1,
+    goals_conceded: 2,
   },
   {
     player_id: "player-2",
@@ -294,6 +295,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     total_yellow_cards: 0,
     total_red_cards: 0,
     total_clean_sheets: 0,
+    goals_conceded: 0,
   },
   {
     player_id: "player-3",
@@ -311,6 +313,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     total_yellow_cards: 1,
     total_red_cards: 0,
     total_clean_sheets: 0,
+    goals_conceded: 0,
   },
   {
     player_id: "player-4",
@@ -328,6 +331,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     total_yellow_cards: 0,
     total_red_cards: 0,
     total_clean_sheets: 0,
+    goals_conceded: 0,
   },
   {
     player_id: "player-5",
@@ -345,6 +349,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     total_yellow_cards: 0,
     total_red_cards: 0,
     total_clean_sheets: 0,
+    goals_conceded: 0,
   },
   {
     player_id: "player-6",
@@ -362,6 +367,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     total_yellow_cards: 0,
     total_red_cards: 0,
     total_clean_sheets: 0,
+    goals_conceded: 0,
   },
   {
     player_id: "player-7",
@@ -379,6 +385,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     total_yellow_cards: 0,
     total_red_cards: 0,
     total_clean_sheets: 0,
+    goals_conceded: 0,
   },
   {
     player_id: "player-8",
@@ -396,6 +403,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     total_yellow_cards: 1,
     total_red_cards: 0,
     total_clean_sheets: 0,
+    goals_conceded: 0,
   },
   {
     player_id: "player-9",
@@ -413,6 +421,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     total_yellow_cards: 0,
     total_red_cards: 0,
     total_clean_sheets: 0,
+    goals_conceded: 0,
   },
   {
     player_id: "player-10",
@@ -430,6 +439,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     total_yellow_cards: 0,
     total_red_cards: 0,
     total_clean_sheets: 0,
+    goals_conceded: 0,
   },
   {
     player_id: "player-11",
@@ -447,6 +457,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     total_yellow_cards: 0,
     total_red_cards: 0,
     total_clean_sheets: 0,
+    goals_conceded: 0,
   },
   {
     player_id: "player-12",
@@ -464,6 +475,7 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     total_yellow_cards: 0,
     total_red_cards: 0,
     total_clean_sheets: 0,
+    goals_conceded: 0,
   },
   {
     player_id: "player-13",
@@ -481,5 +493,6 @@ export const initialStatsSummary: PlayerStatsSummary[] = [
     total_yellow_cards: 0,
     total_red_cards: 0,
     total_clean_sheets: 0,
+    goals_conceded: 0,
   },
 ];

@@ -73,11 +73,18 @@ export function PlayerCard({ player }: PlayerCardProps) {
 
         {/* Quick Season Stats Bar */}
         <div className="relative z-10 grid grid-cols-3 gap-2 rounded-lg border border-white/5 bg-surface-elevated/60 p-2.5 text-center">
+        <div
+          className={`relative z-10 grid ${
+            isStaff ? "grid-cols-3" : "grid-cols-4"
+          } gap-1 rounded-lg border border-white/5 bg-surface-elevated/60 p-2 text-center`}
+        >
           <div>
             <span className="block font-display text-[10px] uppercase tracking-wider text-secondary">
+            <span className="block font-display text-[9px] uppercase tracking-wider text-secondary truncate">
               Partidos
             </span>
             <span className="font-display text-base font-bold text-primary">
+            <span className="font-display text-sm font-bold text-primary sm:text-base">
               {player.matches_played}
             </span>
           </div>
@@ -86,17 +93,21 @@ export function PlayerCard({ player }: PlayerCardProps) {
             <>
               <div>
                 <span className="block font-display text-[10px] uppercase tracking-wider text-accent-cyan">
+                <span className="block font-display text-[9px] uppercase tracking-wider text-accent-cyan truncate">
                   Rol
                 </span>
                 <span className="font-display text-xs font-bold text-accent-cyan truncate block pt-1">
+                <span className="font-display text-xs font-bold text-accent-cyan truncate block pt-0.5">
                   {getPositionName(player.position)}
                 </span>
               </div>
               <div>
                 <span className="block font-display text-[10px] uppercase tracking-wider text-secondary">
+                <span className="block font-display text-[9px] uppercase tracking-wider text-secondary truncate">
                   Tarjetas
                 </span>
                 <span className="font-display text-base font-bold text-primary">
+                <span className="font-display text-sm font-bold text-primary sm:text-base">
                   {player.total_yellow_cards + player.total_red_cards}
                 </span>
               </div>
@@ -105,17 +116,29 @@ export function PlayerCard({ player }: PlayerCardProps) {
             <>
               <div>
                 <span className="block font-display text-[10px] uppercase tracking-wider text-warning">
+                <span className="block font-display text-[9px] uppercase tracking-wider text-warning truncate" title="Porterías a Cero">
                   Imbatible
                 </span>
                 <span className="font-display text-base font-bold text-warning">
+                <span className="font-display text-sm font-bold text-warning sm:text-base">
                   {player.total_clean_sheets}
                 </span>
               </div>
               <div>
                 <span className="block font-display text-[10px] uppercase tracking-wider text-secondary">
+                <span className="block font-display text-[9px] uppercase tracking-wider text-danger truncate" title="Goles Encajados">
+                  Encajados
+                </span>
+                <span className="font-display text-sm font-bold text-danger sm:text-base">
+                  {player.goals_conceded ?? 0}
+                </span>
+              </div>
+              <div>
+                <span className="block font-display text-[9px] uppercase tracking-wider text-secondary truncate">
                   Tarjetas
                 </span>
                 <span className="font-display text-base font-bold text-primary">
+                <span className="font-display text-sm font-bold text-primary sm:text-base">
                   {player.total_yellow_cards + player.total_red_cards}
                 </span>
               </div>
@@ -124,18 +147,31 @@ export function PlayerCard({ player }: PlayerCardProps) {
             <>
               <div>
                 <span className="block font-display text-[10px] uppercase tracking-wider text-accent-cyan">
+                <span className="block font-display text-[9px] uppercase tracking-wider text-accent-cyan truncate">
                   Goles
                 </span>
                 <span className="font-display text-base font-bold text-accent-cyan">
+                <span className="font-display text-sm font-bold text-accent-cyan sm:text-base">
                   {player.total_goals}
                 </span>
               </div>
               <div>
                 <span className="block font-display text-[10px] uppercase tracking-wider text-success">
                   Asistencias
+                <span className="block font-display text-[9px] uppercase tracking-wider text-success truncate">
+                  Asist.
                 </span>
                 <span className="font-display text-base font-bold text-success">
+                <span className="font-display text-sm font-bold text-success sm:text-base">
                   {player.total_assists}
+                </span>
+              </div>
+              <div>
+                <span className="block font-display text-[9px] uppercase tracking-wider text-secondary truncate">
+                  Tarjetas
+                </span>
+                <span className="font-display text-sm font-bold text-primary sm:text-base">
+                  {player.total_yellow_cards + player.total_red_cards}
                 </span>
               </div>
             </>
@@ -261,11 +297,183 @@ export function PlayerCard({ player }: PlayerCardProps) {
                   </p>
                 </div>
               </div>
+            ) : player.position === "portero" ? (
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-secondary">
+                    Partidos Jugados
+                  </span>
+                  <p className="mt-1 font-display text-2xl font-bold text-primary sm:text-3xl">
+                    {player.matches_played}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-warning">
+                    Porterías a Cero
+                  </span>
+                  <p className="mt-1 font-display text-2xl font-bold text-warning sm:text-3xl text-glow-subtle">
+                    {player.total_clean_sheets}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-danger">
+                    Goles Encajados
+                  </span>
+                  <p className="mt-1 font-display text-2xl font-bold text-danger sm:text-3xl">
+                    {player.goals_conceded ?? 0}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-accent-cyan">
+                    Promedio Goles / Partido
+                  </span>
+                  <p className="mt-1 font-display text-xl font-bold text-accent-cyan sm:text-2xl">
+                    {player.matches_played > 0
+                      ? ((player.goals_conceded ?? 0) / player.matches_played).toFixed(2)
+                      : "0.00"}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-warning">
+                    Tarjetas Amarillas
+                  </span>
+                  <p className="mt-1 font-display text-2xl font-bold text-warning sm:text-3xl">
+                    {player.total_yellow_cards}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-danger">
+                    Tarjetas Rojas
+                  </span>
+                  <p className="mt-1 font-display text-2xl font-bold text-danger sm:text-3xl">
+                    {player.total_red_cards}
+                  </p>
+                </div>
+              </div>
+            ) : player.position === "defensa" ? (
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-secondary">
+                    Partidos Jugados
+                  </span>
+                  <p className="mt-1 font-display text-2xl font-bold text-primary sm:text-3xl">
+                    {player.matches_played}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-accent-cyan">
+                    Goles Marcados
+                  </span>
+                  <p className="mt-1 font-display text-2xl font-bold text-accent-cyan sm:text-3xl text-glow-subtle">
+                    {player.total_goals}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-success">
+                    Asistencias
+                  </span>
+                  <p className="mt-1 font-display text-2xl font-bold text-success sm:text-3xl">
+                    {player.total_assists}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-secondary">
+                    Total Tarjetas
+                  </span>
+                  <p className="mt-1 font-display text-xl font-bold text-primary sm:text-2xl">
+                    {player.total_yellow_cards + player.total_red_cards}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-warning">
+                    Tarjetas Amarillas
+                  </span>
+                  <p className="mt-1 font-display text-2xl font-bold text-warning sm:text-3xl">
+                    {player.total_yellow_cards}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-danger">
+                    Tarjetas Rojas
+                  </span>
+                  <p className="mt-1 font-display text-2xl font-bold text-danger sm:text-3xl">
+                    {player.total_red_cards}
+                  </p>
+                </div>
+              </div>
+            ) : player.position === "medio" ? (
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-secondary">
+                    Partidos Jugados
+                  </span>
+                  <p className="mt-1 font-display text-2xl font-bold text-primary sm:text-3xl">
+                    {player.matches_played}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-accent-cyan">
+                    Goles Marcados
+                  </span>
+                  <p className="mt-1 font-display text-2xl font-bold text-accent-cyan sm:text-3xl text-glow-subtle">
+                    {player.total_goals}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-success">
+                    Asistencias
+                  </span>
+                  <p className="mt-1 font-display text-2xl font-bold text-success sm:text-3xl">
+                    {player.total_assists}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-accent-cyan">
+                    Participación (G+A)
+                  </span>
+                  <p className="mt-1 font-display text-xl font-bold text-accent-cyan sm:text-2xl">
+                    {player.total_goals + player.total_assists}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-warning">
+                    Tarjetas Amarillas
+                  </span>
+                  <p className="mt-1 font-display text-2xl font-bold text-warning sm:text-3xl">
+                    {player.total_yellow_cards}
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-danger">
+                    Tarjetas Rojas
+                  </span>
+                  <p className="mt-1 font-display text-2xl font-bold text-danger sm:text-3xl">
+                    {player.total_red_cards}
+                  </p>
+                </div>
+              </div>
             ) : (
+              /* Delanteros */
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
                   <span className="font-display text-xs font-bold uppercase tracking-wider text-secondary">
                     Partidos
+                    Partidos Jugados
                   </span>
                   <p className="mt-1 font-display text-2xl font-bold text-primary sm:text-3xl">
                     {player.matches_played}
@@ -275,6 +483,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
                 <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
                   <span className="font-display text-xs font-bold uppercase tracking-wider text-accent-cyan">
                     Goles
+                    Goles Marcados
                   </span>
                   <p className="mt-1 font-display text-2xl font-bold text-accent-cyan sm:text-3xl text-glow-subtle">
                     {player.total_goals}
@@ -300,6 +509,16 @@ export function PlayerCard({ player }: PlayerCardProps) {
                     </p>
                   </div>
                 )}
+                <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
+                  <span className="font-display text-xs font-bold uppercase tracking-wider text-accent-cyan">
+                    Promedio Goles / Partido
+                  </span>
+                  <p className="mt-1 font-display text-xl font-bold text-accent-cyan sm:text-2xl">
+                    {player.matches_played > 0
+                      ? (player.total_goals / player.matches_played).toFixed(2)
+                      : "0.00"}
+                  </p>
+                </div>
 
                 <div className="rounded-xl border border-white/10 bg-surface-elevated/40 p-4 text-center">
                   <span className="font-display text-xs font-bold uppercase tracking-wider text-warning">

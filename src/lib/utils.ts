@@ -89,6 +89,12 @@ export const POSITION_ORDER: Record<PlayerPosition, number> = {
   delantero: 4,
   entrenador: 5,
   utillero: 6,
+  entrenador: 1,
+  utillero: 2,
+  portero: 3,
+  defensa: 4,
+  medio: 5,
+  delantero: 6,
 };
 
 export function sortPlayersByPositionAndDorsal<

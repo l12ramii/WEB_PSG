@@ -189,6 +189,7 @@ export interface Database {
           total_yellow_cards: number;
           total_red_cards: number;
           total_clean_sheets: number;
+          goals_conceded: number;
         };
         Relationships: [];
       };

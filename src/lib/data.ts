@@ -75,10 +75,16 @@ export async function getPlayerStatsSummary(): Promise<PlayerStatsSummary[]> {
           total_yellow_cards: 0,
           total_red_cards: 0,
           total_clean_sheets: 0,
+          goals_conceded: 0,
         }))
       );
     }
     return sortPlayersByPositionAndDorsal((data as PlayerStatsSummary[]) || []);
+    const formatted = ((data as PlayerStatsSummary[]) || []).map((p) => ({
+      ...p,
+      goals_conceded: p.goals_conceded ?? 0,
+    }));
+    return sortPlayersByPositionAndDorsal(formatted);
   } catch (err) {
     console.error("Unexpected error in getPlayerStatsSummary:", err);
     return [];
