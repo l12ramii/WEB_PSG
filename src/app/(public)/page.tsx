@@ -23,6 +23,7 @@ import { MatchCard } from "@/components/public/MatchCard";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { PsgShield } from "@/components/ui/PsgShield";
+import { RivalShield } from "@/components/ui/RivalShield";
 import { formatMatchDate, getCompetitionLabel } from "@/lib/utils";
 
 export const revalidate = 0;
@@ -201,16 +202,12 @@ export default async function HomePage() {
                           {!nextMatch.is_home ? "Local" : "Visitante"}
                         </span>
                       </div>
-                      <div className="flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated p-2 flex-shrink-0">
-                        {nextMatch.rival?.shield_url ? (
-                          <img
-                            src={nextMatch.rival.shield_url}
-                            alt={nextMatch.rival.name}
-                            className="h-full w-full object-contain"
-                          />
-                        ) : (
-                          <Shield className="h-7 w-7 text-muted" />
-                        )}
+                      <div className="flex items-center justify-center flex-shrink-0">
+                        <RivalShield
+                          src={nextMatch.rival?.shield_url}
+                          name={nextMatch.rival?.name}
+                          size="md"
+                        />
                       </div>
                     </div>
                   </div>

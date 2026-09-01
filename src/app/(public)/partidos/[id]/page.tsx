@@ -16,6 +16,7 @@ import { getMatchById } from "@/lib/data";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { PsgShield } from "@/components/ui/PsgShield";
+import { RivalShield } from "@/components/ui/RivalShield";
 import {
   formatMatchDate,
   getCompetitionLabel,
@@ -130,16 +131,12 @@ export default async function MatchDetailPage({ params }: MatchDetailPageProps) 
 
           {/* Rival Side */}
           <div className="flex flex-col items-center justify-center text-center min-w-0 px-1">
-            <div className="mb-2 flex h-16 w-16 sm:h-24 sm:w-24 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated p-2 sm:p-3 shadow-inner">
-              {match.rival?.shield_url ? (
-                <img
-                  src={match.rival.shield_url}
-                  alt={match.rival.name}
-                  className="h-full w-full object-contain"
-                />
-              ) : (
-                <Shield className="h-8 w-8 sm:h-10 sm:w-10 text-muted" />
-              )}
+            <div className="mb-2 flex items-center justify-center">
+              <RivalShield
+                src={match.rival?.shield_url}
+                name={match.rival?.name}
+                size="xl"
+              />
             </div>
             <span
               title={match.rival?.name || "Rival"}

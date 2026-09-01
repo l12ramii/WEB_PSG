@@ -22,6 +22,7 @@ import { saveMatchSheet } from "@/lib/data";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { PsgShield } from "@/components/ui/PsgShield";
+import { RivalShield } from "@/components/ui/RivalShield";
 import {
   getPositionBadgeColor,
   getPositionName,
@@ -206,15 +207,11 @@ export function MatchSheetEditor({ match, allPlayers }: MatchSheetEditorProps) {
           {/* Rival Side */}
           <div className="flex flex-col items-center space-y-3 min-w-0">
             <div className="flex items-center gap-2 max-w-full">
-              {match.rival?.shield_url ? (
-                <img
-                  src={match.rival.shield_url}
-                  alt={match.rival.name}
-                  className="h-6 w-6 object-contain flex-shrink-0"
-                />
-              ) : (
-                <Shield className="h-5 w-5 text-muted flex-shrink-0" />
-              )}
+              <RivalShield
+                src={match.rival?.shield_url}
+                name={match.rival?.name}
+                size="xs"
+              />
               <span
                 title={match.rival?.name || "Rival"}
                 className="truncate font-display text-2xl font-black tracking-wide text-primary sm:text-3xl"

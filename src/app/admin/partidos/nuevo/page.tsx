@@ -16,6 +16,7 @@ import {
 import { getRivals, addMatch } from "@/lib/data";
 import { Rival } from "@/lib/supabase/types";
 import { Button } from "@/components/ui/Button";
+import { RivalShield } from "@/components/ui/RivalShield";
 
 export default function NuevoPartidoPage() {
   const router = useRouter();
@@ -134,17 +135,11 @@ export default function NuevoPartidoPage() {
                   className="w-full flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-surface-elevated px-4 py-3 text-left transition-all hover:border-accent-cyan/50 focus-ring"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="h-8 w-8 flex-shrink-0 rounded-lg border border-white/10 bg-background/50 p-1 flex items-center justify-center overflow-hidden">
-                      {selectedRival?.shield_url ? (
-                        <img
-                          src={selectedRival.shield_url}
-                          alt={selectedRival.name}
-                          className="h-full w-full object-contain"
-                        />
-                      ) : (
-                        <Shield className="h-4 w-4 text-muted" />
-                      )}
-                    </div>
+                    <RivalShield
+                      src={selectedRival?.shield_url}
+                      name={selectedRival?.name}
+                      size="sm"
+                    />
                     <span className="truncate font-display text-sm font-bold uppercase tracking-wide text-primary">
                       {selectedRival?.name || "Seleccionar equipo rival..."}
                     </span>
@@ -181,17 +176,11 @@ export default function NuevoPartidoPage() {
                             }`}
                           >
                             <div className="flex items-center gap-3 min-w-0">
-                              <div className="h-7 w-7 flex-shrink-0 rounded-md border border-white/10 bg-background/40 p-0.5 flex items-center justify-center overflow-hidden">
-                                {rival.shield_url ? (
-                                  <img
-                                    src={rival.shield_url}
-                                    alt={rival.name}
-                                    className="h-full w-full object-contain"
-                                  />
-                                ) : (
-                                  <Shield className="h-3.5 w-3.5 text-muted" />
-                                )}
-                              </div>
+                              <RivalShield
+                                src={rival.shield_url}
+                                name={rival.name}
+                                size="xs"
+                              />
                               <span className="truncate font-display text-xs font-bold uppercase">
                                 {rival.name}
                               </span>

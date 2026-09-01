@@ -11,6 +11,7 @@ import {
 import { getMatches } from "@/lib/data";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
+import { RivalShield } from "@/components/ui/RivalShield";
 import { formatMatchDate, getCompetitionLabel } from "@/lib/utils";
 
 export const revalidate = 0;
@@ -50,17 +51,12 @@ export default async function AdminPartidosPage() {
             >
               {/* Match Details */}
               <div className="flex items-start gap-4 min-w-0 flex-1">
-                <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl border border-white/10 bg-surface-elevated p-2 shadow-inner">
-                  {match.rival?.shield_url ? (
-                    <img
-                      src={match.rival.shield_url}
-                      alt={match.rival.name}
-                      className="h-full w-full object-contain"
-                    />
-                  ) : (
-                    <Shield className="h-7 w-7 text-muted" />
-                  )}
-                </div>
+                <RivalShield
+                  src={match.rival?.shield_url}
+                  name={match.rival?.name}
+                  size="md"
+                  className="h-14 w-14"
+                />
 
                 <div className="space-y-1.5 min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">

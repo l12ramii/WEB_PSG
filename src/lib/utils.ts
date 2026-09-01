@@ -249,11 +249,26 @@ export async function compressImageFile(
 
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
+        ctx.clearRect(0, 0, width, height);
         ctx.drawImage(img, 0, 0, width, height);
 
         try {
-          const compressedDataUrl = canvas.toDataURL("image/jpeg", quality);
-          resolve(compressedDataUrl);
+          const isTransparentFormat =
+            file.type === "image/png" ||
+            file.type === "image/webp" ||
+            file.name?.toLowerCase().endsWith(".png") ||
+            file.name?.toLowerCase().endsWith(".webp");
+
+          const formatType = isTransparentFormat ? "image/webp" : "image/jpeg";
+          let compressedDataUrl = canvas.toDataURL(formatType, quality);
+
+          if (!compressedDataUrl || compressedDataUrl === "data:,") {
+            compressedDataUrl = canvas.toDataURL(
+              isTransparentFormat ? "image/png" : "image/jpeg",
+              quality
+            );
+          }
+          resolve(compressedDataUrl || src);
         } catch {
           resolve(src);
         }

@@ -1,23 +1,47 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Plus, Shield, Check, Trophy, Search, Upload, X, Loader2 } from "lucide-react";
-import { getRivals, addRival } from "@/lib/data";
+import {
+  Plus,
+  Check,
+  Trophy,
+  Search,
+  Upload,
+  X,
+  Loader2,
+  Edit,
+  Trash2,
+  AlertTriangle,
+  Link as LinkIcon,
+  Shield,
+} from "lucide-react";
+import { getRivals, addRival, updateRival, deleteRival } from "@/lib/data";
 import { Rival } from "@/lib/supabase/types";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
+import { RivalShield } from "@/components/ui/RivalShield";
 import { compressImageFile } from "@/lib/utils";
 
 export default function AdminRivalesPage() {
   const [rivals, setRivals] = useState<Rival[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+
+  // Modal create/edit state
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingRival, setEditingRival] = useState<Rival | null>(null);
   const [name, setName] = useState("");
   const [shieldUrl, setShieldUrl] = useState("");
   const [saving, setSaving] = useState(false);
+  const [isProcessingFile, setIsProcessingFile] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Delete confirmation modal state
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [rivalToDelete, setRivalToDelete] = useState<Rival | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const loadRivals = async () => {
     try {
@@ -32,33 +56,107 @@ export default function AdminRivalesPage() {
     loadRivals();
   }, []);
 
+  const openNewRivalModal = () => {
+    setEditingRival(null);
+    setName("");
+    setShieldUrl("");
+    setErrorMessage(null);
+    setIsModalOpen(true);
+  };
+
+  const openEditRivalModal = (rival: Rival) => {
+    setEditingRival(rival);
+    setName(rival.name);
+    setShieldUrl(rival.shield_url || "");
+    setErrorMessage(null);
+    setIsModalOpen(true);
+  };
+
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const compressed = await compressImageFile(file, 600, 600, 0.9);
-      if (compressed) setShieldUrl(compressed);
-      if (fileInputRef.current) fileInputRef.current.value = "";
+    if (!file) return;
+
+    setIsProcessingFile(true);
+    try {
+      const compressed = await compressImageFile(file, 400, 400, 0.9);
+      if (compressed) {
+        setShieldUrl(compressed);
+      }
+    } catch (err) {
+      console.error("Error al procesar el escudo:", err);
+    } finally {
+      setIsProcessingFile(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     }
   };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name) {
-      alert("Por favor introduce el nombre del equipo.");
+    if (!name.trim()) {
+      alert("Por favor introduce el nombre del equipo rival.");
       return;
     }
 
     setSaving(true);
+    setErrorMessage(null);
+
+    const cleanShield = shieldUrl.trim() || null;
+
     try {
-      const newRival = await addRival(name, shieldUrl);
-      setRivals((prev) => [...prev, newRival]);
+      if (editingRival) {
+        const updated = await updateRival(editingRival.id, {
+          name: name.trim(),
+          shield_url: cleanShield,
+        });
+
+        if (updated) {
+          setRivals((prev) =>
+            prev.map((r) => (r.id === editingRival.id ? updated : r))
+          );
+        }
+      } else {
+        const newRival = await addRival(name.trim(), cleanShield);
+        setRivals((prev) => [...prev, newRival]);
+      }
+
+      setIsModalOpen(false);
       setName("");
       setShieldUrl("");
-      setIsModalOpen(false);
+      setEditingRival(null);
     } catch (err: any) {
-      alert("Error al guardar el rival en Supabase: " + (err?.message || ""));
+      setErrorMessage(
+        err?.message || "Error al guardar el rival en la base de datos."
+      );
     } finally {
       setSaving(false);
+    }
+  };
+
+  const promptDelete = (rival: Rival) => {
+    setRivalToDelete(rival);
+    setErrorMessage(null);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    if (!rivalToDelete) return;
+
+    setDeleting(true);
+    setErrorMessage(null);
+    try {
+      await deleteRival(rivalToDelete.id);
+      setRivals((prev) => prev.filter((r) => r.id !== rivalToDelete.id));
+      setDeleteModalOpen(false);
+      setRivalToDelete(null);
+    } catch (err: any) {
+      setErrorMessage(
+        err?.message ||
+          "No se puede eliminar este rival. Es posible que tenga partidos asociados en el calendario o actas."
+      );
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -76,17 +174,13 @@ export default function AdminRivalesPage() {
             <span className="text-glow-subtle text-accent-cyan">Rivales</span>
           </h1>
           <p className="text-xs font-medium text-secondary sm:text-sm">
-            Base de datos reutilizable de equipos rivales y sus escudos en Supabase
-            para vincularlos a los partidos.
+            Gestión completa (crear, editar, eliminar) de equipos contrarios y sus escudos
+            para el calendario y las actas de partido.
           </p>
         </div>
 
         <Button
-          onClick={() => {
-            setName("");
-            setShieldUrl("");
-            setIsModalOpen(true);
-          }}
+          onClick={openNewRivalModal}
           size="lg"
           className="shadow-glow-subtle px-5 py-3"
         >
@@ -117,61 +211,100 @@ export default function AdminRivalesPage() {
         <div className="flex flex-col items-center justify-center rounded-xl border border-white/10 bg-surface py-20 text-center">
           <Loader2 className="h-10 w-10 animate-spin text-accent-cyan" />
           <p className="mt-4 font-display text-sm font-bold uppercase tracking-wider text-secondary">
-            Cargando...
+            Cargando directorio de rivales...
           </p>
         </div>
       ) : filteredRivals.length === 0 ? (
         <div className="rounded-xl border border-white/10 bg-surface py-16 text-center">
           <Shield className="mx-auto h-12 w-12 text-muted" />
           <h4 className="mt-3 font-display text-lg font-bold text-primary">
-            No hay rivales registrados
+            No se encontraron rivales
           </h4>
           <p className="mt-1 text-sm text-secondary">
-            Añade rivales para poder programar partidos contra ellos.
+            {search
+              ? "No hay ningún rival que coincida con tu búsqueda."
+              : "Añade rivales para poder programar partidos y registrar actas."}
           </p>
+          {search && (
+            <button
+              onClick={() => setSearch("")}
+              className="mt-3 text-xs font-bold uppercase text-accent-cyan hover:underline"
+            >
+              Limpiar búsqueda
+            </button>
+          )}
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filteredRivals.map((rival) => (
             <div
               key={rival.id}
-              className="group flex select-none items-center gap-4 rounded-xl border border-white/10 bg-surface p-6 inner-light transition-all duration-200 ease-out hover:-translate-y-1 hover:border-accent-cyan/50 hover:shadow-glow-subtle min-w-0"
+              className="group relative flex flex-col justify-between rounded-xl border border-white/10 bg-surface p-5 inner-light transition-all duration-200 ease-out hover:-translate-y-1 hover:border-accent-cyan/50 hover:shadow-glow-subtle min-w-0"
             >
-              <div className="h-16 w-16 flex flex-shrink-0 items-center justify-center overflow-hidden rounded-xl border border-white/10 bg-surface-elevated p-2 shadow-inner transition-transform duration-200 group-hover:scale-105 sm:h-18 sm:w-18">
-                {rival.shield_url ? (
-                  <img
-                    src={rival.shield_url}
-                    alt={rival.name}
-                    className="h-full w-full object-contain"
-                  />
-                ) : (
-                  <Shield className="h-8 w-8 text-muted" />
-                )}
+              {/* Rival Info */}
+              <div className="flex items-center gap-4 min-w-0">
+                <RivalShield
+                  src={rival.shield_url}
+                  name={rival.name}
+                  size="lg"
+                  className="transition-transform duration-200 group-hover:scale-105"
+                />
+
+                <div className="min-w-0 flex-1 space-y-1">
+                  <h3
+                    title={rival.name}
+                    className="truncate font-display text-xl font-bold uppercase tracking-wide text-primary transition-colors group-hover:text-accent-cyan"
+                  >
+                    {rival.name}
+                  </h3>
+                  <span className="flex items-center gap-1 font-display text-xs font-bold uppercase tracking-wider text-success">
+                    <Check className="h-3.5 w-3.5" /> Disponible en Partidos
+                  </span>
+                </div>
               </div>
 
-              <div className="min-w-0 flex-1">
-                <h3
-                  title={rival.name}
-                  className="truncate font-display text-xl font-bold uppercase tracking-wide text-primary transition-colors group-hover:text-accent-cyan"
+              {/* Action Buttons: Edit / Delete */}
+              <div className="mt-4 flex items-center justify-end gap-2 border-t border-white/10 pt-3">
+                <Button
+                  onClick={() => openEditRivalModal(rival)}
+                  variant="secondary"
+                  size="sm"
+                  className="gap-1.5 text-xs font-bold"
                 >
-                  {rival.name}
-                </h3>
-                <span className="mt-1 flex items-center gap-1 font-display text-xs font-bold uppercase tracking-wider text-success">
-                  <Check className="h-3.5 w-3.5" /> Disponible en Partidos
-                </span>
+                  <Edit className="h-3.5 w-3.5 text-accent-cyan" /> Editar
+                </Button>
+                <button
+                  onClick={() => promptDelete(rival)}
+                  title="Eliminar rival"
+                  className="flex items-center gap-1.5 rounded-lg border border-danger/30 bg-danger/10 px-3 py-1.5 font-display text-xs font-bold uppercase tracking-wider text-danger transition-colors hover:bg-danger/25 hover:text-white focus-ring"
+                >
+                  <Trash2 className="h-3.5 w-3.5" /> Eliminar
+                </button>
               </div>
             </div>
           ))}
         </div>
       )}
 
-      {/* Modal Add Rival */}
+      {/* Modal Add / Edit Rival */}
       <Modal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Añadir Equipo Rival"
+        onClose={() => {
+          if (!saving && !isProcessingFile) {
+            setIsModalOpen(false);
+            setEditingRival(null);
+          }
+        }}
+        title={editingRival ? `Editar Rival: ${editingRival.name}` : "Añadir Nuevo Rival"}
       >
         <form onSubmit={handleSave} className="space-y-5">
+          {errorMessage && (
+            <div className="rounded-xl border border-danger/40 bg-danger/15 p-3.5 text-xs font-medium text-danger flex items-start gap-2">
+              <AlertTriangle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+              <span>{errorMessage}</span>
+            </div>
+          )}
+
           <Input
             label="Nombre del Equipo Rival *"
             placeholder="Ej: Barrio Norte F7"
@@ -183,10 +316,9 @@ export default function AdminRivalesPage() {
           {/* Shield Upload / URL Section */}
           <div className="space-y-2">
             <label className="block font-display text-xs font-bold uppercase tracking-wider text-secondary">
-              Escudo del Equipo (Subir archivo o pegar enlace)
+              Escudo Oficial (Subir archivo o pegar enlace)
             </label>
 
-            {/* Direct File Upload Dropzone */}
             <input
               type="file"
               ref={fileInputRef}
@@ -198,54 +330,60 @@ export default function AdminRivalesPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <button
                 type="button"
+                disabled={isProcessingFile}
                 onClick={() => fileInputRef.current?.click()}
-                className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-white/20 bg-surface-elevated/50 p-4 text-xs font-bold uppercase tracking-wider text-secondary hover:border-accent-cyan hover:text-accent-cyan transition-colors focus-ring"
+                className="flex items-center justify-center gap-2 rounded-xl border border-dashed border-white/20 bg-surface-elevated/50 p-4 text-xs font-bold uppercase tracking-wider text-secondary hover:border-accent-cyan hover:text-accent-cyan transition-colors focus-ring disabled:opacity-50"
               >
-                <Upload className="h-4 w-4" />
-                <span>Subir imagen local</span>
+                {isProcessingFile ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin text-accent-cyan" />
+                    <span>Optimizando escudo...</span>
+                  </>
+                ) : (
+                  <>
+                    <Upload className="h-4 w-4" />
+                    <span>Subir escudo local</span>
+                  </>
+                )}
               </button>
 
               <div className="relative">
                 <input
                   type="text"
                   placeholder="O pega URL (https://...)"
-                  value={shieldUrl.startsWith("data:") ? "Imagen cargada localmente" : shieldUrl}
+                  value={shieldUrl.startsWith("data:") ? "" : shieldUrl}
                   onChange={(e) => setShieldUrl(e.target.value)}
-                  className="w-full h-full rounded-xl border border-white/10 bg-surface-elevated px-3 py-2.5 text-xs text-primary placeholder-muted focus-ring focus:border-accent-cyan focus:outline-none"
+                  className="w-full h-full rounded-xl border border-white/10 bg-surface-elevated px-3.5 py-2.5 text-xs text-primary placeholder-muted focus-ring focus:border-accent-cyan focus:outline-none"
                 />
               </div>
             </div>
 
             {/* Live Shield Preview */}
-            {shieldUrl && (
+            {shieldUrl ? (
               <div className="flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-surface-elevated p-3">
-                <div className="flex items-center gap-3">
-                  <div className="h-12 w-12 rounded-lg border border-white/10 bg-background/50 p-1 flex items-center justify-center overflow-hidden">
-                    <img
-                      src={shieldUrl}
-                      alt="Vista previa del escudo"
-                      className="h-full w-full object-contain"
-                    />
-                  </div>
-                  <div>
-                    <span className="block text-xs font-bold text-primary">
-                      Escudo cargado
+                <div className="flex items-center gap-3 min-w-0">
+                  <RivalShield src={shieldUrl} name={name || "Vista previa"} size="sm" />
+                  <div className="min-w-0">
+                    <span className="block text-xs font-bold text-primary truncate">
+                      {shieldUrl.startsWith("data:")
+                        ? "Escudo cargado localmente (optimizado)"
+                        : "Escudo vinculado por URL"}
                     </span>
                     <span className="text-[11px] text-secondary">
-                      Listo para vincular al equipo
+                      Listo para asociarse al equipo
                     </span>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => setShieldUrl("")}
-                  className="rounded-lg p-1.5 text-secondary hover:bg-white/10 hover:text-danger focus-ring"
-                  title="Eliminar imagen"
+                  className="rounded-lg p-1.5 text-secondary hover:bg-white/10 hover:text-danger focus-ring flex-shrink-0"
+                  title="Eliminar escudo"
                 >
                   <X className="h-4 w-4" />
                 </button>
               </div>
-            )}
+            ) : null}
           </div>
 
           <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 border-t border-white/10 pt-4">
@@ -254,7 +392,11 @@ export default function AdminRivalesPage() {
               variant="secondary"
               size="md"
               className="w-full sm:w-auto px-6 py-2.5 min-h-[44px]"
-              onClick={() => setIsModalOpen(false)}
+              disabled={saving}
+              onClick={() => {
+                setIsModalOpen(false);
+                setEditingRival(null);
+              }}
             >
               Cancelar
             </Button>
@@ -264,10 +406,74 @@ export default function AdminRivalesPage() {
               className="w-full sm:w-auto px-6 py-2.5 min-h-[44px]"
               isLoading={saving}
             >
-              <Check className="h-4 w-4" /> Guardar Rival
+              <Check className="h-4 w-4" />{" "}
+              {editingRival ? "Guardar Cambios" : "Guardar Rival"}
             </Button>
           </div>
         </form>
+      </Modal>
+
+      {/* Modal Confirm Delete */}
+      <Modal
+        isOpen={deleteModalOpen}
+        onClose={() => {
+          if (!deleting) {
+            setDeleteModalOpen(false);
+            setRivalToDelete(null);
+          }
+        }}
+        title="Confirmar Eliminación"
+      >
+        <div className="space-y-4">
+          {errorMessage ? (
+            <div className="rounded-xl border border-danger/40 bg-danger/15 p-3.5 text-xs font-medium text-danger flex items-start gap-2">
+              <AlertTriangle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+              <span>{errorMessage}</span>
+            </div>
+          ) : (
+            <p className="text-sm text-secondary">
+              ¿Estás seguro de que deseas eliminar al rival{" "}
+              <strong className="text-primary uppercase">
+                {rivalToDelete?.name}
+              </strong>
+              ? Esta acción no se puede deshacer.
+            </p>
+          )}
+
+          <div className="flex flex-col-reverse sm:flex-row justify-end gap-3 border-t border-white/10 pt-4">
+            <Button
+              type="button"
+              variant="secondary"
+              size="md"
+              className="w-full sm:w-auto px-6 py-2.5 min-h-[44px]"
+              disabled={deleting}
+              onClick={() => {
+                setDeleteModalOpen(false);
+                setRivalToDelete(null);
+              }}
+            >
+              Cancelar
+            </Button>
+            <button
+              type="button"
+              disabled={deleting}
+              onClick={confirmDelete}
+              className="flex items-center justify-center gap-2 rounded-xl border border-danger/40 bg-danger px-6 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-white shadow-glow-crimson transition-all hover:bg-danger/80 disabled:opacity-50 min-h-[44px]"
+            >
+              {deleting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>Eliminando...</span>
+                </>
+              ) : (
+                <>
+                  <Trash2 className="h-4 w-4" />
+                  <span>Eliminar Definitivamente</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
       </Modal>
     </div>
   );

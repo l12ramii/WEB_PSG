@@ -234,6 +234,46 @@ export async function addRival(
   return data as Rival;
 }
 
+export async function updateRival(
+  id: string,
+  data: Partial<Rival>
+): Promise<Rival | null> {
+  const supabase = createClient();
+  const { data: updatedRival, error } = await (supabase.from("rivals") as any)
+    .update(data)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error("Error updating rival in Supabase:", error.message);
+    throw error;
+  }
+  return updatedRival as Rival;
+}
+
+export async function deleteRival(id: string): Promise<boolean> {
+  const supabase = createClient();
+  const { error } = await (supabase.from("rivals") as any)
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    console.error("Error deleting rival in Supabase:", error.message);
+    if (
+      error.code === "23503" ||
+      error.message?.includes("violates foreign key constraint") ||
+      error.message?.includes("matches_rival_id_fkey")
+    ) {
+      throw new Error(
+        "No se puede eliminar el rival porque tiene partidos asociados en el calendario o actas."
+      );
+    }
+    throw error;
+  }
+  return true;
+}
+
 export async function addPlayer(
   data: Omit<Player, "id" | "created_at">
 ): Promise<Player> {
