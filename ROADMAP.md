@@ -68,9 +68,10 @@ Este documento detalla las tareas paso a paso para completar el desarrollo de la
 - [x] **Testing y Ajustes UX**
   - [x] Verificar que la creación del acta actualice correctamente las estadísticas de la plantilla.
   - [x] Revisión de usabilidad (Responsive) en dispositivos móviles, especialmente para el panel del CM.
-- [x] **Despliegue**
+- [x] **Despliegue y Configuración en Vercel**
   - [x] Subir el repositorio a GitHub.
-  - [ ] Conectar el repositorio con Vercel para despliegue automático.
-  - [ ] Configurar variables de entorno de producción en Vercel.
+  - [x] Conectar el repositorio con Vercel para habilitar el despliegue automático (CI/CD en ramas/pull requests).
+  - [x] Configurar variables de entorno en Vercel (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`).
+  - [x] Verificar el build exitoso de producción y el funcionamiento del despliegue continuo tras cada push.
 - [ ] **Dominio (Futuro)**
   - [ ] Adquirir dominio personalizado y configurar DNS en Vercel.

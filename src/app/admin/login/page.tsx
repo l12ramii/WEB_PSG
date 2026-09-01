@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Flame, Lock, Sparkles, ArrowLeft } from "lucide-react";
+import { Lock } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -28,13 +28,6 @@ export default function AdminLoginPage() {
       });
 
       if (authError) {
-        if (
-          !process.env.NEXT_PUBLIC_SUPABASE_URL ||
-          process.env.NEXT_PUBLIC_SUPABASE_URL.includes("placeholder")
-        ) {
-          router.push("/admin");
-          return;
-        }
         setError(authError.message || "Credenciales incorrectas");
       } else {
         router.push("/admin");
@@ -44,10 +37,6 @@ export default function AdminLoginPage() {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleDemoAccess = () => {
-    router.push("/admin");
   };
 
   return (
@@ -109,21 +98,6 @@ export default function AdminLoginPage() {
               <Lock className="h-4 w-4" /> Iniciar Sesión CM
             </Button>
           </form>
-
-          {/* Demo Instant Access Button */}
-          <div className="space-y-3 border-t border-surface-border/80 pt-4 text-center">
-            <span className="block text-[11px] font-medium text-psg-400">
-              ¿Quieres explorar el panel sin credenciales de Supabase?
-            </span>
-            <button
-              type="button"
-              onClick={handleDemoAccess}
-              className="flex w-full items-center justify-center gap-2 rounded-2xl border border-surface-border bg-surface-muted px-4 py-3 font-display text-xs font-black uppercase tracking-wider text-accent-cyan shadow-sm transition-all hover:bg-surface-active hover:text-white"
-            >
-              <Sparkles className="h-4 w-4 text-accent-cyan" /> Acceso de
-              Demostración Inmediato
-            </button>
-          </div>
         </div>
 
         {/* Back Link */}
